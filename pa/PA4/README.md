@@ -1,7 +1,7 @@
 # PA4 — Test Plan & Test Cases
 
-Thư mục này chỉ lưu **bản PA4 đã nộp**, PDF + file nguồn, bảng đóng góp và AI Usage Log theo template.
+Archive the **submitted PA4 PDF + editable source**, including Member Contribution and AI Usage Log. The document covers test strategy, levels, environments, entry/exit criteria, defect management, test-design techniques, detailed cases and Must-have requirement coverage.
 
-Nội dung: test scope, test levels/types, environment, entry/exit, defect process, EP/BVA/decision table, test cases đủ preconditions/data/steps/expected và coverage các Must-have requirements.
+Test cases can be tables **inside PA4**; separate files are only needed if the team deliberately manages a large test suite. Do not claim tests passed before actual execution.
 
-Test plan/cases còn đang làm trong `docs/testing/`; **không** ghi test Passed nếu chưa chạy.
+See the [submission procedure](../README.md).

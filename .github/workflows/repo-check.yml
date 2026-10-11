@@ -26,8 +26,7 @@ jobs:
             "README.md", "CONTRIBUTING.md", ".gitignore",
             "frontend/README.md", "backend/README.md",
             "docs/README.md", "docs/management/README.md",
-            "docs/management/weekly/README.md", "docs/requirements/README.md",
-            "docs/design/README.md", "docs/testing/README.md", "docs/ai-usage/README.md",
+            "docs/management/weekly/README.md",
             "pa/README.md", "pa/Final/README.md",
             *[f"pa/PA{i}/README.md" for i in range(6)],
           ]

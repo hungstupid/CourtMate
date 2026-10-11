@@ -1,15 +1,9 @@
-# Frontend — guidance for every PA
+# Frontend
 
-**Purpose:** frontend application code and assets for the web browser. The **technology choice is provisional** (React suggested in PA0).
+Holds CourtMate's **browser application code** when implementation begins: pages, UI components, assets and frontend tests. React is proposed in PA0 but not yet confirmed.
 
-Place here **when approved/implemented**:
-- `src/`: pages/views, reusable UI components, state/hooks, form validation, route guards.
-- `public/` or `assets/`: local static assets with appropriate licenses.
-- `tests/`: frontend unit/component tests if the selected tooling uses this layout.
-- `package.json`, configuration and `.env.example`: dependencies and non-secret environment variable names.
+Once the application is created, document its actual installation, development, build and test commands here. Do not claim commands work before verification.
 
-**Do not place here:** PA submission PDFs, use-case specifications, architecture diagrams or real secrets. Put course artifacts in `docs/` and `pa/`.
+**Not for:** PA PDFs, requirements/design/test reports, contributor logs or secrets. The official assignment documentation is submitted within `pa/PAx/`; team work is tracked with GitHub Issues/Projects.
 
-**Cross-phase workflow:** PA2 requirements → PA3 designs → PA4 test cases → PA5 implementation and test evidence. Include setup/run/test/build commands here **once real tooling is selected**; do not present speculative commands as working.
-
-Every change: approved Issue → branch → PR → review → merge. Link UI screens back to use cases and tests.
+Use a feature branch and Pull Request for changes.

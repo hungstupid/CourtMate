@@ -1,9 +1,7 @@
 # PA2 — Software Requirements Specification
 
-Archive the **PA2 submitted PDF + editable source**, contribution table and AI Usage Log. **Deadline:** end of W5 per course schedule; verify Moodle.
+Archive the **submitted PA2 PDF + editable source**, including Member Contribution and AI Usage Log. The SRS document contains functional/nonfunctional requirements, use cases, business rules, acceptance criteria, prototypes and traceability/review records.
 
-Required: numbered and prioritized functional requirements, measurable nonfunctional requirements, detailed business/domain rules, actor/use-case diagram and use case specifications (pre/postconditions, main, alternative and exception flows), main-use-case prototypes, acceptance criteria, requirements traceability matrix and review findings/resolution.
+Individual requirement or use-case files are **optional**, not required for this repository layout. Use the course template, track assigned tasks in GitHub and keep the actual submission copy here.
 
-Connect features to PA1 MoSCoW scope and document any proposed/approved baseline changes. For CourtMate especially agree on booking duration/slots, confirmation/approval, cancellation, no-overlap logic and owner permissions before specifying testable requirements.
-
-Keep living working assets in `docs/requirements/` and submitted immutable snapshot here.
+See the [submission procedure](../README.md).

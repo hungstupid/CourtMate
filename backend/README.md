@@ -1,11 +1,9 @@
-# Backend — guidance for every PA
+# Backend
 
-**Purpose:** API, domain/business logic, authentication/authorization, booking validation, persistence and migrations. PA0 proposes **FastAPI + PostgreSQL**, subject to team confirmation.
+Holds CourtMate's **server-side implementation** when development begins: API endpoints, business rules, authentication/authorization, data access, database migrations and backend tests. FastAPI + PostgreSQL are proposed in PA0 but not yet confirmed.
 
-When development begins, document actual folders such as `app/` (API/routes/services/data access), `tests/`, `migrations/`, dependency files and a safe `.env.example`. Choose names appropriate for the final stack.
+The booking-duration and confirmation/approval rules must be agreed before implementation. Preventing overlapping valid bookings requires a verified server/database approach.
 
-**Required engineering considerations:** users and court-owner permissions, date/time validation, overlapping reservations, database transaction/constraint strategy, cancellations, error handling, logging and testability. Do not assume a fixed 60-minute duration or automatic booking approval until agreed.
+Once initialized, document the real setup, database migration, run and test commands here. Never commit credentials, `.env` or real customer information.
 
-**Store outside this folder:** SRS and business rules (`docs/requirements/`), design decisions and database ERD (`docs/design/`), submitted PA files (`pa/`), test plans/reports (`docs/test/`).
-
-Add proven local setup, migrations, testing and run commands here after project scaffolding is actually implemented. Do not commit secrets or generated databases.
+**Not for:** PA documentation; finalized course submissions go in `pa/PAx/`.

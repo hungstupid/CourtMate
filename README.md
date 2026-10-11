@@ -2,92 +2,65 @@
 
 **Sports Court Booking & Management Platform**
 
-A web-based system that helps players discover sports venues, view court availability, and submit reservations while providing court owners with tools to manage courts, schedules, and bookings.
+CourtMate is a proposed web platform for players to discover sports courts, check availability and make reservations, while helping venue owners manage courts, schedules and bookings.
 
-**Team:** Nexora (T05)  
-**Course:** Introduction to Software Engineering — University of Science, VNU-HCM (HCMUS)  
-**Repository:** [hungstupid/CourtMate](https://github.com/hungstupid/CourtMate)
+**Team:** Nexora — T05  
+**Course:** Introduction to Software Engineering — University of Science, VNU-HCM (HCMUS)
 
 ## Project Overview
 
-CourtMate aims to make sports court reservations more accessible and organized for both players and venue operators. The proposed scope focuses on a complete booking workflow, from court discovery to reservation management.
-
-| User role | Core capabilities |
+| User | Primary activities |
 | --- | --- |
-| **Player** | Register and sign in; browse/search courts; view court information and availability; manage reservations and profile |
-| **Court Owner** | Maintain court listings and operating schedules; view and manage bookings for their courts |
+| Player | Search courts, inspect available times, manage reservations and account information |
+| Court Owner | Manage court information, opening schedules and incoming bookings |
 
-**Planned priorities:** 8 Must-have features (authentication, search, court details/availability, booking, booking history, court/schedule management, owner booking management, and profile management) and 2 Should-have features (reviews and promotions).
+The PA0 proposal contains **8 Must-have** and **2 Should-have** features. Detailed booking duration, confirmation rules and cancellation rules still require team/TA clarification. Online payments are outside the initial Must-have scope.
 
-The detailed booking duration, reservation confirmation process, and cancellation rules will be defined through requirements analysis. Payment integration is outside the initial Must-have scope.
-
-## Technology
-
-The preliminary technology proposal is:
-
-| Layer | Proposed technology |
-| --- | --- |
-| Frontend | React |
-| Backend / API | Python + FastAPI |
-| Database | PostgreSQL |
-| Collaboration | GitHub, GitHub Projects, Pull Requests |
-
-Technology choices and deployment details are subject to team review during project planning.
+**Proposed technology:** React (frontend), FastAPI/Python (backend) and PostgreSQL (database). The final stack will be confirmed during planning.
 
 ## Repository Structure
 
-| Directory | Contents |
+| Path | Purpose |
 | --- | --- |
-| [`frontend/`](frontend/README.md) | Web application source, UI assets, and frontend tests |
-| [`backend/`](backend/README.md) | API, business logic, data access, migrations, and backend tests |
-| [`docs/management/`](docs/management/README.md) | Plans, WBS, estimates, schedule, risks, meeting minutes, contribution evidence, and weekly status reports |
-| [`docs/requirements/`](docs/requirements/README.md) | Product vision, stakeholders, requirements, use cases, business rules, and traceability |
-| [`docs/design/`](docs/design/README.md) | C4, architecture decisions, UML, database design, and UI/UX specifications |
-| [`docs/testing/`](docs/testing/README.md) | Test plans, cases, execution reports, defects, and testing evidence |
-| [`docs/ai-usage/`](docs/ai-usage/README.md) | AI tool usage records and human verification notes |
-| [`pa/`](pa/README.md) | Submitted PDF and editable source files for each project assignment |
-| [`.github/`](.github/PULL_REQUEST_TEMPLATE.md) | Issue templates, Pull Request template, and repository checks |
+| [`frontend/`](frontend/README.md) | Web application source code and frontend tests |
+| [`backend/`](backend/README.md) | API, business logic, database integration and backend tests |
+| [`docs/management/weekly/`](docs/management/weekly/README.md) | Weekly status reports, W2–W10 |
+| [`docs/management/`](docs/management/README.md) | Additional meeting notes or management evidence when needed |
+| [`pa/`](pa/README.md) | **Final submitted copies** of PA0–PA5 and Final materials |
+| [`.github/`](.github/PULL_REQUEST_TEMPLATE.md) | Issue/PR templates and automated repository checks |
 
-Each directory contains a dedicated `README.md` defining its purpose and file placement **throughout the entire project**, not just one assignment.
+**Documents for each PA are written as one assignment document**, including the WBS, Gantt chart, risk register, requirements, designs or test cases relevant to that PA. Separate files and folders for these sections are **not required**. Working drafts may be maintained collaboratively in Google Docs/Drive; `pa/PAx/` holds the corresponding submitted PDF and editable source.
 
-### Document Management
+## Collaboration and Contribution Evidence
 
-- **Working documents:** `docs/` — updated as the project evolves.
-- **Official submissions:** `pa/PA0/` through `pa/PA5/` and `pa/Final/` — committed copies of the files submitted for each milestone.
-- **Weekly reports:** `docs/management/weekly/` — one report per week from W2 through W10.
-- **Implementation:** `frontend/` and `backend/` — application code and code-level tests.
+The team uses [GitHub Issues](https://github.com/hungstupid/CourtMate/issues) and [GitHub Projects](https://github.com/hungstupid/CourtMate/projects) to assign and track approved work packages. Each task should identify an owner, due date, expected output and review criteria.
 
-Submitted assignments serve as project baselines. Subsequent changes should be documented and traced to affected requirements, designs, and tests.
+1. Agree on the work package; create and assign an Issue.
+2. Create a branch, make a focused change and commit it.
+3. Open a Pull Request (PR) referencing the work, and obtain an independent review before merging into `main`.
+4. Update the Issue/Project status and record evidence in the weekly report.
+5. Summarize actual individual contributions in the **Member Contribution** table of each graded PA.
 
-## Development Workflow
+Work completed in collaborative documents can be evidenced by document revision history and task/review records; Git commits alone do not capture all such contributions. See [CONTRIBUTING.md](CONTRIBUTING.md).
 
-Team tasks are coordinated through [GitHub Issues](https://github.com/hungstupid/CourtMate/issues) and [GitHub Projects](https://github.com/hungstupid/CourtMate/projects). Each agreed WBS work package should have an assigned owner, due date, estimated effort, and reviewable deliverable.
+## Project Assignments
 
-1. Select an agreed Issue and create a working branch from `main` (e.g., `docs/pa1-wbs`, `feat/court-search`).
-2. Make focused changes and use [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) (`feat:`, `fix:`, `docs:`, `test:`, `chore:`).
-3. Open a Pull Request referencing the Issue and describe the changes and validation performed.
-4. Obtain a review from another team member before merging into `main`.
-5. Update the Issue and project board with the outcome and supporting evidence.
-
-For contribution standards, review responsibilities, and security practices, see [CONTRIBUTING.md](CONTRIBUTING.md).
-
-## Course Deliverables
-
-| Milestone | Deliverable |
+| Phase | Submission |
 | --- | --- |
-| PA0 | Project Idea & Team Contract |
-| PA1 | Project Proposal & Plan |
-| PA2 | Software Requirements Specification |
-| PA3 | Software Design |
-| PA4 | Test Plan & Test Cases |
-| PA5 | Implementation, Testing & Deployment |
-| Final | Presentation & Demonstration |
+| [PA0](pa/PA0/README.md) | Project Idea & Team Contract |
+| [PA1](pa/PA1/README.md) | Project Proposal & Plan |
+| [PA2](pa/PA2/README.md) | Software Requirements Specification |
+| [PA3](pa/PA3/README.md) | Software Design |
+| [PA4](pa/PA4/README.md) | Test Plan & Test Cases |
+| [PA5](pa/PA5/README.md) | Implementation, Testing & Deployment |
+| [Final](pa/Final/README.md) | Presentation & Demonstration |
 
-Submit each assignment in the format and by the deadline required on Moodle. The repository's `pa/` directory maintains a corresponding version-controlled copy of the submitted PDF and editable source. The graded assignments include the team's contribution assessment and AI Usage Log.
+Submit PDFs and editable source files to Moodle as required by the course, then commit matching submission copies to the appropriate `pa/` directory. Graded PAs include a **Member Contribution** table and **AI Usage Log** within the document. Submitted versions are baselines: record any later changes instead of silently replacing history.
+
+Weekly reports are committed separately in [`docs/management/weekly/`](docs/management/weekly/README.md).
 
 ## References
 
-- [Project Idea & Team Contract (PA0 working document)](https://docs.google.com/document/d/1q32BiCtVhKpyceWly3hzzVZmYrN8v_fZM5uOVZal5VE/edit)
+- [PA0 Project Idea & Team Contract — working document](https://docs.google.com/document/d/1q32BiCtVhKpyceWly3hzzVZmYrN8v_fZM5uOVZal5VE/edit)
 - [Contribution Guidelines](CONTRIBUTING.md)
-- [Documentation Directory](docs/README.md)
-- [Assignment Archive](pa/README.md)
+- [Submission Guidelines](pa/README.md)
