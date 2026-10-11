@@ -1,37 +1,93 @@
-# CourtMate · Nexora (T05)
+# CourtMate
 
-**Introduction to Software Engineering — HCMUS**
+**Sports Court Booking & Management Platform**
 
-CourtMate là đồ án web tìm kiếm và đặt sân thể thao, hỗ trợ chủ sân quản lý lịch đặt. Đây là repository chung cho **toàn bộ PA0–PA5 và Final**. Mọi quyết định chưa được nhóm hoặc TA thông qua đều là đề xuất.
+A web-based system that helps players discover sports venues, view court availability, and submit reservations while providing court owners with tools to manage courts, schedules, and bookings.
 
-## Đăng tài liệu ở đâu?
+**Team:** Nexora (T05)  
+**Course:** Introduction to Software Engineering — University of Science, VNU-HCM (HCMUS)  
+**Repository:** [hungstupid/CourtMate](https://github.com/hungstupid/CourtMate)
 
-| Thư mục | Mọi người dùng để |
+## Project Overview
+
+CourtMate aims to make sports court reservations more accessible and organized for both players and venue operators. The proposed scope focuses on a complete booking workflow, from court discovery to reservation management.
+
+| User role | Core capabilities |
 | --- | --- |
-| [`frontend/`](frontend/README.md) | Code và test giao diện web |
-| [`backend/`](backend/README.md) | API, nghiệp vụ, database/migration, test backend |
-| [`docs/management/`](docs/management/README.md) | Kế hoạch/WBS, Gantt, risks, họp, quyết định, đóng góp, **weekly report W2–W10** |
-| [`docs/requirements/`](docs/requirements/README.md) | Vision, scope, FR/NFR, use case, business rules, traceability |
-| [`docs/design/`](docs/design/README.md) | C4, ADR, UML, ERD, UI/UX |
-| [`docs/testing/`](docs/testing/README.md) | Test plan/cases, kết quả thật, defect và bằng chứng |
-| [`docs/ai-usage/`](docs/ai-usage/README.md) | AI Usage Log và cách thành viên kiểm chứng |
-| [`pa/`](pa/README.md) | **Chỉ bản chính thức đã nộp** PDF + source của từng PA/Final |
-| [`.github/`](.github/PULL_REQUEST_TEMPLATE.md) | Mẫu PR, Issues và kiểm tra tự động cơ bản |
+| **Player** | Register and sign in; browse/search courts; view court information and availability; manage reservations and profile |
+| **Court Owner** | Maintain court listings and operating schedules; view and manage bookings for their courts |
 
-**Nhớ 4 nơi chính:** Task → GitHub Projects/Issues; bản đang sửa → `docs/`; bản nộp → `pa/`; code → `frontend/` / `backend/`.
+**Planned priorities:** 8 Must-have features (authentication, search, court details/availability, booking, booking history, court/schedule management, owner booking management, and profile management) and 2 Should-have features (reviews and promotions).
 
-## Cách phối hợp
+The detailed booking duration, reservation confirmation process, and cancellation rules will be defined through requirements analysis. Payment integration is outside the initial Must-have scope.
 
-1. Sau buổi họp, nhóm chốt **WBS ID, owner, reviewer, deadline, person-hours** rồi tạo Issue bằng mẫu Work Package và đưa vào GitHub Projects.
-2. Tạo branch riêng (`docs/...`, `feat/...`, `fix/...`) → commit có nghĩa → mở PR → **ít nhất 1 người khác review** → merge.
-3. Xem [CONTRIBUTING.md](CONTRIBUTING.md) để biết quy tắc làm việc và bảo mật. Không commit `.env`, API key hoặc dữ liệu riêng tư.
-4. Mỗi tuần W2–W10 cập nhật báo cáo vào [`docs/management/weekly/`](docs/management/weekly/README.md); deadline nội bộ đang **dự kiến** Chủ nhật 22:00, nhóm cần xác nhận.
-5. Với mỗi PA: nộp PDF + file nguồn lên Moodle; commit bản giống hệt vào `pa/PAx/`, không sửa âm thầm bản đã nộp. Kiểm tra deadline chính thức trên Moodle.
+## Technology
 
-## CourtMate: điểm chưa chốt
+The preliminary technology proposal is:
 
-Phạm vi PA0 đề xuất 8 Must-have và 2 Should-have. **Thời lượng đặt sân** và **cách xác nhận booking** chưa thống nhất (không tự gán 60 phút). React + FastAPI + PostgreSQL mới là stack đề xuất.
+| Layer | Proposed technology |
+| --- | --- |
+| Frontend | React |
+| Backend / API | Python + FastAPI |
+| Database | PostgreSQL |
+| Collaboration | GitHub, GitHub Projects, Pull Requests |
 
-[PA0 Google Doc](https://docs.google.com/document/d/1q32BiCtVhKpyceWly3hzzVZmYrN8v_fZM5uOVZal5VE/edit) · [Issues](https://github.com/hungstupid/CourtMate/issues) · [Projects](https://github.com/hungstupid/CourtMate/projects)
+Technology choices and deployment details are subject to team review during project planning.
 
-> README và CI cơ bản đã chuẩn bị; **tạo Project board, bảo vệ `main` (PR + review), thêm đủ thành viên và TA** cần thao tác/kiểm tra trong GitHub Settings. README không tự bật các cài đặt quản trị.
+## Repository Structure
+
+| Directory | Contents |
+| --- | --- |
+| [`frontend/`](frontend/README.md) | Web application source, UI assets, and frontend tests |
+| [`backend/`](backend/README.md) | API, business logic, data access, migrations, and backend tests |
+| [`docs/management/`](docs/management/README.md) | Plans, WBS, estimates, schedule, risks, meeting minutes, contribution evidence, and weekly status reports |
+| [`docs/requirements/`](docs/requirements/README.md) | Product vision, stakeholders, requirements, use cases, business rules, and traceability |
+| [`docs/design/`](docs/design/README.md) | C4, architecture decisions, UML, database design, and UI/UX specifications |
+| [`docs/testing/`](docs/testing/README.md) | Test plans, cases, execution reports, defects, and testing evidence |
+| [`docs/ai-usage/`](docs/ai-usage/README.md) | AI tool usage records and human verification notes |
+| [`pa/`](pa/README.md) | Submitted PDF and editable source files for each project assignment |
+| [`.github/`](.github/PULL_REQUEST_TEMPLATE.md) | Issue templates, Pull Request template, and repository checks |
+
+Each directory contains a dedicated `README.md` defining its purpose and file placement **throughout the entire project**, not just one assignment.
+
+### Document Management
+
+- **Working documents:** `docs/` — updated as the project evolves.
+- **Official submissions:** `pa/PA0/` through `pa/PA5/` and `pa/Final/` — committed copies of the files submitted for each milestone.
+- **Weekly reports:** `docs/management/weekly/` — one report per week from W2 through W10.
+- **Implementation:** `frontend/` and `backend/` — application code and code-level tests.
+
+Submitted assignments serve as project baselines. Subsequent changes should be documented and traced to affected requirements, designs, and tests.
+
+## Development Workflow
+
+Team tasks are coordinated through [GitHub Issues](https://github.com/hungstupid/CourtMate/issues) and [GitHub Projects](https://github.com/hungstupid/CourtMate/projects). Each agreed WBS work package should have an assigned owner, due date, estimated effort, and reviewable deliverable.
+
+1. Select an agreed Issue and create a working branch from `main` (e.g., `docs/pa1-wbs`, `feat/court-search`).
+2. Make focused changes and use [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) (`feat:`, `fix:`, `docs:`, `test:`, `chore:`).
+3. Open a Pull Request referencing the Issue and describe the changes and validation performed.
+4. Obtain a review from another team member before merging into `main`.
+5. Update the Issue and project board with the outcome and supporting evidence.
+
+For contribution standards, review responsibilities, and security practices, see [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## Course Deliverables
+
+| Milestone | Deliverable |
+| --- | --- |
+| PA0 | Project Idea & Team Contract |
+| PA1 | Project Proposal & Plan |
+| PA2 | Software Requirements Specification |
+| PA3 | Software Design |
+| PA4 | Test Plan & Test Cases |
+| PA5 | Implementation, Testing & Deployment |
+| Final | Presentation & Demonstration |
+
+Submit each assignment in the format and by the deadline required on Moodle. The repository's `pa/` directory maintains a corresponding version-controlled copy of the submitted PDF and editable source. The graded assignments include the team's contribution assessment and AI Usage Log.
+
+## References
+
+- [Project Idea & Team Contract (PA0 working document)](https://docs.google.com/document/d/1q32BiCtVhKpyceWly3hzzVZmYrN8v_fZM5uOVZal5VE/edit)
+- [Contribution Guidelines](CONTRIBUTING.md)
+- [Documentation Directory](docs/README.md)
+- [Assignment Archive](pa/README.md)
