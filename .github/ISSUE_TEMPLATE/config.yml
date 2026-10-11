@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Repository contribution guide
+    url: https://github.com/hungstupid/CourtMate/blob/main/CONTRIBUTING.md
+    about: Read our workflow, evidence requirements and branching rules before opening an issue.

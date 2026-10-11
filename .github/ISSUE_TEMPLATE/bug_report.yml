@@ -1,0 +1,43 @@
+name: "Bug report"
+description: "Report a reproducible defect in any phase where working software/tests exist"
+title: "[BUG] "
+body:
+  - type: input
+    id: version
+    attributes:
+      label: "Environment and version"
+      placeholder: "browser / API commit SHA / test environment"
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: "Steps to reproduce"
+      placeholder: |
+        1. ...
+        2. ...
+    validations:
+      required: true
+  - type: textarea
+    id: outcome
+    attributes:
+      label: "Expected vs actual result"
+      placeholder: "Expected: ... Actual: ..."
+    validations:
+      required: true
+  - type: dropdown
+    id: severity
+    attributes:
+      label: "Severity"
+      options:
+        - "Critical"
+        - "High"
+        - "Medium"
+        - "Low"
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: "Evidence, linked requirement/test case, suspected cause"
+      description: "No real user data, secrets or fabricated screenshots."

@@ -1,0 +1,73 @@
+name: Repository hygiene
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  structure-and-documentation:
+    name: Repository structure and documentation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check shared project guides
+        shell: bash
+        run: |
+          set -euo pipefail
+          paths=(
+            README.md CONTRIBUTING.md SECURITY.md
+            frontend/README.md backend/README.md infra/README.md scripts/README.md
+            docs/README.md docs/management/README.md docs/management/planning/README.md
+            docs/management/weekly/README.md docs/management/meetings/README.md
+            docs/management/contributions/README.md docs/management/templates/README.md
+            docs/requirements/README.md docs/design/README.md docs/test/README.md
+            docs/ai-usage/README.md docs/references/README.md
+            pa/README.md pa/PA0/README.md pa/PA1/README.md pa/PA2/README.md
+            pa/PA3/README.md pa/PA4/README.md pa/PA5/README.md pa/Final/README.md
+          )
+          for file in "${paths[@]}"; do
+            [[ -s "$file" ]] || { echo "::error::Required nonempty file missing: $file"; exit 1; }
+          done
+
+      - name: Check tracked secret filenames and documentation links
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import pathlib
+          import re
+          import subprocess
+          import sys
+
+          tracked = subprocess.check_output(["git", "ls-files"], text=True).splitlines()
+          blocked = []
+          for name in tracked:
+              base = pathlib.PurePosixPath(name).name
+              if (base == ".env" or base.startswith(".env.")) and not base.endswith(".example") and base != ".env.example":
+                  blocked.append(name)
+              if base in {"credentials.json", "id_rsa", "id_ed25519"} or base.endswith((".pem", ".p12", ".pfx")):
+                  blocked.append(name)
+          broken = []
+          for name in tracked:
+              if not name.endswith(".md"):
+                  continue
+              path = pathlib.Path(name)
+              data = path.read_text(encoding="utf-8")
+              for raw in re.findall(r"\[[^\]]+\]\(([^)]+)\)", data):
+                  if raw.startswith(("https://", "http://", "#", "mailto:")):
+                      continue
+                  target = raw.split("#", 1)[0].split("?", 1)[0]
+                  if target and not (path.parent / target).exists():
+                      broken.append(f"{name}: {raw}")
+          for label, items in [("Tracked secret filenames", blocked), ("Broken local Markdown links", broken)]:
+              if items:
+                  print(f"::error::{label}\n" + "\n".join(items))
+          if blocked or broken:
+              sys.exit(1)
+          print(f"Verified {len(tracked)} tracked files; no listed secret filenames or broken local links.")
+          PY

@@ -1,0 +1,44 @@
+name: "Change request"
+description: "Propose a tracked change to a baselined decision, scope or design"
+title: "[CHANGE] "
+body:
+  - type: input
+    id: affected
+    attributes:
+      label: "Affected phase/requirement/decision"
+      placeholder: "PA2 FR-004 / ADR-001"
+    validations:
+      required: true
+  - type: textarea
+    id: motivation
+    attributes:
+      label: "Problem and proposed change"
+      description: "Explain why this is needed and what will change."
+    validations:
+      required: true
+  - type: textarea
+    id: impact
+    attributes:
+      label: "Impact analysis"
+      placeholder: "Scope, schedule, effort, risks, PA baselines, design, code and tests"
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: "Alternatives and trade-offs"
+  - type: dropdown
+    id: status
+    attributes:
+      label: "Decision state"
+      options:
+        - "Proposed — team review pending"
+        - "Team accepted — TA review pending if required"
+        - "Accepted and recorded"
+    validations:
+      required: true
+  - type: textarea
+    id: review
+    attributes:
+      label: "Approvals and linked meeting/decision record"
+      placeholder: "Link decisions and explicit approval; do not guess"
