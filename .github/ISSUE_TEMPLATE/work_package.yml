@@ -1,0 +1,59 @@
+name: "Work package (WBS)"
+description: "A reviewed, assignable WBS leaf for any PA"
+title: "[WBS] "
+body:
+  - type: markdown
+    attributes:
+      value: "Create only after team agreement. Fill Assignee, Project status and Due date in GitHub after submitting."
+  - type: input
+    id: phase
+    attributes:
+      label: "Phase and WBS ID"
+      placeholder: "PA1 / 1.2.3"
+    validations:
+      required: true
+  - type: textarea
+    id: purpose
+    attributes:
+      label: "Objective and concrete deliverable"
+      description: "What must exist and where will it be stored?"
+      placeholder: "Example: draft stakeholder list in docs/requirements/..."
+    validations:
+      required: true
+  - type: input
+    id: owner
+    attributes:
+      label: "Proposed owner and reviewer/backup"
+      placeholder: "owner: @username; reviewer: @username"
+    validations:
+      required: true
+  - type: input
+    id: effort
+    attributes:
+      label: "Estimated person-hours and method"
+      placeholder: "4 h (three-point estimate: 2/4/8); proposed"
+    validations:
+      required: true
+  - type: input
+    id: due
+    attributes:
+      label: "Target due date"
+      placeholder: "YYYY-MM-DD; confirm with team"
+    validations:
+      required: true
+  - type: textarea
+    id: dependencies
+    attributes:
+      label: "Dependencies, assumptions and risks"
+      placeholder: "Blocked by #N; requires TA approval"
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: "Definition of done (reviewable)"
+      value: |
+        - [ ] Correct artifact at agreed path
+        - [ ] Checked against PA baseline / acceptance criteria
+        - [ ] Reviewed by another member
+        - [ ] Evidence and relevant PR/doc links included
+    validations:
+      required: true

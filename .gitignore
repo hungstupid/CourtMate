@@ -1,0 +1,53 @@
+# Local secrets and configuration
+.env
+.env.*
+!.env.example
+!.env.*.example
+*.pem
+*.key
+*.p12
+*.pfx
+credentials.json
+service-account*.json
+secrets.*
+!secrets.example.*
+
+# Python / FastAPI (provisional stack)
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+coverage.xml
+htmlcov/
+dist/
+build/
+*.egg-info/
+
+# Node / React (provisional stack)
+node_modules/
+.next/
+.vite/
+dist/
+coverage/
+.npm/
+.pnpm-store/
+
+# IDE and OS
+.idea/
+.vscode/*
+!.vscode/extensions.json
+.DS_Store
+Thumbs.db
+*.swp
+
+# Local logs / runtime files
+*.log
+logs/
+tmp/
+.cache/
+
+# Do not ignore PDF or Word PA deliverables: /pa/PAx stores official snapshots.
