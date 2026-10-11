@@ -1,13 +1,34 @@
-# weekly/ — Weekly Status Reports (W2–W10)
+# Weekly Status Reports (W2–W10)
 
-**Chỉ lưu báo cáo tuần thực tế**: `W2-status.md`, `W3-status.md`, … `W10-status.md` (hoặc định dạng TA yêu cầu). Không tạo báo cáo giả cho tuần chưa diễn ra.
+Store an **actual report for each week** here, named `W2-status.md`, `W3-status.md`, ... `W10-status.md` (or the format required by the TA).
 
-Mỗi báo cáo cần có:
-1. **Week / ngày / người tổng hợp / thành viên tham dự** và thông tin họp TA nếu có.
-2. **Completed:** WBS/Issue, owner, kết quả thật, PR/commit/doc evidence.
-3. **Next week:** task, owner, due date, dependency.
-4. **Blockers / risks / decisions:** vấn đề, hướng giải quyết, người phụ trách, feedback TA.
+Each report should include:
 
-Team Lead hoặc backup commit đúng hạn nhóm thống nhất (PA0 đề xuất Chủ nhật 22:00). **Không chỉnh lại báo cáo cũ để giả vờ đúng hạn**; sửa sai cần ghi chú bổ sung minh bạch. Course guideline yêu cầu từ W2 tới W10.
+| Section | What to record |
+| --- | --- |
+| Week and participants | Date range, preparer, meeting/TA attendees |
+| Completed work | Assigned Issue/WBS, owner, real output, commit/PR or document history link |
+| Next-week work | Task, owner, target date and dependency |
+| Blockers and risks | Problem, impact, responsible member and action |
+| Decisions / TA feedback | Agreed changes and outstanding questions |
 
-Các biên bản họp, Gantt, WBS, risk register để ở thư mục [management/](../README.md), không để lẫn nơi này.
+**Suggested compact format:**
+
+```markdown
+# W3 Status Report — [date range]
+
+## Completed
+| Issue/WBS | Owner | Result / Evidence |
+| --- | --- | --- |
+| #... | @... | PR or Google Doc revision link |
+
+## Next Week
+| Task | Owner | Due |
+| --- | --- | --- |
+| ... | ... | ... |
+
+## Blockers, Risks and Decisions
+- ...
+```
+
+Team Lead (or backup) consolidates verifiable updates and commits the report by the deadline agreed in PA1 (PA0 proposed Sunday 22:00; confirm with the team). Do not create fake reports for future weeks or rewrite older reports to disguise missed deadlines.

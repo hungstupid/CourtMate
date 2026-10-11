@@ -1,7 +1,7 @@
-# Final — Presentation and Demo
+# Final — Presentation & Demonstration
 
-Archive final slide source/export, a short presentation outline, demo script, links to public deployment and approved demo resources. The course final presentation is in **W11** (verify the official schedule).
+Store the final **submitted** presentation source/export, demo materials and any required evidence or links here, after the actual submission. Working drafts can remain in the team's collaboration tools.
 
-The course rubric expects accurate project context, engineering process, requirements, designs, testing, traceability and a reliable live demo. Every team member must speak **at least 2 minutes**. Keep an honest fallback (recorded demo) if the live deployment fails, and avoid unsupported claims.
+Refer to the course's presentation rubric and confirm the demo flow and speaking roles with the team.
 
-Draft/rehearsal notes may live in `docs/management/`; committed final artifacts live here. Do not include credentials or confidential information in slides/screenshots.
+See the [submission procedure](../README.md).
