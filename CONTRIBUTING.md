@@ -1,35 +1,27 @@
-# Contributing to CourtMate
+# Quy tắc đóng góp — áp dụng cho mọi PA
 
-This is a **team coursework repository**, not a collection of individually finished assignments. Follow this process for **every PA and every code change**.
+## Trước khi làm
+- Thống nhất trong nhóm: WBS ID, mục tiêu, file đầu ra, owner, reviewer/backup, estimate (person-hours), dependency và due date.
+- Dùng **GitHub Projects** để theo dõi `Backlog → To Do → In Progress → Review → Done` (hoặc `Blocked`). **Done** chỉ khi đầu ra có thật, đã review và có link bằng chứng.
 
-## 1. Before starting
-1. Read the README of the target folder to decide where the deliverable belongs.
-2. Find or create an approved GitHub **work-package Issue** after agreeing on its WBS ID, output and due date. Associate it with the GitHub Project board.
-3. Confirm the **primary owner**, **reviewer/backup**, effort estimate (person-hours), dependency and definition of done. Do not self-assign other members without agreement.
-4. If work modifies PA0 baseline or a previously submitted PA, record the rationale in the decision log and affected PA change list.
+## Khi làm
+1. Branch mới từ `main`: ví dụ `docs/pa1-wbs`, `feat/court-search`, `fix/booking-overlap`.
+2. Commit theo Conventional Commits: `docs:`, `feat:`, `fix:`, `test:`, `chore:`...
+3. PR dùng biểu mẫu có sẵn, gắn Issue/WBS, liệt kê điều đã thay đổi và test **thực sự chạy**.
+4. Có **≥1 người khác review** và giải quyết góp ý trước khi merge vào `main`; không tự approve.
+5. Cập nhật issue/board và liên kết PR, commit hoặc tài liệu. Không đánh dấu hoàn tất nếu thiếu bằng chứng.
 
-## 2. Branch / commit / pull request
-- Branch from latest `main`: `feat/<topic>`, `fix/<topic>`, `docs/<topic>`, `test/<topic>`, `chore/<topic>`.
-- Conventional Commits: `feat:`, `fix:`, `docs:`, `test:`, `refactor:`, `chore:`, `ci:` (e.g. `docs: add PA2 use case diagrams`).
-- Keep pull requests focused: link the corresponding issue (`Closes #123` only when genuinely complete); explain changes, verification steps and screenshots for UI changes.
-- Have **at least one other teammate review** before merging into `main`. Do not approve your own work. Resolve all blocking comments.
-- Protect `main` in Settings → Rules → Rulesets / Branch protection. This is a **manual admin setting**, not achieved by merely committing this policy.
-- **Use the issue's real status:** Review while waiting for checks/review; Done only after approved merge, required artifacts and evidence. Never close unfinished work as completed.
+## Bài nộp và trách nhiệm
+- Draft để trong `docs/`; bản đã nộp (PDF và file nguồn) trong `pa/PAx/` và trên Moodle.
+- Sau mỗi PA, bản nộp là baseline: mọi thay đổi quan trọng phải ghi lý do và phạm vi ảnh hưởng tới requirement/design/test.
+- PA1–PA5 cần Member Contribution (tổng 100%) và AI Usage Log. Đánh giá đóng góp dựa trên công việc **có chứng cứ**, không chia đều mặc định.
+- W2–W10: báo cáo tuần đúng hạn trong `docs/management/weekly/`, không sửa quá khứ nhằm che trễ hạn.
+- **Tuyệt đối không commit** password, `.env`, API token, private key, dữ liệu cá nhân, test giả hoặc bằng chứng giả. AI có thể hỗ trợ nhưng phải kiểm chứng và khai báo.
 
-## 3. Documents / waterfall baselines
-- Drafts and living records go under `docs/`; finalized submitted snapshots go under `pa/PAx/`.
-- Follow the official course templates, rubric and TA directions. Include member contribution assessment and AI Usage Log in every **graded PA**.
-- On submission: upload **PDF + editable source** to Moodle and commit copies in `pa/PAx/`; verify filenames `T05-PAx.*`.
-- After submission, the PA is a **baseline**: do not quietly replace it. If a change is approved, track what changed, why, affected downstream documents and the new revision.
+## Việc Team Lead cần bật bằng giao diện GitHub
+- Settings → Rules/Rulesets: bảo vệ `main`, yêu cầu PR, ≥1 approval và cấm force push.
+- Mời thành viên, TA/giảng viên vào repo với quyền cần thiết.
+- Tạo GitHub Project board và gán Issues theo WBS **sau khi họp**.
+- Bảo đảm kênh Discord/Slack/Teams chính thức có TA.
 
-## 4. Quality, security and evidence
-- Never commit `.env`, private keys, tokens, passwords, personal data or false evidence.
-- Keep test evidence truthful: test cases/results must correspond to executions, CI runs to actual runs, interviews to actual interviews.
-- Every member maintains evidence through assigned Issues, commits, PRs, reviews, meeting notes and reports.
-- Use `docs/management/weekly/` for reports from W2 through W10; earlier weeks' records must not be rewritten.
-- AI may assist, but humans review and disclose significant use in `docs/ai-usage/` or the relevant PA log.
-
-## 5. Communication
-Use the official Discord/Slack/Teams channel with the TA for required communication. Decisions affecting scope, deadlines, architecture or ownership belong in a versioned record, **not only in chat**.
-
-See [management templates](docs/management/templates/README.md), [security guidance](SECURITY.md), and [PR template](.github/PULL_REQUEST_TEMPLATE.md).
+**Lưu ý:** file quy định không thể thay thế các cấu hình quản trị thực tế.

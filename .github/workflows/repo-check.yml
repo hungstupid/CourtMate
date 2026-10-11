@@ -1,0 +1,47 @@
+name: Repository check
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  guides:
+    name: Check folder guides and sensitive filenames
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify structure
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import subprocess
+          import sys
+
+          must_exist = [
+            "README.md", "CONTRIBUTING.md", ".gitignore",
+            "frontend/README.md", "backend/README.md",
+            "docs/README.md", "docs/management/README.md",
+            "docs/management/weekly/README.md", "docs/requirements/README.md",
+            "docs/design/README.md", "docs/testing/README.md", "docs/ai-usage/README.md",
+            "pa/README.md", "pa/Final/README.md",
+            *[f"pa/PA{i}/README.md" for i in range(6)],
+          ]
+          missing = [f for f in must_exist if not Path(f).is_file() or not Path(f).stat().st_size]
+          tracked = subprocess.check_output(["git", "ls-files"], text=True).splitlines()
+          unsafe = [
+            f for f in tracked if
+            (Path(f).name == ".env" or (Path(f).name.startswith(".env.") and not Path(f).name.endswith(".example")))
+            or Path(f).name in {"credentials.json", "id_rsa", "id_ed25519"}
+            or Path(f).suffix.lower() in {".pem", ".p12", ".pfx", ".key"}
+          ]
+          if missing or unsafe:
+            print("Missing guides:", missing)
+            print("Potentially sensitive tracked files:", unsafe)
+            sys.exit(1)
+          print(f"OK: {len(must_exist)} guides found; no common secret filenames tracked.")
+          PY

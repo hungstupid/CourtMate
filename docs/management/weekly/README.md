@@ -1,13 +1,13 @@
-# Weekly status reports — W2 to W10
+# weekly/ — Weekly Status Reports (W2–W10)
 
-This directory contains **only dated, submitted status reports**, not the blank template. Use [the reusable template](../templates/WEEKLY_STATUS_TEMPLATE.md) when writing a new report.
+**Chỉ lưu báo cáo tuần thực tế**: `W2-status.md`, `W3-status.md`, … `W10-status.md` (hoặc định dạng TA yêu cầu). Không tạo báo cáo giả cho tuần chưa diễn ra.
 
-## Operating rules
-- Create `W2-status.md` through `W10-status.md`, or `.docx` if requested by the TA.
-- Report deadline: the team **proposed Sunday 22:00**, to be confirmed at PA1; adhere consistently thereafter.
-- The Team Lead (or backup) collects updates, verifies facts against Issues/PRs/commits and commits the report here **on time**.
-- Each report names week/date, attendance/TA check-in, completed/planned work with links, blockers, decisions, risk changes and next actions/owners.
-- **Never retroactively rewrite an earlier week's status report** to make it look on time; correct mistakes in a new dated follow-up or explain the amendment.
-- These reports are normally tracked and committed in GitHub; they are **not a replacement** for PA PDFs on Moodle.
+Mỗi báo cáo cần có:
+1. **Week / ngày / người tổng hợp / thành viên tham dự** và thông tin họp TA nếu có.
+2. **Completed:** WBS/Issue, owner, kết quả thật, PR/commit/doc evidence.
+3. **Next week:** task, owner, due date, dependency.
+4. **Blockers / risks / decisions:** vấn đề, hướng giải quyết, người phụ trách, feedback TA.
 
-No W2–W10 report is included yet because no weekly report was verified as completed.
+Team Lead hoặc backup commit đúng hạn nhóm thống nhất (PA0 đề xuất Chủ nhật 22:00). **Không chỉnh lại báo cáo cũ để giả vờ đúng hạn**; sửa sai cần ghi chú bổ sung minh bạch. Course guideline yêu cầu từ W2 tới W10.
+
+Các biên bản họp, Gantt, WBS, risk register để ở thư mục [management/](../README.md), không để lẫn nơi này.

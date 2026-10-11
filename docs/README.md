@@ -1,18 +1,11 @@
-# Documentation — living project knowledge for PA0–PA5
+# docs/ — tài liệu làm việc trong toàn bộ dự án
 
-This directory holds **editable, maintained working artifacts across the entire course**. Put final submitted snapshots under `../pa/`, not here.
+Đây là nơi lưu **tài liệu đang sửa**, dùng xuyên suốt PA0–PA5:
 
-| Directory | What belongs there |
-| --- | --- |
-| [management](management/README.md) | WBS, project plans, effort estimates, schedules, risks, meeting records, weekly reports, contributions and decisions |
-| [requirements](requirements/README.md) | Vision, stakeholders, MoSCoW, SRS, functional/nonfunctional requirements, domain rules, use cases, prototypes and traceability |
-| [design](design/README.md) | C4 context/container, ADRs, UML, ERD, database tables, UI specifications and deployment design |
-| [test](test/README.md) | Test plans, techniques, cases, executions, defects, automation results and coverage evidence |
-| [ai-usage](ai-usage/README.md) | AI tools used and how teammates validated/corrected outputs |
-| [references](references/README.md) | Externally sourced references, citations, competitor research, license/source notes |
+- [management](management/README.md): WBS, project plan, Gantt, risk register, meeting notes, contribution evidence, weekly status reports.
+- [requirements](requirements/README.md): Vision, stakeholders, MoSCoW, FR/NFR, use cases, acceptance criteria, traceability.
+- [design](design/README.md): C4, ADR, UML, ERD, UI/UX, technical designs.
+- [testing](testing/README.md): test plan, cases, actual execution, defects, evidence.
+- [ai-usage](ai-usage/README.md): nhật ký AI của các PA.
 
-**Naming:** clear English file names, e.g. `PA2-SRS-working.md`, `ADR-001-backend-choice.md`. Link issues/PRs and note owner, date, revision where useful.
-
-**Traceability:** requirements IDs ↔ design ↔ test cases ↔ implementation issues. If baseline requirements change, record the impact and revise dependent artifacts.
-
-Do not claim an interview, test result, deployment, TA approval or contributor work without evidence.
+Mỗi thư mục con có README giải thích cụ thể cần lưu gì. Tài liệu nộp cuối cùng **không** để lẫn ở đây mà đóng bản tại [pa/](../pa/README.md). File nên có tên rõ nghĩa, issue/owner liên quan và revision khi cần. Không ghi giả TA approval, test result hoặc user research.
