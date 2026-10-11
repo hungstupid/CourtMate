@@ -1,13 +1,21 @@
-# Project management — all phases (PA0 through Final)
+# management/ — quản lý cho toàn bộ PA
 
-The source of truth for work tracking is GitHub Issues/Projects; this folder contains **versioned documents and evidence** referenced by those tasks.
+**Gộp một chỗ để nhóm dễ tìm.** Không cần thêm nhiều lớp `planning/`, `templates/`, `meetings/`, `contributions/` cho đến khi thực sự cần.
 
-- [planning/](planning/README.md) — goals, roadmap, WBS, resource estimates, schedule/Gantt/critical path, costs, dependencies and approved scope revisions.
-- [weekly/](weekly/README.md) — dated weekly reports **W2 through W10**, committed each week; do not rewrite prior reports.
-- [meetings/](meetings/README.md) — minutes, attendance, decisions, action owners and TA feedback.
-- [templates/](templates/README.md) — reusable forms for meeting minutes, weekly report, risks and decisions.
-- [contributions/](contributions/README.md) — linkable evidence of individual work and contribution evaluations.
+| Loại tài liệu | Tên gợi ý và cần ghi |
+| --- | --- |
+| Kế hoạch, WBS | `project-plan.md`, `WBS.md`: ≥3 cấp, owner, deliverable, person-hours, dependency, Issue link |
+| Timeline / Gantt | `schedule.md`, `gantt.png`: duration khác effort, milestone, critical path |
+| Chi phí | `cost-estimate.md`: hourly rate × effort, tool/hosting, giả định |
+| Rủi ro | `risk-register.md`: Risk, Type, Probability, Loss, RE=P×Loss, Mitigation, Contingency, Owner |
+| Họp và quyết định | `YYYY-MM-DD-meeting.md`, `decision-log.md`: người dự, lựa chọn, việc đã chốt/chưa chốt, action owner và hạn |
+| Bằng chứng đóng góp | `contributions.md`: links đến issue, PR, commits, reviews, deliverables |
+| Báo cáo tuần | [weekly/](weekly/README.md): W2 tới W10, commit đúng hạn |
 
-For risks, keep the active risk register in `planning/` and update probability/loss, exposure, owner, mitigation, trigger and status; link relevant issues. Capture major decisions in meeting minutes and a decision log; don't rely solely on Messenger/Discord.
+**Mẫu biên bản họp:** ngày, người dự, agenda → phương án thảo luận → decision status (Proposed/Approved) → bảng `Task | Owner | Due | Reviewer | Issue` → TA questions.
 
-**Course expectations:** WBS ≥3 levels, effort in person-hours, Gantt with dependencies and critical path, risk exposure P × Loss, accountable owners/backups, cost assumptions, dates aligned with PA gates, weekly reports on the agreed day. Schedule and numeric estimates are **plans**, not proof of completed work.
+**Risk register:** ít nhất 5 rủi ro; dùng thang Probability/Loss của **bài giảng môn**, không tự chế mức chấm. Rủi ro, estimate và contribution là **dự kiến** cho đến khi nhóm duyệt.
+
+**Nguồn trạng thái task:** GitHub Projects. Tài liệu trong folder ghi kế hoạch, lý do và lịch sử quyết định, không thay thế task board.
+
+Các quyết định về thời lượng booking, xác nhận booking, công nghệ và số giờ làm việc phải được ghi lại đúng trạng thái (chưa chốt/đã chốt).

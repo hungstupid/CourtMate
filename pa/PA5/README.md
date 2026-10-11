@@ -1,7 +1,7 @@
 # PA5 — Implementation, Testing & Deployment
 
-Archive the **PA5 submitted PDF + editable source**, contribution table, AI Usage Log, release evidence and demo resources/links. **Deadline:** end of W10 (verify Moodle).
+Lưu **bản PA5 đã nộp** (PDF + file nguồn, bảng đóng góp và AI Usage Log), link deployment/video/demo và evidence có thật.
 
-Required: implemented and publicly accessible Must-have workflows, test accounts (never real credentials), demo **video ≤10 minutes**, actual executed test cases and defect records, unit tests with coverage report, automated checks (at least 2 use cases × 2 scenarios), CI triggered on PRs, code review evidence, code quality and project retrospective comparing planned vs actual work and AI-use lessons.
+Nội dung: ứng dụng triển khai công khai, các Must-have hoạt động, test accounts giả, video demo ≤10 phút, unit/integration/system testing, actual defects, coverage, ít nhất 2 use cases × 2 scenarios automated, CI/PR review, code quality, retrospective.
 
-Actual source code belongs to `frontend/` and `backend/`; deployment config belongs to `infra/`; real test results to `docs/test/`. **Never** fabricate coverage, working functionality, deployment links or CI evidence. List deviations from PA3/design and explain approved changes.
+Code ở `frontend/` và `backend/`; kết quả kiểm thử ở `docs/testing/`. Không ghi tính năng đã hoàn thành nếu chưa có proof.
