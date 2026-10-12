@@ -65,6 +65,5 @@ Bảng **Member Contribution** phải có trong mỗi PA được chấm và c�
 - AI Usage Log nằm trong từng PA; chỉ ghi hoạt động AI và nội dung kiểm chứng có thật.
 - Không công bố mật khẩu, `.env`, API key, private key, dữ liệu cá nhân hay bằng chứng không có thật.
 
-## Repository Administration
 
-Team Lead cần kiểm tra bằng giao diện GitHub: thêm thành viên và TA theo yêu cầu, tạo Project Board, bảo vệ nhánh `main` bằng PR và ≥1 approval, và mời TA vào kênh Discord/Slack/Teams chính thức. Việc có file hướng dẫn **không tự bật** các cài đặt quản trị trên GitHub.
+
