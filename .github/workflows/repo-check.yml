@@ -24,7 +24,9 @@ jobs:
 
           must_exist = [
             "README.md", "CONTRIBUTING.md", ".gitignore",
-            "frontend/README.md", "backend/README.md",
+            "src/frontend/README.md", "src/backend/README.md",
+            "docs/requirements/README.md", "docs/design/README.md",
+            "docs/test/README.md", "docs/ai-usage/README.md",
             "docs/README.md", "docs/management/README.md",
             "docs/management/weekly/README.md",
             "pa/README.md", "pa/Final/README.md",

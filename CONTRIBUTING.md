@@ -24,9 +24,11 @@ Bảng **Member Contribution** phải có trong mỗi PA được chấm và c�
 
 ## Documents and Submission
 
+- Cấu trúc theo mẫu PA1: code trong `src/frontend/` và `src/backend/`; tài liệu trong `docs/management/`, `docs/requirements/`, `docs/design/`, `docs/test/`, `docs/ai-usage/`.
 - WBS, Gantt, risks, requirements, architecture, test cases... được trình bày **trực tiếp trong tài liệu của PA tương ứng** theo mẫu môn học. Không bắt buộc tách thành các file riêng trong repository.
 - Làm nháp trên công cụ cộng tác phù hợp; bản nộp chính thức gồm PDF và file nguồn lưu tại `pa/PAx/` và nộp Moodle.
-- Báo cáo tiến độ W2–W10: `docs/management/weekly/W<week>-status.md` (hoặc định dạng TA quy định). Commit đúng hạn do nhóm thống nhất; không sửa báo cáo cũ để che trễ hạn.
+- Báo cáo tiến độ W2–W10: `docs/management/weekly/W<week>-status.docx` (hoặc `.md` theo mẫu thầy). Commit đúng hạn do nhóm thống nhất; không sửa báo cáo cũ để che trễ hạn.
+- File nguồn hoặc đường dẫn bản đang làm đặt trong thư mục `docs/` tương ứng; tránh chép lặp toàn bộ nội dung PA.
 - AI Usage Log nằm trong từng PA; chỉ ghi hoạt động AI và nội dung kiểm chứng có thật.
 - Không công bố mật khẩu, `.env`, API key, private key, dữ liệu cá nhân hay bằng chứng không có thật.
 

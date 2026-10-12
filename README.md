@@ -22,14 +22,18 @@ The PA0 proposal contains **8 Must-have** and **2 Should-have** features. Detail
 
 | Path | Purpose |
 | --- | --- |
-| [`frontend/`](frontend/README.md) | Web application source code and frontend tests |
-| [`backend/`](backend/README.md) | API, business logic, database integration and backend tests |
+| [`src/frontend/`](src/frontend/README.md) | Web application source code and frontend tests |
+| [`src/backend/`](src/backend/README.md) | API, business logic, database integration and backend tests |
 | [`docs/management/weekly/`](docs/management/weekly/README.md) | Weekly status reports, W2–W10 |
-| [`docs/management/`](docs/management/README.md) | Additional meeting notes or management evidence when needed |
+| [`docs/management/`](docs/management/README.md) | Project plan, meeting notes and management evidence |
+| [`docs/requirements/`](docs/requirements/README.md) | Vision, SRS, use cases and mockups |
+| [`docs/design/`](docs/design/README.md) | C4, ADRs, UML and UI design |
+| [`docs/test/`](docs/test/README.md) | Test plans, cases and reports |
+| [`docs/ai-usage/`](docs/ai-usage/README.md) | AI usage records and references to each PA log |
 | [`pa/`](pa/README.md) | **Final submitted copies** of PA0–PA5 and Final materials |
 | [`.github/`](.github/PULL_REQUEST_TEMPLATE.md) | Issue/PR templates and automated repository checks |
 
-**Documents for each PA are written as one assignment document**, including the WBS, Gantt chart, risk register, requirements, designs or test cases relevant to that PA. Separate files and folders for these sections are **not required**. Working drafts may be maintained collaboratively in Google Docs/Drive; `pa/PAx/` holds the corresponding submitted PDF and editable source.
+**Documents for each PA are written as one assignment document**, including the WBS, Gantt chart, risk register, requirements, designs or test cases relevant to that PA. The repository follows the folder structure in the PA1 course template. Supporting sources and references belong in the corresponding `docs/` folders; sections already included in PA documents need not be duplicated as separate files. Working drafts may be maintained collaboratively in Google Docs/Drive; `pa/PAx/` holds the corresponding submitted PDF and editable source.
 
 ## Collaboration and Contribution Evidence
 

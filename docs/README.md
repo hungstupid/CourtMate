@@ -1,10 +1,11 @@
-# Project Management Records
+# Project Documentation
 
-This directory contains the **small set of ongoing records** needed in addition to the official PA submissions.
+Folders follow the PA1 course template:
 
-- [`management/weekly/`](management/weekly/README.md): mandatory weekly status reports, W2–W10.
-- [`management/`](management/README.md): additional meeting notes, decisions or evidence *only when useful*.
+- `management/`: project plan, meeting records and weekly reports in `management/weekly/`.
+- `requirements/`: Vision, SRS, use cases and mockups.
+- `design/`: C4 architecture, ADRs, UML models and UI design.
+- `test/`: test plan, test cases and test reports.
+- `ai-usage/`: AI usage records and references to the logs in each PA.
 
-**No separate requirements/design/testing/AI-usage folders are needed by default.** The corresponding material is already part of PA1–PA5 documents in [`pa/`](../pa/README.md), while current drafts may be maintained in Google Docs/Drive.
-
-Use GitHub Issues and Projects for task status rather than duplicating task boards in text files.
+Keep current collaborative drafts in Google Docs/Drive. Store supporting source files or links here when available; archive submitted PDF and editable source in [`pa/`](../pa/README.md). Do not duplicate task status: use GitHub Issues/Projects.
