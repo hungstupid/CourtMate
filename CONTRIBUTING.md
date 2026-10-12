@@ -12,6 +12,39 @@
 
 **GitHub Projects** là bảng theo dõi công việc, không cần tạo bảng đóng góp thứ hai chỉ để chép lại trạng thái Issues.
 
+## Cách commit vừa đủ
+
+### Làm tài liệu trên Google Docs
+Viết phần được giao trên tài liệu chung bằng tài khoản cá nhân. Khi xong, comment link và vị trí phần viết trong Issue, chuyển sang Review. Người review góp ý/xác nhận trong Docs và Issue. Không cần mỗi bạn xuất một bản Word để tạo commit. Người tổng hợp đưa bản PA đã chốt lên repo.
+
+### Đưa Word/PDF lên GitHub bằng giao diện
+1. Mở đúng thư mục, ví dụ `pa/PA1/` hoặc `docs/management/weekly/`.
+2. Chọn **Add file → Upload files**, chọn file đã chốt.
+3. Ghi commit message, ví dụ `docs: add W02 status report`.
+4. Chọn **Create a new branch for this commit and start a pull request**, đặt tên branch, rồi lưu.
+5. Mở PR vào `main`, ghi link Issue (nếu có), chọn bạn review. Sau khi được chấp nhận và checks đạt, người có quyền merge gộp PR; xóa branch đã xong.
+
+Báo cáo tuần đặt tên `W02-status.docx`, `W03-status.docx`… W2–W10 có tổng 9 báo cáo. Nhóm chọn deadline và ghi trong PA1 (PA0 hiện đề xuất Chủ nhật 22:00). Bản nháp có thể ở Drive; bản được lưu vào repo mới có lịch sử commit. Không ghi lùi ngày để che trễ hạn.
+
+### Làm code bằng Git
+Lần đầu: `git clone https://github.com/hungstupid/CourtMate.git`, rồi `cd CourtMate`. Đăng nhập GitHub trên công cụ Git của bạn khi được yêu cầu.
+
+Mỗi task mới, bắt đầu khi working tree sạch:
+
+```bash
+git switch main
+git pull --ff-only origin main
+git switch -c feat/court-search
+# Sửa code trong src/frontend/ hoặc src/backend/, chạy kiểm tra phù hợp
+git status
+git add src/frontend/
+git diff --cached
+git commit -m "feat: add court search"
+git push -u origin feat/court-search
+```
+
+Đổi tên branch, đường dẫn trong `git add` và message theo task thực tế. `git status` kiểm tra file đã đổi; `git add` chọn file; `git diff --cached` kiểm tra phần sắp commit; `commit` lưu thay đổi; `push` đưa branch lên GitHub. Sau đó mở PR, nhờ review và merge như trên. Nếu Git báo conflict hoặc lỗi, dừng và trao đổi với Lead/người sửa cùng phần; không force push vào `main`.
+
 ## Evidence of Contribution
 
 Để cuối mỗi PA tính Member Contribution, ưu tiên:
