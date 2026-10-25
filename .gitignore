@@ -8,6 +8,8 @@
 *.p12
 *.pfx
 credentials.json
+id_rsa
+id_ed25519
 service-account*.json
 secrets.*
 !secrets.example.*
