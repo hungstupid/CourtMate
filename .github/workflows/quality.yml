@@ -1,0 +1,81 @@
+name: CourtMate quality
+on:
+  pull_request:
+  push:
+    branches: [main, chore/project-bootstrap]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: quality-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  frontend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: src/frontend
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: src/frontend/package-lock.json
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm run build
+  integration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_USER: courtmate
+          POSTGRES_PASSWORD: ci-isolated-only
+          POSTGRES_DB: courtmate
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U courtmate -d courtmate"
+          --health-interval 3s --health-timeout 3s --health-retries 20
+    env:
+      APP_ENV: test
+      DATABASE_URL: postgresql+psycopg://courtmate:ci-isolated-only@localhost:5432/courtmate
+      MIGRATION_DATABASE_URL: postgresql+psycopg://courtmate:ci-isolated-only@localhost:5432/courtmate
+      TEST_DATABASE_URL: postgresql+psycopg://courtmate:ci-isolated-only@localhost:5432/courtmate_test
+      FIREBASE_PROJECT_ID: demo-courtmate
+      FIREBASE_AUTH_EMULATOR_HOST: 127.0.0.1:9099
+      VITE_API_BASE_URL: http://localhost:8000
+      VITE_FIREBASE_PROJECT_ID: demo-courtmate
+      VITE_FIREBASE_API_KEY: demo-key
+      VITE_FIREBASE_APP_ID: demo-courtmate-web
+      VITE_FIREBASE_AUTH_DOMAIN: demo-courtmate.firebaseapp.com
+      VITE_FIREBASE_AUTH_EMULATOR_URL: http://127.0.0.1:9099
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: src/frontend/package-lock.json
+      - uses: astral-sh/setup-uv@v10
+        with:
+          version: '0.13.5'
+          enable-cache: true
+          cache-dependency-glob: src/backend/uv.lock
+      - run: uv python install 3.12
+      - run: uv sync --locked
+        working-directory: src/backend
+      - run: uv run ruff check . && uv run ruff format --check .
+        working-directory: src/backend
+      - run: uv run alembic upgrade head && uv run alembic upgrade head
+        working-directory: src/backend
+      - run: npm ci
+        working-directory: src/frontend
+      - run: npx playwright install --with-deps chromium
+        working-directory: src/frontend
+      - run: npm install -g firebase-tools@15.34.1
+      - name: Isolated API, Firebase, browser and accessibility tests
+        run: env -u DEBUG firebase emulators:exec --only auth --project demo-courtmate "bash scripts/ci-integration.sh"

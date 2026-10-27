@@ -13,7 +13,7 @@ export function BackendStatus() {
   useEffect(() => {
     const controller = new AbortController()
     let active = true
-    const timeout = window.setTimeout(() => controller.abort(), 8000)
+    const timeout = window.setTimeout(() => controller.abort(), import.meta.env.PROD ? 75000 : 8000)
 
     checkHealth(controller.signal)
       .then(() => {
@@ -55,7 +55,7 @@ export function BackendStatus() {
       </div>
       <p className="endpoint">{API_BASE_URL}/health</p>
       {connection.status === 'connected' && <p>The CourtMate API is ready for development.</p>}
-      {connection.status === 'loading' && <p>Checking the CourtMate API…</p>}
+      {connection.status === 'loading' && <p>Checking the CourtMate API… The first connection may take a minute.</p>}
       {connection.status === 'error' && (
         <div>
           <p role="alert">{connection.message}</p>

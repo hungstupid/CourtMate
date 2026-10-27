@@ -1,6 +1,6 @@
 # CourtMate bootstrap — kết quả nghiệm thu
 
-Ngày thực hiện: **24/10/2026**, múi giờ Asia/Ho_Chi_Minh. Phạm vi: môi trường phát triển, repository, React + TypeScript + Vite và FastAPI + uv. Các acceptance checks bắt buộc đã đạt. Chưa triển khai chức năng nghiệp vụ.
+Ngày thực hiện ban đầu: **24/10/2026**, múi giờ Asia/Ho_Chi_Minh. Mục 1–8 dưới đây lưu bằng chứng lịch sử của bootstrap React/Vite + FastAPI. Xem phần cập nhật ngày 27/10 ở cuối file cho trạng thái database/Auth/CI/deployment hiện tại; không dùng kết quả lịch sử để suy ra các tích hợp mới đã READY.
 
 Quy ước: **PASS** = đã chạy kiểm tra thành công; **FIXED** = phát hiện và sửa; **BLOCKED** = chưa hoàn thành; **SKIPPED** = không cần trong phạm vi này. Không còn blocker cho bootstrap.
 
@@ -43,7 +43,7 @@ Phiên bản “trước” lấy từ audit đầu phiên, không lấy từ sn
 - Base: `main` tại `36f4e30263d2f69e8f7e599fe0bc09abe2ddd2fa`.
 - Working branch: `chore/project-bootstrap`.
 - `main` vẫn ở nguyên commit trên. Không có nested Git repository.
-- Kết quả cuối: **31 file mới, 3 file tracked được sửa; chưa stage, commit hoặc push**. Không mở PR hoặc merge.
+- Kết quả đợt 24/10: **31 file mới, 3 file tracked được sửa**, đã commit `b7a393b38f4ce7165244656e7354685a9991797b` và push lên `origin/chore/project-bootstrap` theo yêu cầu tiếp theo của chủ repo. Không merge vào main.
 - `CONTRIBUTING.md` tiếp tục là nguồn quy ước branch/commit/review. Không tạo quy trình quản trị trùng lặp.
 - Root README, workflow, toàn bộ tài liệu PA và báo cáo nhóm được bảo toàn. Danh sách chính xác ở mục 6.
 
@@ -232,7 +232,7 @@ Không còn vấn đề authentication hoặc Docker daemon. Không thay đổi 
 
 Sau khi nhóm review và chấp nhận bootstrap: PostgreSQL + Docker Compose; database schema và Alembic; Firebase Authentication; lint/build/tests trong CI/CD; deployment. Các phần này chưa được triển khai trong nhiệm vụ này.
 
-Các lệnh sau **chỉ để chủ repo thực hiện sau khi review**, chưa được chạy bởi agent. Chạy tại root repository:
+Các lệnh sau là hướng dẫn lịch sử của đợt 24/10. Commit/push bootstrap đã được chủ repo yêu cầu và thực hiện sau đó; trạng thái hiện tại được ghi ở phần cập nhật cuối file. Không chạy lại lệnh tạo commit cũ một cách máy móc. Chạy tại root repository:
 
 ```bash
 git status --short --branch
@@ -248,3 +248,23 @@ gh pr create --base main --head chore/project-bootstrap --fill
 ```
 
 Làm theo review độc lập trong `CONTRIBUTING.md` trước khi merge. Không có lệnh merge hoặc force push trong quy trình trên.
+
+## Cập nhật 27/10/2026 — nền tảng local và cloud
+
+Phạm vi mới được chủ repo cho phép: Docker PostgreSQL, SQLAlchemy/psycopg, Alembic, Firebase Auth, Neon, Render, Vercel và GitHub Actions. Trạng thái tại commit nền tảng đầu tiên của đợt này: **PARTIAL — local đã kiểm chứng; cloud deployment và GitHub CI đang chờ nghiệm thu sau push**. Bằng chứng lịch sử phía trên được giữ nguyên.
+
+- Đã fetch và merge `origin/main` (`246a92b`) vào `chore/project-bootstrap` bằng merge commit `95d996e`. Không reset/rebase/force-push và không merge vào main. Hai tài liệu requirements mới từ main được giữ nguyên.
+- Đã đọc SRS hiện hành `1zL3Ra_0LceKOF_2pZa9iWpq7HIbRtALB`; chỉ triển khai identity/role foundation, không sửa SRS/Figma/PA và không triển khai booking/court/room.
+- Tạo local Compose `courtmate-db-1`, PostgreSQL 17, volume riêng `courtmate_postgres_data`, healthcheck và port loopback 5433. `make setup` sinh local password ngẫu nhiên, không ghi đè giá trị có sẵn.
+- Neon: project `courtmate` / `divine-sun-63104113`, organization `org-patient-bonus-12684769` (free), Singapore; demo branch `br-small-glitter-aomatkd1`, development branch `br-wild-bread-ao8ejarx`. Project không rõ mục đích đã có từ trước được giữ nguyên.
+- Migration `0001_identity` chỉ có bảng users với Firebase UID unique, UUID nội bộ, role `player`/`owner` có check constraint và timestamp có timezone. Đã migrate hai lần liên tiếp trên local trống, Neon demo và development. Direct connection cho migration, pooled connection cho runtime; kiểm tra TLS `verify-full` tại libpq và timezone UTC thành công. `pg_stat_ssl` trên server sau Neon proxy không phản ánh TLS client nên không dùng làm bằng chứng TLS.
+- Firebase project `courtmate-t05-nexora` (project number `1025822356886`), Web App `1:1025822356886:web:690e2d75083929893c19b7`; Email/Password đã deploy thật qua Firebase CLI. Runtime service account `courtmate-runtime` chỉ có `roles/firebaseauth.viewer`; credential runtime riêng, không sử dụng phiên CLI như credential FastAPI.
+- Vercel project `courtmate` / `prj_M5RVrPKXbHI7AvHwtNEb7CELAIsw`, Node 24, root `src/frontend`, GitHub integration đã cấp cho CourtMate. Render CLI và MCP xác minh đúng workspace `tea-dbg8buh42hec73dt859g` / My Workspace / `hungkydau2@gmail.com`.
+- Role không nhận từ client/custom claims; Firebase UID mới luôn là Player. Owner chỉ cấp bằng `python -m app.scripts.grant_owner UID --confirm UID`. Có helper kiểm tra ownership phía server; chưa có court/booking resource để tuyên bố kiểm thử AC nghiệp vụ.
+- Đã chạy lại `npm ci`, lint, typecheck, build; tất cả PASS. SDK chỉ dùng Firebase App/Auth, không dùng Firestore. `npm audit`: 0 vulnerabilities tại thời điểm chạy.
+- `uv sync --locked`, Ruff lint/format và **15 pytest tests PASS**, không skip. Tests dùng database `courtmate_test` riêng và Auth Emulator `demo-courtmate`, kiểm tra token thật của emulator, token sai, Player/Owner, role injection, ownership rejection, constraint role, UTC và migration idempotence.
+- **3 Playwright tests PASS** trên Chrome: browser → real API; Firebase Emulator signup → token → backend → database → Player; axe WCAG 2/2.1 AA check trên trang development. Không gán kết quả này cho các màn hình nghiệp vụ chưa triển khai.
+- Local seed chạy hai lần thành công. Export bằng pg_dump trong Docker và restore chỉ vào local database `_test` đã kiểm chứng. Các lệnh reset/restore từ chối database demo/cloud và không yêu cầu cài PostgreSQL global.
+- Render Blueprint đã validate bằng CLI: `valid: true`. Free plan không hỗ trợ pre-deploy command, nên startup chạy Alembic dưới PostgreSQL advisory lock rồi exec Uvicorn; migration lỗi thì không khởi động API. Cloud emulator bị từ chối; URL/credential bắt buộc thiếu phải báo lỗi.
+- CI mới dùng service PostgreSQL riêng, Auth Emulator demo, lockfiles, Ruff/pytest/migration, Playwright và accessibility; không cần credential cloud/cá nhân. Chưa coi CI đạt cho tới khi có GitHub run thật.
+- Hướng dẫn vận hành hiện tại: [setup.md](setup.md). Các thông tin deploy/CI/commit sau push sẽ được bổ sung theo kết quả thực tế; không ghi READY trước khi kiểm chứng các URL và luồng cloud.

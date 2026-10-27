@@ -44,7 +44,9 @@ npm run preview
 
 `typecheck` runs TypeScript project checks with strict settings. `lint` runs ESLint and the React Hooks rules. `build` checks types and produces `dist/`; `preview` serves that build at **http://localhost:4173**. To check the API from preview, add `http://localhost:4173` to the backend's `CORS_ORIGINS` and restart the backend. `dist/` and `node_modules/` are ignored.
 
-No frontend unit-test runner is installed in this bootstrap. Integration was checked with real HTTP requests and Chrome; loading, successful connection, backend unavailable and retry behavior were exercised.
+Playwright now provides `npm run test:e2e` and `npm run test:a11y`. Start PostgreSQL, the API and Auth Emulator as described in the [development guide](../../docs/development/setup.md) before running these commands. The identity smoke UI supports Firebase sign-in/signup/sign-out and backend verification; it has no role selector or business screens.
+
+For a clean checkout use `make setup` at repository root to generate matching local `.env` files and install dependencies. Firebase Web App/Auth variables are documented in `.env.example`; `.env.cloud.example` describes the public cloud build configuration. Production never connects to the Auth Emulator. The production health timeout permits free-host cold starts; local development keeps a shorter timeout.
 
 ## Source layout
 

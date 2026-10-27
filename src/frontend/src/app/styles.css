@@ -30,6 +30,15 @@ h2 { margin: 0; font-size: 17px; font-weight: 650; }
 button { cursor: pointer; border: 0; background: #174d3f; color: #fff; font: inherit; padding: 10px 16px; border-radius: 8px; }
 button:hover { background: #103c30; }
 button:focus-visible { outline: 3px solid #76b99b; outline-offset: 3px; }
+.identity { margin-top: 20px; }
+.identity form { max-width: 420px; }
+.identity label { display: block; font-size: 14px; margin-top: 12px; }
+.identity input { width: 100%; padding: 10px; border: 1px solid #84988b; border-radius: 6px; font: inherit; color: #162c29; }
+.identity input:focus-visible { outline: 3px solid #76b99b; outline-offset: 2px; }
+.auth-actions { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
+.secondary { background: #e7eee8; color: #174d3f; }
+.secondary:hover { background: #d7e6da; }
+button:disabled { opacity: .6; cursor: wait; }
 footer { margin-top: 60px; font-size: 12px; color: #65746d; display: flex; gap: 9px; }
 @media (max-width: 480px) {
   main { padding: 28px 20px; }

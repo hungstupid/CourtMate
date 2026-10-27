@@ -4,7 +4,7 @@ Holds CourtMate's **server-side implementation**: API endpoints, business rules,
 
 The booking-duration and confirmation/approval rules must be agreed before implementation. Preventing overlapping valid bookings requires a verified server/database approach.
 
-The setup, run and check commands below have been verified locally. Never commit credentials, `.env` or real customer information. No database, migration, authentication or business feature is implemented in this bootstrap.
+The original setup commands below are retained, but database/Auth initialization now starts with the [development guide](../../docs/development/setup.md): `make setup`, `make db-up`, `make migrate`, and a running Auth Emulator. Never commit credentials, `.env` or real customer information. Identity/role foundation is implemented; court, booking and room business features are not.
 
 **Not for:** PA documentation; finalized course submissions go in `pa/PAx/`.
 
@@ -51,7 +51,7 @@ CORS_ORIGINS=http://localhost:5173,http://127.0.0.1:5173
 
 `CORS_ORIGINS` accepts a comma-separated list of complete origins. These two origins are also the defaults when unset. Explicitly add other development ports if needed; wildcard `*` is rejected. CORS currently allows GET requests and Accept/Content-Type headers, with credentials disabled. Update deliberately when approved features require other methods.
 
-The health endpoint needs no database or credentials. `.env`, `.venv/` and caches are ignored; `.env.example`, `.python-version` and `uv.lock` are tracked.
+The liveness endpoint needs no database query. API startup requires DATABASE_URL and FIREBASE_PROJECT_ID. `/ready` checks the database/migration, `/api/me` verifies a Firebase token and provisions Player, and `/api/owner/access` tests the stored Owner role. Runtime/migration/test URL separation, cloud credentials, local emulator and operator role scripts are documented in the development guide. `.env`, `.secrets/`, `.venv/` and caches are ignored; examples and lockfiles are tracked.
 
 ## Quality checks
 
@@ -66,7 +66,7 @@ uv run ruff format --check .
 
 `uv sync` installs the locked runtime and development dependencies into the local `.venv/`. `--locked` additionally rejects a stale lockfile. Commit `uv.lock` alongside dependency changes made with `uv add` or `uv add --dev`. There is no parallel requirements.txt workflow.
 
-The tests cover the health response, OpenAPI/docs, allowed and denied CORS origins, preflight, custom origins, wildcard rejection and reading configuration from `.env`. They need no external services. The current Starlette TestClient emits a deprecation warning about HTTPX; tests still pass. Keep the HTTPX dependency required by this bootstrap and review that upstream migration when upgrading the test stack.
+The tests cover health/docs/CORS/config plus real PostgreSQL and Auth Emulator identity/authorization integration. Start those isolated services using the development guide; TEST_DATABASE_URL must reference a separate local database ending `_test`. No cloud credentials or demo data are used. HTTPX2 was added for current Starlette TestClient support while retaining HTTPX for smoke tooling.
 
 To apply Ruff formatting before review, run `uv run ruff format .`.
 

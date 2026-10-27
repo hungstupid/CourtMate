@@ -20,6 +20,8 @@ The PA0 proposal contains **8 Must-have** and **2 Should-have** features. Detail
 
 ## Repository Structure
 
+For verified local setup, isolated tests, Firebase roles, migrations and deployment, see the [development guide](docs/development/setup.md) and [bootstrap evidence](docs/development/bootstrap-report.md).
+
 | Path | Purpose |
 | --- | --- |
 | [`src/frontend/`](src/frontend/README.md) | Web application source code and frontend tests |

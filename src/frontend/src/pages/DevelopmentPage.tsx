@@ -1,4 +1,5 @@
 import { BackendStatus } from '../components/BackendStatus'
+import { IdentitySmoke } from '../components/IdentitySmoke'
 
 export function DevelopmentPage() {
   return (
@@ -10,6 +11,7 @@ export function DevelopmentPage() {
         <p className="lead">Sports Court Booking &amp; Management Platform</p>
       </div>
       <BackendStatus />
+      <IdentitySmoke />
       <footer>T05 Nexora <span aria-hidden="true">·</span> HCMUS</footer>
     </main>
   )
