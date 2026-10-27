@@ -29,7 +29,7 @@ Open **http://localhost:5173**. The server uses a strict port: if 5173 is occupi
 VITE_API_BASE_URL=http://localhost:8000
 ```
 
-Copy `.env.example` only for initial setup; keep existing local values when updating the project. The same URL is used by default if the variable is absent or empty. Restart Vite after changing `.env`. API configuration lives in `src/lib/api.ts`; `/health` requests time out after eight seconds.
+Copy `.env.example` only for initial setup; keep existing local values when updating the project. The same URL is used by default if the variable is absent or empty. Restart Vite after changing `.env`. API configuration lives in `src/lib/api.ts`; health requests time out after eight seconds in local dev or 75 seconds in production to accommodate free-host cold starts.
 
 `VITE_*` values are public and can enter the browser bundle. Never put passwords, tokens or Firebase Admin credentials there. Local `.env` files are ignored; `.env.example` is tracked and contains no credentials.
 

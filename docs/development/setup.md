@@ -101,7 +101,7 @@ The 20-request/5-worker load probe measures only liveness. Playwright/axe curren
 | Vercel | `courtmate` / `prj_M5RVrPKXbHI7AvHwtNEb7CELAIsw`; project root `src/frontend` |
 | Render workspace | My Workspace / `tea-dbg8buh42hec73dt859g`; account `hungkydau2@gmail.com` |
 
-Actual public URLs, Render service/deploy identifiers and GitHub CI runs are recorded in [bootstrap-report.md](bootstrap-report.md) after live verification. Until recorded there, deployment is not READY.
+Verified public frontend: https://courtmate-court-mate.vercel.app (also https://courtmate-virid.vercel.app). API: https://courtmate-api-cs7b.onrender.com; health `/health`, readiness `/ready`, docs `/docs`. Render service: `srv-dbg8tmu7bikc73fdlb7g`. Deployment and GitHub CI identifiers/evidence are recorded in [bootstrap-report.md](bootstrap-report.md).
 
 Quality workflow `.github/workflows/quality.yml` runs on PRs, `main` and the setup branch. It installs from lockfiles, checks the frontend and tests backend/migrations/Auth/browser integration against fresh CI-only services. Keep `.github/workflows/repo-check.yml` for document/secret-filename checks. Existing team PR/review rules remain in CONTRIBUTING.md.
 

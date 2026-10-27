@@ -1,10 +1,10 @@
 # Backend
 
-Holds CourtMate's **server-side implementation**: API endpoints, business rules, authentication/authorization, data access, database migrations and backend tests. The development bootstrap uses FastAPI and uv with Python 3.12. PostgreSQL and business endpoints will be added in later work.
+Holds CourtMate's **server-side implementation**: API endpoints, business rules, authentication/authorization, data access, database migrations and backend tests. The foundation uses FastAPI, uv, Python 3.12, PostgreSQL and Firebase Authentication. Business endpoints will be added in later work.
 
 The booking-duration and confirmation/approval rules must be agreed before implementation. Preventing overlapping valid bookings requires a verified server/database approach.
 
-The original setup commands below are retained, but database/Auth initialization now starts with the [development guide](../../docs/development/setup.md): `make setup`, `make db-up`, `make migrate`, and a running Auth Emulator. Never commit credentials, `.env` or real customer information. Identity/role foundation is implemented; court, booking and room business features are not.
+Database/Auth initialization starts with the [development guide](../../docs/development/setup.md). Never commit credentials, `.env` or real customer information. Identity/role foundation is implemented; court, booking and room business features are not.
 
 **Not for:** PA documentation; finalized course submissions go in `pa/PAx/`.
 
@@ -24,11 +24,12 @@ See the [official uv installation guide](https://docs.astral.sh/uv/getting-start
 From the repository root:
 
 ```bash
-cd src/backend
-uv python install 3.12
-uv sync
-cp .env.example .env
-uv run uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
+make setup
+make db-up
+make migrate
+make auth-emulator
+# In another terminal, also from the repository root:
+make dev-api
 ```
 
 Keep the server in this terminal and stop it with Ctrl+C. Start the frontend in another terminal using [its guide](../frontend/README.md).
@@ -43,13 +44,13 @@ The API root `/` has no endpoint and returns 404; use `/health` to verify startu
 
 ## Configuration
 
-`app/core/config.py` reads `src/backend/.env` through python-dotenv at startup. Exported environment variables take precedence. Copy the example only during initial setup and restart the server after changing configuration.
+`app/core/config.py` and `app/core/settings.py` read `src/backend/.env`; exported environment variables take precedence. `make setup` generates matching local configuration without replacing existing values. Restart the server after changing configuration.
 
 ```dotenv
 CORS_ORIGINS=http://localhost:5173,http://127.0.0.1:5173
 ```
 
-`CORS_ORIGINS` accepts a comma-separated list of complete origins. These two origins are also the defaults when unset. Explicitly add other development ports if needed; wildcard `*` is rejected. CORS currently allows GET requests and Accept/Content-Type headers, with credentials disabled. Update deliberately when approved features require other methods.
+`CORS_ORIGINS` accepts a comma-separated list of complete origins. These two origins are also the defaults when unset. Explicitly add other development ports if needed; wildcard `*` is rejected. CORS allows GET/POST and Accept/Content-Type/Authorization headers, with cookie credentials disabled. Update deliberately when approved features require other methods.
 
 The liveness endpoint needs no database query. API startup requires DATABASE_URL and FIREBASE_PROJECT_ID. `/ready` checks the database/migration, `/api/me` verifies a Firebase token and provisions Player, and `/api/owner/access` tests the stored Owner role. Runtime/migration/test URL separation, cloud credentials, local emulator and operator role scripts are documented in the development guide. `.env`, `.secrets/`, `.venv/` and caches are ignored; examples and lockfiles are tracked.
 
@@ -77,6 +78,9 @@ To apply Ruff formatting before review, run `uv run ruff format .`.
 | `app/main.py` | FastAPI metadata, middleware and routes |
 | `app/api/health.py` | Typed `/health` response |
 | `app/core/config.py` | Local environment and CORS configuration |
+| `app/core/settings.py`, `app/core/auth.py` | Runtime settings and Firebase/role/ownership checks |
+| `app/db/`, `migrations/` | Identity model, sessions and reviewed Alembic schema changes |
+| `app/scripts/` | Controlled seed, Owner grant, test reset, backup and release commands |
 | `tests/` | pytest tests using FastAPI TestClient |
 | `pyproject.toml` | Dependencies, Python constraints and tool configuration |
 | `uv.lock` | Resolved dependency versions |
