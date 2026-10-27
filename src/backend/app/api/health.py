@@ -23,7 +23,8 @@ def health() -> HealthResponse:
 def ready() -> dict[str, str]:
     try:
         with get_engine().connect() as connection:
-            connection.execute(text("SELECT 1 FROM alembic_version"))
+            if not connection.scalar(text("SELECT version_num FROM alembic_version")):
+                raise RuntimeError("No migration has been applied.")
         return {"status": "ready", "database": "ok"}
     except Exception as error:
         raise HTTPException(
