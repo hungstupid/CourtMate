@@ -14,9 +14,9 @@ CourtMate is a proposed web platform for players to discover sports courts, chec
 | Player | Search courts, inspect available times, manage reservations and account information |
 | Court Owner | Manage court information, opening schedules and incoming bookings |
 
-The PA0 proposal contains **8 Must-have** and **2 Should-have** features. Detailed booking duration, confirmation rules and cancellation rules still require team/TA clarification. Online payments are outside the initial Must-have scope.
+The PA0 proposal contains **8 Must-have** and **2 Should-have** features. Current booking, cancellation, capacity and role decisions are recorded in the [current SRS](https://docs.google.com/document/d/1zL3Ra_0LceKOF_2pZa9iWpq7HIbRtALB/edit); use that source rather than older PA1 assumptions. Online payments remain outside scope.
 
-**Proposed technology:** React (frontend), FastAPI/Python (backend) and PostgreSQL (database). The final stack will be confirmed during planning.
+**Development stack:** React + TypeScript + Vite, FastAPI + Python 3.12 + uv, PostgreSQL, and Firebase Authentication. Local database uses Docker; cloud uses Vercel, Render and Neon. Business implementation remains for PA5.
 
 ## Repository Structure
 

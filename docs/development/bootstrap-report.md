@@ -268,3 +268,138 @@ Phạm vi mới được chủ repo cho phép: Docker PostgreSQL, SQLAlchemy/psy
 - Render Blueprint đã validate bằng CLI: `valid: true`. Free plan không hỗ trợ pre-deploy command, nên startup chạy Alembic dưới PostgreSQL advisory lock rồi exec Uvicorn; migration lỗi thì không khởi động API. Cloud emulator bị từ chối; URL/credential bắt buộc thiếu phải báo lỗi.
 - CI mới dùng service PostgreSQL riêng, Auth Emulator demo, lockfiles, Ruff/pytest/migration, Playwright và accessibility; không cần credential cloud/cá nhân. Chưa coi CI đạt cho tới khi có GitHub run thật.
 - Hướng dẫn vận hành hiện tại: [setup.md](setup.md). Các thông tin deploy/CI/commit sau push sẽ được bổ sung theo kết quả thực tế; không ghi READY trước khi kiểm chứng các URL và luồng cloud.
+
+
+## Nghiệm thu cuối 27/10/2026 — READY cho nền tảng development/demo
+
+Các điều kiện nghiệm thu hạ tầng đã đạt. READY ở đây dành cho nền tảng, không phải sản phẩm nghiệp vụ, các AC booking/room hay NFR hiệu năng.
+
+### Git và PR
+
+- Nhánh: `chore/project-bootstrap`, remote `hungstupid/CourtMate`; không sửa/merge vào main, không reset/rebase/force-push.
+- Merge đồng bộ: `95d996e` từ `origin/main@246a92b`.
+- Code foundation: `85d90d203603a030821912db869e9e82d1f26ccf`.
+- Sửa CI thực tế: `5087bfc13fc8052b125cdbb832a9eb36ca1adf55`. Run đầu dùng alias setup-uv `v10` không tồn tại nên thất bại trước integration; đã sửa thành release tag tồn tại `v10.3.2`, không đổi dependency ứng dụng để chữa lỗi này.
+- Sửa readiness để từ chối database có bảng alembic_version nhưng chưa có revision: `67ed48ee34740be359228e4789026af72b78a4da`, có regression test thật trên PostgreSQL.
+- Commit được nghiệm thu trên cloud/CI: `f1d6a38a1fab6ac4d69cf428da4589e726ebb94c`; các cập nhật tài liệu bàn giao sau đó nằm cùng nhánh, xem `git log -1` / HEAD của PR để lấy commit tài liệu mới nhất.
+- [Draft PR #73](https://github.com/hungstupid/CourtMate/pull/73) đã mở. Cần team review trước khi merge; không agent nào merge tự động.
+
+### Cloud đã xác minh
+
+| Thành phần | Tài nguyên / URL | Bằng chứng |
+| --- | --- | --- |
+| Frontend | https://courtmate-court-mate.vercel.app ; alias https://courtmate-virid.vercel.app | HTTPS 200, không yêu cầu đăng nhập dashboard; Chrome sign-in/verification và axe pass |
+| Vercel | `courtmate` / `prj_M5RVrPKXbHI7AvHwtNEb7CELAIsw` | Deployment `dpl_7R6153QvmHmDz9d1N8TTt8qoWRb7` READY, target production, Git source `85d90d2`; frontend source không đổi ở các commit CI/readiness/docs sau |
+| Backend | https://courtmate-api-cs7b.onrender.com | `/health` 200, `/ready` 200, CORS đúng origin frontend; token thật được xác minh |
+| Render | `courtmate-api` / `srv-dbg8tmu7bikc73fdlb7g`, Free, Singapore, root `src/backend` | Auto deployment `dep-dbg9317b9u1s73822rdg`, source `f1d6a38`, trigger `new_commit`, LIVE sau CI |
+| Neon | `courtmate` / `divine-sun-63104113`, Free, Singapore | Runtime pooled, migration direct, TLS verify-full tại client; demo có 2 identity fixtures, development có 0 identity rows và revision riêng |
+| Firebase | `courtmate-t05-nexora`, Web App `1:1025822356886:web:690e2d75083929893c19b7` | Email/Password thật, authorized domains khớp các alias frontend đã quan sát; runtime service-account credential riêng |
+
+Render ban đầu deploy từ setup branch để nghiệm thu. Đã bật `checksPass`, push một commit setup, quan sát CI pass rồi Render tự tạo deployment `new_commit` và đạt LIVE. Sau đó đã **đặt và đọc lại** service thành `branch=main`, `autoDeployTrigger=checksPass`, plan Free; đổi cấu hình không tự deploy mã main cũ. Bản setup đã xác minh tiếp tục live. Merge main sau review sẽ dùng đường triển khai đã cấu hình, không cần sửa dashboard vào PA5.
+
+Vercel đã build/deploy production từ Git source thật; main Git deployment bật, setup Git deployment tắt để tránh một push tạo thêm preview ngoài bản acceptance chủ động. Chưa tạo sự kiện merge main vì không được phép merge. Không gán bằng chứng deploy setup thành bằng chứng đã merge/main deploy.
+
+### CI thực tế
+
+| Run | Commit / sự kiện | Kết quả |
+| --- | --- | --- |
+| [40498733550](https://github.com/hungstupid/CourtMate/actions/runs/40498733550) | `5087bfc`, push | Frontend + integration PASS |
+| [40499095148](https://github.com/hungstupid/CourtMate/actions/runs/40499095148) | `67ed48e`, push | Frontend + integration PASS |
+| [40499671930](https://github.com/hungstupid/CourtMate/actions/runs/40499671930) | `f1d6a38`, push | Frontend + integration PASS |
+| [40499762439](https://github.com/hungstupid/CourtMate/actions/runs/40499762439) | `f1d6a38`, pull_request | Frontend + integration PASS; **16 pytest tests**, **3 browser tests** |
+| [40499761175](https://github.com/hungstupid/CourtMate/actions/runs/40499761175) | PR #73 repository check | PASS, folder guides / sensitive filenames |
+
+CI clone sạch, cài từ npm/uv lockfiles, chạy frontend lint/typecheck/build, Ruff lint/format, migration hai lần, PostgreSQL test riêng, Firebase Auth Emulator demo, pytest, Playwright/axe và 20-request liveness probe. Không dùng credential cá nhân, Neon demo, Firebase cloud hoặc secret từ máy để chạy CI.
+
+### Lệnh/check đã chạy và kết quả
+
+- Frontend: `npm ci`, `npm run lint`, `npm run typecheck`, `npm run build`, `npm audit` — PASS, audit 0 vulnerabilities tại thời điểm nghiệm thu.
+- Backend: `uv sync --locked`, `uv run pytest` — **16 passed, 0 skipped**; `uv run ruff check .`, `uv run ruff format --check .` — PASS.
+- `make setup`, `make db-up`, `make migrate` hai lần, local seed hai lần — PASS. `make setup` giữ các giá trị đã có, thêm key thiếu, không log password.
+- Clone thật từ remote vào thư mục tạm sạch, Compose project `courtmate-repro` riêng trên port 5434: setup/install, migrations hai lần, 16 tests, seed, frontend checks và API chạy thật tại port 8010/health/ready đều PASS; API và database repro được dừng đúng sau test, volume không bị xóa.
+- Local E2E: **3 passed**; Firebase Emulator signup qua browser → token → backend → PostgreSQL → Player, cùng axe trên trang development.
+- Cloud API: sign-in bằng Firebase Email/Password thật, `/api/me` lưu UID, role mặc định Player; script Owner grant xác minh UID tồn tại/enabled; Owner được phép, Player bị 403; không token / token sai / token unsigned của emulator bị 401; client `role=owner` không nâng quyền. Giá trị role trong Neon đã đối chiếu lại.
+- Cloud browser: cùng suite Playwright chạy với Player và Owner, **3 passed + 3 passed** sau auto-deploy Render; gồm HTTPS/CORS/backend identity và axe. Không mock response thành công hoặc tắt token verification.
+- `uv run python -m app.scripts.database_backup export` / `restore-test`: PASS, dùng pg_dump/pg_restore trong Docker, chỉ restore vào localhost `_test` riêng; không reset demo.
+- Neon demo và development: migration hai lần, UTC, verify-full TLS PASS; pooled runtime cũng đã truy vấn được schema. Không coi pg_stat_ssl sau Neon proxy là TLS client evidence.
+- `render blueprints validate render.yaml --output json`: `valid: true`; cấu hình live cũng được áp dụng/đọc lại, không chỉ viết file IaC.
+- `git diff --check`, kiểm tra staged filenames/artifacts, pattern secret thông dụng, lockfiles và bảo toàn tài liệu PA: PASS. Không có nested repo hoặc credential trong source.
+
+Không kiểm thử AC booking/cancellation/capacity/room/deal hoặc NFR concurrency vì chưa có business implementation. Load probe không phải chứng nhận hiệu năng. Không sửa SRS, Figma hoặc tài liệu PA; hai tài liệu requirements đi vào nhánh bằng merge main được bảo toàn.
+
+### Secrets, tài khoản thử và bàn giao
+
+- Runtime secrets chỉ nằm trong Render environment storage và local `.env`/`.secrets` được ignore. Không đưa service-account key, connection URL có password hoặc token vào báo cáo/source/screenshot.
+- Hai cloud identity fixtures (Player và Owner) cùng thông tin đăng nhập nằm trong `src/backend/.secrets/cloud-accounts.json` trên máy chủ repo, permission 0600; không ghi credential vào PR/report/chat. Dùng đăng ký Player công khai hoặc chia sẻ tài khoản demo riêng qua kênh phù hợp khi cần đánh giá Owner.
+- Source/lockfiles/examples và docs đã được commit/push trên branch setup theo quyền được cấp. SRS/Figma/PA và các tài nguyên không thuộc CourtMate không bị thay đổi.
+- Hướng dẫn PA5: [setup.md](setup.md). Cần review/merge như quy trình nhóm; sau đó chỉ thêm migration/code/test vào repo, CI và deployment source main đã sẵn. Các migration tiếp theo phải tương thích với bản API cũ đang live; không rollback database bằng cách tự chạy downgrade/reset demo.
+- Bằng chứng ảnh public landing không có credential: `/private/tmp/courtmate-cloud-landing.png`. Artifact tạm và one-time operator scripts không phải source bàn giao; project/service IDs và cách tái xác thực CLI/provider đã được ghi trong setup.md.
+
+### Giới hạn / outstanding
+
+Không còn blocker cho nền tảng. Render Free ngủ sau 15 phút idle, cold start khoảng một phút, 750 instance-hours/workspace/tháng và hạn mức build/bandwidth; frontend có timeout/retry phù hợp. Neon Free có scale-to-zero, compute/storage/history quotas; project đang dùng 0.25 CU và history retention 6 giờ theo metadata đã quan sát. Vercel Hobby/Firebase Spark có quota; không bật trả phí hoặc cam kết NFR production.
+
+npm vẫn có thông báo install-script chưa duyệt cho dependency tùy chọn/support (`fsevents`, Firebase util); install/dev/build/CI đều thành công. Không bật hàng loạt lifecycle scripts. Warning HTTPX/TestClient cũ đã được xử lý bằng HTTPX2 cho TestClient; HTTPX vẫn dùng cho tooling.
+
+Tài liệu giới hạn hiện hành: [Render Free](https://render.com/docs/free), [Render deploy/CI](https://render.com/docs/deploys), [Neon pooling](https://neon.com/docs/connect/connection-pooling), [Firebase emulator isolation](https://firebase.google.com/docs/emulator-suite/connect_auth). Không thực hiện nâng gói hoặc triển khai thêm worker/queue/AI/image-storage provider.
+
+### File manifest của đợt setup mở rộng
+
+So với merge base `95d996e` (đã chứa các cập nhật main), danh sách chính xác dưới đây gồm STATUS A = tạo mới, M = sửa; không tính lại các file bootstrap 24/10. Hai file requirements được đưa vào bằng merge main không nằm trong phần thay đổi do agent tạo:
+
+```text
+A	.env.example
+A	.github/workflows/quality.yml
+M	.gitignore
+A	Makefile
+M	README.md
+A	compose.yaml
+M	docs/development/bootstrap-report.md
+A	docs/development/setup.md
+A	firebase.json
+A	render.yaml
+A	scripts/ci-integration.sh
+A	scripts/setup_local.py
+A	src/backend/.env.cloud.example
+M	src/backend/.env.example
+M	src/backend/README.md
+A	src/backend/alembic.ini
+M	src/backend/app/api/health.py
+A	src/backend/app/api/identity.py
+A	src/backend/app/core/auth.py
+A	src/backend/app/core/settings.py
+A	src/backend/app/db/__init__.py
+A	src/backend/app/db/models.py
+A	src/backend/app/db/session.py
+M	src/backend/app/main.py
+A	src/backend/app/scripts/__init__.py
+A	src/backend/app/scripts/database_backup.py
+A	src/backend/app/scripts/grant_owner.py
+A	src/backend/app/scripts/load_smoke.py
+A	src/backend/app/scripts/reset_test.py
+A	src/backend/app/scripts/seed.py
+A	src/backend/app/scripts/start.py
+A	src/backend/migrations/env.py
+A	src/backend/migrations/script.py.mako
+A	src/backend/migrations/versions/0001_identity.py
+M	src/backend/pyproject.toml
+A	src/backend/tests/conftest.py
+A	src/backend/tests/test_identity.py
+A	src/backend/tests/test_readiness.py
+M	src/backend/uv.lock
+A	src/frontend/.env.cloud.example
+M	src/frontend/.env.example
+M	src/frontend/README.md
+A	src/frontend/e2e/bootstrap.spec.ts
+M	src/frontend/package-lock.json
+M	src/frontend/package.json
+A	src/frontend/playwright.config.ts
+M	src/frontend/src/app/styles.css
+M	src/frontend/src/components/BackendStatus.tsx
+A	src/frontend/src/components/IdentitySmoke.tsx
+A	src/frontend/src/lib/firebase.ts
+M	src/frontend/src/pages/DevelopmentPage.tsx
+A	src/frontend/vercel.json
+```
+
+Tổng đợt mở rộng: 52 files (A: 36, M: 16).

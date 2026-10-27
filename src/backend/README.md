@@ -2,7 +2,7 @@
 
 Holds CourtMate's **server-side implementation**: API endpoints, business rules, authentication/authorization, data access, database migrations and backend tests. The foundation uses FastAPI, uv, Python 3.12, PostgreSQL and Firebase Authentication. Business endpoints will be added in later work.
 
-The booking-duration and confirmation/approval rules must be agreed before implementation. Preventing overlapping valid bookings requires a verified server/database approach.
+Use the [current SRS](https://docs.google.com/document/d/1zL3Ra_0LceKOF_2pZa9iWpq7HIbRtALB/edit) for approved booking, cancellation and capacity decisions when implementation starts. Preventing overlapping valid bookings still requires a verified server/database approach; this foundation does not claim that feature is implemented.
 
 Database/Auth initialization starts with the [development guide](../../docs/development/setup.md). Never commit credentials, `.env` or real customer information. Identity/role foundation is implemented; court, booking and room business features are not.
 
