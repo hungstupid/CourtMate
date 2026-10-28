@@ -112,15 +112,15 @@ No performance/accessibility/product completion claim follows from these tests.
 
 ## Implemented refinements
 
-A full Phase A run passed153 tests before B started; the combined suite now
-passes209 tests. Each successful confirmation/cancellation also bumps the court
+A full Phase A run passed 153 tests before B started; the combined suite now
+passes 209 tests. Each successful confirmation/cancellation also bumps the court
 quote version, requiring a fresh review after state changes and preventing an
 old confirmation retry from silently rebooking after cancellation. This may
 invalidate quotes for unrelated slots of the same court; it is a deliberate
 conservative draft tradeoff.
 
 Operating-hours windows permit arbitrary integer minutes; only published slots
-need the30-minute grid. Owner readback includes unpublished slots and maintenance
+need the 30-minute grid. Owner readback includes unpublished slots and maintenance
 on inactive courts. Confirmed slot edits are conservatively rejected; after
 cancellation, later price changes do not affect any saved snapshot.
 
