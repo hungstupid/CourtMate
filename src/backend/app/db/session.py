@@ -50,4 +50,9 @@ def get_engine() -> Engine:
 
 def get_session() -> Generator[Session, None, None]:
     with Session(get_engine()) as session:
-        yield session
+        try:
+            yield session
+            session.commit()
+        except Exception:
+            session.rollback()
+            raise

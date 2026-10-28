@@ -22,6 +22,14 @@ def run_migrations() -> None:
         with context.begin_transaction():
             context.run_migrations()
     else:
+        supplied = context.config.attributes.get("connection")
+        if supplied is not None:
+            context.configure(
+                connection=supplied, target_metadata=target_metadata, compare_type=True
+            )
+            with context.begin_transaction():
+                context.run_migrations()
+            return
         engine = create_engine(
             normalize_url(value),
             poolclass=pool.NullPool,

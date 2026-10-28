@@ -6,10 +6,11 @@ from fastapi import HTTPException
 from sqlalchemy import text
 
 from app.api import health
+from app.db.readiness import required_heads
 
 
 @pytest.mark.parametrize(
-    "revision", [None, "0000_old", "not-a-revision", "0001_identity"]
+    "revision", [None, "0001_identity", "not-a-revision", "current"]
 )
 def test_readiness_requires_current_heads(database_engine, monkeypatch, revision):
     with database_engine.connect() as connection:
@@ -20,12 +21,15 @@ def test_readiness_requires_current_heads(database_engine, monkeypatch, revision
             lambda: SimpleNamespace(connect=lambda: nullcontext(connection)),
         )
         connection.execute(text("DELETE FROM alembic_version"))
-        if revision:
+        actual_revision = (
+            next(iter(required_heads())) if revision == "current" else revision
+        )
+        if actual_revision:
             connection.execute(
                 text("INSERT INTO alembic_version VALUES (:revision)"),
-                {"revision": revision},
+                {"revision": actual_revision},
             )
-        if revision == "0001_identity":
+        if revision == "current":
             assert health.ready() == {"status": "ready", "database": "ok"}
         else:
             with pytest.raises(HTTPException) as error:

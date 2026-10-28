@@ -77,7 +77,7 @@ def verified_identity(
 
 def current_user(
     identity: Annotated[dict[str, Any], Depends(verified_identity)],
-    session: Annotated[Session, Depends(get_session)],
+    session: Annotated[Session, Depends(get_session, scope="function")],
 ) -> User:
     uid = identity.get("uid")
     if not isinstance(uid, str) or not uid or len(uid) > 128:
@@ -88,7 +88,7 @@ def current_user(
         .values(firebase_uid=uid, role="player")
         .on_conflict_do_nothing(index_elements=[User.firebase_uid])
     )
-    session.commit()
+    session.flush()
     user = session.scalar(select(User).where(User.firebase_uid == uid))
     if user is None or user.role not in {"player", "owner"}:
         raise HTTPException(403, "No valid server-controlled role.")
@@ -98,6 +98,12 @@ def current_user(
 def require_owner(user: Annotated[User, Depends(current_user)]) -> User:
     if user.role != "owner":
         raise HTTPException(403, "Court Owner access is required.")
+    return user
+
+
+def require_player(user: Annotated[User, Depends(current_user)]) -> User:
+    if user.role != "player":
+        raise HTTPException(403, "Player access is required.")
     return user
 
 

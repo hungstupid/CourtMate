@@ -10,6 +10,7 @@ from sqlalchemy.orm import Session
 from app.core.auth import require_resource_ownership
 from app.core.settings import get_settings
 from app.db.models import User
+from app.db.readiness import required_heads
 
 
 def emulator_token() -> tuple[str, str]:
@@ -79,8 +80,10 @@ def test_database_utc_and_migration(database_engine) -> None:
     with database_engine.connect() as connection:
         assert connection.scalar(text("SHOW timezone")) == "UTC"
         assert (
-            connection.scalar(text("SELECT version_num FROM alembic_version"))
-            == "0001_identity"
+            frozenset(
+                connection.scalars(text("SELECT version_num FROM alembic_version"))
+            )
+            == required_heads()
         )
 
 
