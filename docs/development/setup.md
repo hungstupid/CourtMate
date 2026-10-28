@@ -1,6 +1,6 @@
 # Development, identity and deployment
 
-Stack: React/TypeScript/Vite, FastAPI/Python 3.12/uv, PostgreSQL 17, Firebase Authentication. PostgreSQL is hosted on Neon; the API on Render and the frontend on Vercel. Only Player and Court Owner are application roles. This foundation does not implement booking, courts, rooms, deals, payments or chat.
+Stack: React/TypeScript/Vite, FastAPI/Python 3.12/uv, PostgreSQL 17, Firebase Authentication. PostgreSQL is hosted on Neon; the API on Render and the frontend on Vercel. Only Player and Court Owner are application roles. Court scheduling, atomic booking/cancellation and Open Play are now backend implementation drafts; see [backend-api.md](backend-api.md) and [backend-core-design.md](backend-core-design.md). Business frontend, deals, profile, payment and chat remain outside this implementation.
 
 ## Clean local setup
 
@@ -132,3 +132,32 @@ Render Free lacks a pre-deploy command. `app.scripts.start` takes a PostgreSQL a
 Inspect CI with `gh run list` / `gh run view RUN_ID --log-failed`. Inspect Render via `render deploys list SERVICE_ID --output json` and `render logs --help`; inspect Vercel via its deployment dashboard/API or authenticated CLI. Roll back to an observed previous successful deployment through the provider's supported rollback operation after checking migration compatibility. Rollback does not revert PostgreSQL or Firebase writes. Never automatically downgrade or restore demo data to roll back code.
 
 Free plans have quotas/cold starts. Render Free sleeps after 15 minutes idle and may take about a minute to wake; the frontend offers retry and allows a longer production health request. Neon scales to zero on its Free plan. Do not add a keepalive loop to defeat sleep. No paid database, worker, Redis, queue, upload provider, AI service or OpenAI API key is needed.
+
+
+## Backend core implementation draft (28 October)
+
+Use [backend-api.md](backend-api.md) to connect the existing API client to Owner
+court/schedule, Player review/confirm/history/cancel and public/Player Open Play
+endpoints. [backend-core-design.md](backend-core-design.md) describes schema,
+transactions and requirement mapping; [backend-core-report.md](backend-core-report.md)
+records actual tests/deployment evidence. This does not replace PA3/PA4 review.
+
+Run `make migrate` before starting the new API. Revisions `0002_booking_core` and
+`0003_open_play` add business tables without replacing `users`. Test fixtures use
+the isolated test DB and dedicated temporary schemas; no demo reset is needed.
+`uv run pytest` automatically includes the real concurrency and migration suites
+in the existing quality CI. Pytest uses short tracebacks without frame locals.
+Keep database errors and credentials out of copied diagnostic output.
+
+The previous live API expects revision 0001 in readiness. During the additive
+upgrade its old `/ready` may briefly return 503 until the new instance starts.
+Existing identity tables/endpoints remain schema-compatible, but this is not a
+zero-downtime guarantee. After advancing to 0003, rollback must preserve the new
+migration files/readiness contract or be a forward fix; do not deploy an old
+0001-only artifact or downgrade/restore demo to roll code back. Render keeps the
+existing serialized startup migration and `/ready` deployment gate.
+
+Render rootDir `src/backend` filters changes outside that directory. A later
+docs-only push may leave the last backend source SHA live while Vercel updates;
+verify the actual per-service commit and compare source differences, rather than
+assuming both hosts always redeploy every repository commit.

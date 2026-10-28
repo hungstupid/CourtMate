@@ -22,7 +22,7 @@ directly from Google Docs on 28 October; PA documents and Figma are unchanged.
   interval/price/version snapshots. `slot_claims` has slot_id as primary key and
   booking FK: it represents only active occupancy, so cancellation can release
   slots without deleting history or blocking a later booking.
-- Phase B, only after A passes: `rooms` has a unique booking FK, organizer,
+- Phase B, implemented after A passed: `rooms` has a unique booking FK, organizer,
   capacity, closed flag; `room_members` has composite room/player PK. Organizer
   counts as member one. OPEN/FULL derive from active membership count; CLOSED
   derives irreversibly from booking cancellation/first start or the closed flag.
@@ -108,3 +108,25 @@ the additive schema, but their exact-head readiness becomes false during the
 revision transition: a brief rollout interruption is possible. Never downgrade
 demo; rollback must use code that understands the new head or a forward fix.
 No performance/accessibility/product completion claim follows from these tests.
+
+
+## Implemented refinements
+
+A full Phase A run passed153 tests before B started; the combined suite now
+passes209 tests. Each successful confirmation/cancellation also bumps the court
+quote version, requiring a fresh review after state changes and preventing an
+old confirmation retry from silently rebooking after cancellation. This may
+invalidate quotes for unrelated slots of the same court; it is a deliberate
+conservative draft tradeoff.
+
+Operating-hours windows permit arbitrary integer minutes; only published slots
+need the30-minute grid. Owner readback includes unpublished slots and maintenance
+on inactive courts. Confirmed slot edits are conservatively rejected; after
+cancellation, later price changes do not affect any saved snapshot.
+
+Room reads and membership operations lock Court→Booking→Room. The only special
+409 transaction path is ROOM_CLOSED: the API returns the same error body while
+allowing the derived sticky closure flag to commit, before any membership
+mutation. Other errors roll back normally. A separate-request HTTP regression
+verifies that a rejected start-time request cannot reopen the room after an
+injected clock correction.
