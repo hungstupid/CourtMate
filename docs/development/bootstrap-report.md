@@ -419,3 +419,27 @@ Trạng thái trước push nghiệm thu: **PARTIAL — code/local checks đã �
 - Local: npm ci/lint/typecheck/build và audit production 0 vulnerabilities; uv sync --locked, Ruff check/format và 83 pytest pass, không skip; 6 Playwright/Chrome pass (3 real integration + 3 local failure regression), axe trên trang foundation. Migration lặp, seed lặp, export/restore/reset local riêng đã chạy. Kết quả không chứng minh AC nghiệp vụ hoặc NFR sản phẩm.
 
 Chi tiết vận hành, IDs/URLs tài nguyên, cấu hình an toàn máy mới, chuyển main trong tương lai và rollback tương thích migration: [setup.md](setup.md). Kết quả clean clone/CI/deploy/cloud của commit nghiệm thu sẽ được ghi tiếp sau khi kiểm chứng thực tế.
+
+
+### Nghiệm thu thực tế của bản sửa 28/10 — READY cho nền tảng PA5
+
+Commit code đã kiểm chứng và push: **`7755520ef1fff17757c75aa114ad98ace22ba37c`**, nhánh `chore/project-bootstrap`. Các commit chỉ bổ sung bằng chứng sau mục này không thay đổi source/runtime configuration. Không merge main hoặc main vào setup, không force-push/rebase/reset. PR #73 được phát hiện đã **closed, draft, unmerged** từ 27/10/2026 13:19:12 UTC; phiên này không mở lại, không thay đổi review hay trạng thái PR.
+
+| Bằng chứng | Kết quả quan sát |
+| --- | --- |
+| CI push | [40630062813](https://github.com/hungstupid/CourtMate/actions/runs/40630062813), exact SHA `7755520...`, frontend-push + integration-push SUCCESS; log xác nhận **83 pytest, 0 skip**, **6 Playwright** |
+| Clone sạch GitHub | `/private/tmp/courtmate-audit-clone-tên-ngẫu-nhiên`, exact SHA trên; lockfile install, Compose project/volume riêng trên port 5434, migrate hai lần, pytest, seed hai lần, frontend checks, export/restore/reset chỉ test DB, pytest migrate lại, API readiness và 6 browser tests PASS; container riêng đã stop, volume giữ lại |
+| Render tự deploy | `dep-dbgn8dnb9u1s7393vse0`, trigger **new_commit**, SHA `7755520...`, LIVE; CI kết thúc 04:04:02 UTC, deploy bắt đầu 04:04:06 UTC và LIVE 04:05:30 UTC ngày 28/10 |
+| Vercel Git deployment | `dpl_J3mxUTDwsKamNatPoFiHuqeUi97R`, source **git**, production SHA `7755520...`; quan sát READY/STAGED + aliasAssigned=false khi integration còn running, rồi READY/PROMOTED + aliasAssigned=true sau cả hai check succeeded |
+| Code đang phục vụ | Frontend public `/version.json` và API `/health` header `X-CourtMate-Commit` đều bằng full SHA `7755520...`; không dùng HTTP 200 đơn lẻ làm bằng chứng version |
+| Runtime cloud | `/health` JSON chuẩn và `/ready` 200; preflight GET/HEAD/POST/PUT/PATCH/DELETE với Bearer + JSON 200, origin ngoài allowlist bị 400 và không có allow-origin |
+| Firebase/Neon thật | Hai fixture hiện có đăng nhập Firebase thật; backend xác minh ID token và đọc role player/owner từ PostgreSQL; Player vào Owner API 403, Owner 200; query role=owner không nâng quyền; token thiếu/sai/unsigned emulator đều 401 |
+| Regression deleted thật | Tạo một UID/email `audit-deleted-...` riêng cho phiên, xác minh Player → xóa đúng Firebase account đó bằng token của nó → gọi lại API với token còn hạn nhận **401**; finally chỉ xóa row PostgreSQL đúng UID mới tạo. Không xóa/chỉnh các fixture cũ hoặc người dùng khác |
+| Browser cloud | **3 tests Player + 3 tests Owner PASS**, real Firebase/API/Neon, bao gồm account/Owner navigation, deep link/reload, sign-out và axe. Local failure-injection suite không chạy/không được tính làm cloud integration |
+| Secrets/scope | Scan 124 source/build files không thấy giá trị runtime credentials từ cấu hình local; không track env/secrets/deps/artifacts; protected PA/SRS/Figma/team contribution files không đổi. Không có provider credential trong Actions |
+
+Các cấu hình cloud đổi trong phiên: Render branch setup + checksPass + `/ready`; Vercel production branch setup + hai native GitHub check gates `frontend-push`/`integration-push` (timeout 900 giây, blocks deployment-alias). Root/build/install/start/Node/Python, repo link và existing environment configuration được kiểm tra; Firebase/Neon không đổi cấu hình hoặc gói. Các check tạm dùng tên job cũ do phiên tạo đã được thay bằng hai check đúng tên push; không động tới tài nguyên khác. Không tạo thêm service hoặc cơ chế deploy.
+
+Không còn blocker trong phạm vi nền tảng đã kiểm chứng. Giới hạn: validation credential kiểm tra cấu trúc/key offline; provider IAM/revocation/network vẫn phụ thuộc dịch vụ và fail closed. Vercel có thể build trước CI nhưng không release domain trước required checks; hai host triển khai độc lập nên không phải một transaction release chung. Free quotas/cold starts vẫn áp dụng. Không chạy destructive/readiness-corruption tests trên demo, không cố tình gây outage provider hay đổi trạng thái fixture cũ. Load probe nhỏ/a11y foundation không chứng minh NFR sản phẩm.
+
+PA3 còn chốt kiến trúc, schema/transaction/concurrency và thiết kế UI nghiệp vụ; PA4 còn thiết kế test cases, traceability, dữ liệu và chiến lược NFR. PA5 triển khai court/slot/atomic booking/cancellation/room/manual deal cùng migration, business tests, review và push. Các quy tắc SRS về 60–240 phút, bước 30 phút, hủy >=6 giờ, room 2..2×max_players và hai vai trò được giữ nguyên; chưa tạo bảng/nghiệp vụ tương ứng. Khi các thiết kế đó được chốt, không còn bước provisioning hạ tầng bắt buộc trong phạm vi stack hiện tại.
