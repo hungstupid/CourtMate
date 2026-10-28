@@ -197,3 +197,31 @@ class SlotClaim(Base):
     )
     slot_id: Mapped[uuid.UUID] = mapped_column(primary_key=True)
     booking_id: Mapped[uuid.UUID] = mapped_column(index=True)
+
+
+class Room(Base):
+    __tablename__ = "rooms"
+    __table_args__ = (
+        CheckConstraint("capacity BETWEEN 2 AND 60", name="ck_room_capacity"),
+    )
+    id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4)
+    booking_id: Mapped[uuid.UUID] = mapped_column(
+        ForeignKey("bookings.id"), unique=True
+    )
+    organizer_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("users.id"))
+    capacity: Mapped[int] = mapped_column(Integer)
+    closed: Mapped[bool] = mapped_column(Boolean, default=False, server_default="false")
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.clock_timestamp()
+    )
+
+
+class RoomMember(Base):
+    __tablename__ = "room_members"
+    room_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("rooms.id"), primary_key=True)
+    player_id: Mapped[uuid.UUID] = mapped_column(
+        ForeignKey("users.id"), primary_key=True
+    )
+    joined_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.clock_timestamp()
+    )

@@ -9,7 +9,7 @@ from uuid import UUID
 from sqlalchemy import delete, select
 from sqlalchemy.orm import Session
 
-from app.db.models import Booking, BookingSlot, Court, Slot, SlotClaim, User
+from app.db.models import Booking, BookingSlot, Court, Room, Slot, SlotClaim, User
 from app.services.common import (
     Clock,
     database_now,
@@ -295,6 +295,14 @@ def cancel_booking(
         fail("BOOKING_NOT_FOUND", "Booking not found.", 404)
     if booking.player_id != player.id:
         fail("NOT_BOOKING_OWNER", "This booking belongs to another Player.", 403)
+    # Every room mutation follows Court -> Booking -> Room. Lock the linked room
+    # before reading time so cancellation eligibility is checked after all waits.
+    room = session.scalar(
+        select(Room)
+        .where(Room.booking_id == booking.id)
+        .with_for_update()
+        .execution_options(populate_existing=True)
+    )
     now = clock(session)
     eligible, reason = _cancellation(booking, now)
     if not eligible:
@@ -304,6 +312,8 @@ def cancel_booking(
             else "CANCELLATION_TOO_LATE"
         )
         fail(code, reason)
+    if room is not None:
+        room.closed = True
     booking.status = "CANCELLED"
     booking.cancelled_at = now
     court.version += 1

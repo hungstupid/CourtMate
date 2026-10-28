@@ -13,6 +13,7 @@ from app.db.models import (
     Court,
     MaintenanceBlock,
     OperatingHours,
+    Room,
     Slot,
     SlotClaim,
     User,
@@ -145,8 +146,25 @@ def update_court(
     court = lock_court(session, court_id, owner=owner)
     values = dict(values)
     _court_values(values)
-    # The room-capacity guard is added with Phase B after Phase A passes.
-    clock(session)
+    now = clock(session)
+    if "max_players" in values:
+        incompatible_room = session.scalar(
+            select(Room.id)
+            .join(Booking, Booking.id == Room.booking_id)
+            .where(
+                Booking.court_id == court.id,
+                Booking.status == "CONFIRMED",
+                Booking.start_at > now,
+                Room.closed.is_(False),
+                Room.capacity > 2 * values["max_players"],
+            )
+            .limit(1)
+        )
+        if incompatible_room is not None:
+            fail(
+                "ROOM_CAPACITY_CONFLICT",
+                "The proposed court capacity would invalidate a future linked room.",
+            )
     for key, value in values.items():
         setattr(court, key, value)
     court.version += 1

@@ -259,3 +259,77 @@ def test_real_http_owner_to_player_booking_cancel_and_rebook(
     assert response.status_code == 201 and response.json()["id"] != booking["id"]
     assert len(client.get("/api/bookings", headers=player).json()) == 2
     assert client.get("/api/bookings").status_code == 401
+
+
+def test_real_http_public_room_player_membership_and_atomic_cancel(
+    committed_api, database_engine
+):
+    client, actor = committed_api
+    owner, organizer, member = (actor(role) for role in ["owner", "player", "player"])
+    court_id = create_court(client, owner)
+    slot = client.post(
+        f"/api/owner/courts/{court_id}/slots",
+        headers=owner,
+        json={
+            "start_at": START.isoformat(),
+            "end_at": (START + timedelta(hours=1)).isoformat(),
+            "price_vnd": 100_001,
+        },
+    )
+    assert slot.status_code == 201
+    selection = {"slot_ids": [slot.json()["id"]]}
+    review = client.post(
+        "/api/bookings/review", headers=organizer, json=selection
+    ).json()
+    booking = client.post(
+        "/api/bookings", headers=organizer, json={**selection, "quote": review["quote"]}
+    ).json()
+    path = f"/api/bookings/{booking['id']}/room"
+    assert client.post(path, headers=owner, json={"capacity": 2}).status_code == 403
+    assert client.post(path, headers=member, json={"capacity": 2}).status_code == 403
+    assert (
+        client.post(path, headers=organizer, json={"capacity": 2.5}).status_code == 422
+    )
+    created = client.post(path, headers=organizer, json={"capacity": 2})
+    assert created.status_code == 201, created.text
+    room = created.json()
+    assert room["member_count"] == 1 and room["status"] == "OPEN"
+    assert client.post(path, headers=organizer, json={"capacity": 2}).status_code == 409
+    room_path = f"/api/rooms/{room['id']}"
+    public = client.get(room_path)
+    assert public.status_code == 200 and "firebase_uid" not in public.text
+    assert any(x["id"] == room["id"] for x in client.get("/api/rooms").json())
+    assert client.post(room_path + "/join", headers=owner).status_code == 403
+    assert client.post(room_path + "/join").status_code == 401
+    joined = client.post(room_path + "/join", headers=member)
+    assert joined.status_code == 200 and joined.json()["status"] == "FULL"
+    assert joined.json()["estimated_share_vnd"] == 50_001
+    assert client.post(room_path + "/join", headers=member).status_code == 409
+    assert client.post(room_path + "/leave", headers=organizer).status_code == 409
+    left = client.post(room_path + "/leave", headers=member)
+    assert left.status_code == 200 and left.json()["status"] == "OPEN"
+    assert client.post(room_path + "/join", headers=member).status_code == 200
+    # Persist closure on the rejected start-time request, including a later
+    # clock correction. Only this injected test clock moves, never system time.
+    app.dependency_overrides[get_clock] = lambda: lambda session: START
+    assert client.post(room_path + "/leave", headers=member).status_code == 409
+    app.dependency_overrides[get_clock] = lambda: lambda session: NOW
+    assert client.get(room_path).json()["status"] == "CLOSED"
+    cancelled = client.post(f"/api/bookings/{booking['id']}/cancel", headers=organizer)
+    assert cancelled.status_code == 200
+    public = client.get(room_path).json()
+    assert public["status"] == "CLOSED" and public["member_count"] == 2
+    assert client.post(room_path + "/leave", headers=member).status_code == 409
+    assert client.post(room_path + "/join", headers=member).status_code == 409
+    from app.db.models import Room
+
+    with Session(database_engine) as observer:
+        assert observer.get(Room, uuid.UUID(room["id"])).closed is True
+        assert (
+            observer.scalar(
+                select(func.count())
+                .select_from(SlotClaim)
+                .where(SlotClaim.booking_id == uuid.UUID(booking["id"]))
+            )
+            == 0
+        )

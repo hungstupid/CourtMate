@@ -387,3 +387,123 @@ def test_non_grid_operating_hours_still_allow_grid_aligned_slots(db_session, gra
     )
     slot = courts.publish_slot(db_session, owner, court.id, slot_values(8), clock=clock)
     assert slot.start_at == start(8)
+
+
+def test_owner_readback_includes_unpublished_slots_and_inactive_court_after_reload(
+    api_client, db_session, graph
+):
+    owner, other, player, court = graph
+    day_two = DAY + timedelta(days=1)
+    published = courts.publish_slot(
+        db_session, owner, court.id, slot_values(8), clock=clock
+    )
+    unpublished = courts.publish_slot(
+        db_session, owner, court.id, slot_values(10), clock=clock
+    )
+    courts.update_slot(
+        db_session,
+        owner,
+        unpublished.id,
+        {"published": False, "blocked": True},
+        clock=clock,
+    )
+    later = courts.publish_slot(
+        db_session,
+        owner,
+        court.id,
+        {
+            "start_at": start(8, day=day_two),
+            "end_at": start(9, day=day_two),
+            "price_vnd": 120_000,
+        },
+        clock=clock,
+    )
+    block = courts.add_maintenance(
+        db_session,
+        owner,
+        court.id,
+        {"start_at": start(12), "end_at": start(13)},
+        clock=clock,
+    )
+    later_block = courts.add_maintenance(
+        db_session,
+        owner,
+        court.id,
+        {"start_at": start(12, day=day_two), "end_at": start(13, day=day_two)},
+        clock=clock,
+    )
+    courts.update_court(db_session, owner, court.id, {"active": False}, clock=clock)
+    court_id, slot_ids = court.id, [published.id, unpublished.id, later.id]
+    block_ids = [block.id, later_block.id]
+    app.dependency_overrides[current_user] = lambda: owner
+    app.dependency_overrides[get_clock] = lambda: clock
+    db_session.expire_all()
+    assert (
+        api_client.get(f"/api/courts/{court_id}/availability?date={DAY}").status_code
+        == 404
+    )
+    response = api_client.get(f"/api/owner/courts/{court_id}/slots")
+    assert response.status_code == 200
+    assert [row["id"] for row in response.json()] == [str(value) for value in slot_ids]
+    assert response.json()[1]["published"] is False
+    assert response.json()[1]["blocked"] is True
+    assert response.json()[0]["status"] == "UNAVAILABLE"
+    filtered = api_client.get(f"/api/owner/courts/{court_id}/slots?date={DAY}").json()
+    assert [row["id"] for row in filtered] == [str(value) for value in slot_ids[:2]]
+    response = api_client.get(f"/api/owner/courts/{court_id}/maintenance")
+    assert response.status_code == 200
+    assert [row["id"] for row in response.json()] == [str(value) for value in block_ids]
+    filtered = api_client.get(
+        f"/api/owner/courts/{court_id}/maintenance?date={DAY}"
+    ).json()
+    assert [row["id"] for row in filtered] == [str(block_ids[0])]
+
+    def use_identity(user):
+        app.dependency_overrides[current_user] = lambda: user
+
+    for actor in (other, player):
+        use_identity(actor)
+        assert api_client.get(f"/api/owner/courts/{court_id}/slots").status_code == 403
+        assert (
+            api_client.get(f"/api/owner/courts/{court_id}/maintenance").status_code
+            == 403
+        )
+
+
+def test_owner_maintenance_date_filter_uses_local_day_overlap_and_exclusive_end(
+    api_client, db_session, graph
+):
+    owner, _, _, court = graph
+    midnight = start(0)
+    previous_day = courts.add_maintenance(
+        db_session,
+        owner,
+        court.id,
+        {"start_at": midnight - timedelta(hours=2), "end_at": midnight},
+        clock=clock,
+    )
+    spans_start = courts.add_maintenance(
+        db_session,
+        owner,
+        court.id,
+        {
+            "start_at": midnight - timedelta(minutes=30),
+            "end_at": midnight + timedelta(minutes=30),
+        },
+        clock=clock,
+    )
+    next_day = courts.add_maintenance(
+        db_session,
+        owner,
+        court.id,
+        {
+            "start_at": midnight + timedelta(days=1),
+            "end_at": midnight + timedelta(days=1, hours=1),
+        },
+        clock=clock,
+    )
+    app.dependency_overrides[current_user] = lambda: owner
+    rows = api_client.get(f"/api/owner/courts/{court.id}/maintenance?date={DAY}").json()
+    assert [row["id"] for row in rows] == [str(spans_start.id)]
+    assert str(previous_day.id) not in {row["id"] for row in rows}
+    assert str(next_day.id) not in {row["id"] for row in rows}

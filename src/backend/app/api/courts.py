@@ -1,4 +1,4 @@
-from datetime import date, datetime
+from datetime import date, datetime, time, timedelta
 from typing import Annotated, Any
 from uuid import UUID
 
@@ -17,10 +17,10 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.core.auth import require_owner
-from app.db.models import Court, OperatingHours, User
+from app.db.models import Court, MaintenanceBlock, OperatingHours, Slot, User
 from app.db.session import get_session
 from app.services import courts
-from app.services.common import Clock, get_clock, lock_court
+from app.services.common import LOCAL_TZ, Clock, get_clock, lock_court, slot_state
 
 router = APIRouter(prefix="/api", tags=["courts and availability"])
 Database = Annotated[Session, Depends(get_session, scope="function")]
@@ -283,6 +283,25 @@ def slot_publish(
     )
 
 
+@router.get("/owner/courts/{court_id}/slots")
+def owner_slots(
+    court_id: UUID,
+    session: Database,
+    owner: Owner,
+    clock: ServerClock,
+    day: Annotated[date | None, Query(alias="date")] = None,
+) -> list[dict[str, Any]]:
+    court = lock_court(session, court_id, owner=owner)
+    now = clock(session)
+    query = select(Slot).where(Slot.court_id == court.id)
+    if day is not None:
+        query = query.where(Slot.playing_date == day)
+    rows = session.scalars(query.order_by(Slot.playing_date, Slot.start_at, Slot.id))
+    return [
+        courts.dump_slot(slot, slot_state(session, court, slot, now)) for slot in rows
+    ]
+
+
 @router.patch("/owner/slots/{slot_id}", response_model=SlotResponse)
 def slot_update(
     slot_id: UUID,
@@ -315,6 +334,34 @@ def maintenance_create(
         "start_at": block.start_at,
         "end_at": block.end_at,
     }
+
+
+@router.get("/owner/courts/{court_id}/maintenance")
+def owner_maintenance(
+    court_id: UUID,
+    session: Database,
+    owner: Owner,
+    day: Annotated[date | None, Query(alias="date")] = None,
+) -> list[dict[str, Any]]:
+    lock_court(session, court_id, owner=owner)
+    query = select(MaintenanceBlock).where(MaintenanceBlock.court_id == court_id)
+    if day is not None:
+        lower = datetime.combine(day, time.min, LOCAL_TZ)
+        upper = lower + timedelta(days=1)
+        query = query.where(
+            MaintenanceBlock.start_at < upper, MaintenanceBlock.end_at > lower
+        )
+    return [
+        {
+            "id": block.id,
+            "court_id": block.court_id,
+            "start_at": block.start_at,
+            "end_at": block.end_at,
+        }
+        for block in session.scalars(
+            query.order_by(MaintenanceBlock.start_at, MaintenanceBlock.id)
+        )
+    ]
 
 
 @router.delete("/owner/maintenance/{block_id}", status_code=204)

@@ -9,6 +9,7 @@ from app.api.bookings import router as bookings_router
 from app.api.courts import router as courts_router
 from app.api.health import router as health_router
 from app.api.identity import router as identity_router
+from app.api.rooms import router as rooms_router
 from app.core.config import get_cors_origins
 from app.core.settings import get_settings
 from app.db.session import get_engine
@@ -25,7 +26,7 @@ app = FastAPI(
     lifespan=lifespan,
     title="CourtMate API",
     version="0.1.0",
-    description="Development bootstrap for T05 Nexora's sports court platform.",
+    description="Draft court scheduling, atomic bookings and Open Play backend.",
 )
 app.add_middleware(
     CORSMiddleware,
@@ -38,6 +39,7 @@ app.include_router(health_router)
 app.include_router(identity_router)
 app.include_router(courts_router)
 app.include_router(bookings_router)
+app.include_router(rooms_router)
 
 
 @app.exception_handler(IntegrityError)

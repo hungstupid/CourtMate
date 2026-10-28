@@ -53,6 +53,8 @@ def test_business_upgrade_from_empty_or_populated_identity(
                 "bookings",
                 "booking_slots",
                 "slot_claims",
+                "rooms",
+                "room_members",
             } <= tables
             if populated_identity:
                 assert connection.execute(
