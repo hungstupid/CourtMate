@@ -45,3 +45,5 @@ footer { margin-top: 60px; font-size: 12px; color: #65746d; display: flex; gap: 
   .intro { margin-top: 60px; }
   .connection { padding: 20px; }
 }
+nav { max-width: 850px; margin: 1rem auto; padding: 0 1.5rem; }
+nav a { color: inherit; text-underline-offset: 0.2em; }

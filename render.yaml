@@ -5,11 +5,11 @@ services:
     plan: free
     region: singapore
     repo: https://github.com/hungstupid/CourtMate
-    branch: main
+    branch: chore/project-bootstrap
     rootDir: src/backend
     buildCommand: pip install uv==0.13.5 && uv sync --locked --no-dev
     startCommand: uv run --no-sync python -m app.scripts.start
-    healthCheckPath: /health
+    healthCheckPath: /ready
     autoDeployTrigger: checksPass
     envVars:
       - key: PYTHON_VERSION

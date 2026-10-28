@@ -1,26 +1,13 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import type { FormEvent } from 'react'
-import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut } from '@firebase/auth'
-import type { User } from '@firebase/auth'
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from '@firebase/auth'
 import { firebaseAuth } from '../lib/firebase'
-import { API_BASE_URL } from '../lib/api'
-
-type Identity = { id: string; firebase_uid: string; role: 'player' | 'owner' }
+import { useSession } from '../lib/session-context'
 
 export function IdentitySmoke() {
-  const [user, setUser] = useState<User | null>(null)
-  const [identity, setIdentity] = useState<Identity | null>(null)
+  const { status, user, identity, message: sessionMessage, refresh, logOut } = useSession()
   const [message, setMessage] = useState('')
   const [busy, setBusy] = useState(false)
-
-  useEffect(() => {
-    if (!firebaseAuth) return
-    return onAuthStateChanged(firebaseAuth, (nextUser) => {
-      setUser(nextUser)
-      setIdentity(null)
-      setMessage('')
-    })
-  }, [])
 
   async function authenticate(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -44,43 +31,14 @@ export function IdentitySmoke() {
     }
   }
 
-  async function verifyIdentity() {
-    if (!user) return
-    setBusy(true)
-    setMessage('')
-    try {
-      const token = await user.getIdToken()
-      const response = await fetch(`${API_BASE_URL}/api/me`, {
-        headers: { Authorization: `Bearer ${token}` },
-        signal: AbortSignal.timeout(75000),
-      })
-      if (!response.ok) throw new Error(`API verification failed (HTTP ${response.status}). Retry after the backend wakes up.`)
-      const result = await response.json() as Identity
-      setIdentity(result)
-    } catch (error) {
-      setMessage(error instanceof Error ? error.message : 'API connection failed.')
-    } finally {
-      setBusy(false)
-    }
-  }
-
-  async function logOut() {
-    if (!firebaseAuth) return
-    try {
-      await signOut(firebaseAuth)
-    } catch {
-      setMessage('Sign-out failed. Please try again.')
-    }
-  }
-
   return (
     <section className="connection identity" aria-labelledby="identity-title">
       <h2 id="identity-title">Identity connection</h2>
-      {!firebaseAuth ? <p>Firebase configuration is missing. See the frontend setup guide.</p> : user ? (
+      {!firebaseAuth ? <p>Firebase configuration is missing. See the frontend setup guide.</p> : status === 'loading' ? <p role="status">Loading session…</p> : user ? (
         <>
           <p>Signed in with Firebase.</p>
-          <button disabled={busy} onClick={verifyIdentity}>Verify with backend</button>{' '}
-          <button className="secondary" onClick={logOut}>Sign out</button>
+          <button disabled={busy} onClick={refresh}>Verify with backend</button>{' '}
+          <button className="secondary" onClick={() => { setMessage(''); void logOut() }}>Sign out</button>
           {identity && <p role="status">Backend verified · Role: <strong>{identity.role === 'owner' ? 'Court Owner' : 'Player'}</strong></p>}
         </>
       ) : (
@@ -98,6 +56,8 @@ export function IdentitySmoke() {
       )}
       {busy && <p role="status">Working…</p>}
       {message && <p role="alert">{message}</p>}
+      {sessionMessage && <p role="alert">{sessionMessage}</p>}
+      {status === 'error' && !user && <button onClick={refresh}>Retry session</button>}
     </section>
   )
 }

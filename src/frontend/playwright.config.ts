@@ -2,6 +2,8 @@ import { defineConfig } from '@playwright/test'
 
 export default defineConfig({
   testDir: './e2e',
+  // API failure injection is a local regression suite, separate from real cloud acceptance.
+  testIgnore: process.env.E2E_BASE_URL ? '**/client.spec.ts' : undefined,
   timeout: 120000,
   retries: process.env.CI ? 1 : 0,
   workers: 1,

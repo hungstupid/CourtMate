@@ -17,11 +17,11 @@ from app.scripts.reset_test import ensure_test_database
 def database_engine():
     settings = get_settings()
     if not settings.test_database_url.get_secret_value():
-        pytest.skip(
-            "Integration requires the isolated TEST_DATABASE_URL; see make setup."
-        )
+        pytest.fail("Integration requires TEST_DATABASE_URL; run make setup and db-up.")
     url = ensure_test_database()
     old = os.environ.get("MIGRATION_DATABASE_URL")
+    old_runtime = os.environ.get("DATABASE_URL")
+    os.environ["DATABASE_URL"] = url
     os.environ["MIGRATION_DATABASE_URL"] = url
     get_settings.cache_clear()
     try:
@@ -32,6 +32,10 @@ def database_engine():
             os.environ.pop("MIGRATION_DATABASE_URL", None)
         else:
             os.environ["MIGRATION_DATABASE_URL"] = old
+        if old_runtime is None:
+            os.environ.pop("DATABASE_URL", None)
+        else:
+            os.environ["DATABASE_URL"] = old_runtime
         get_settings.cache_clear()
     engine = build_engine(url)
     yield engine

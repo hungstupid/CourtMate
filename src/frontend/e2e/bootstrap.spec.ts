@@ -22,8 +22,22 @@ test('Firebase account and backend Player role', async ({ page }) => {
   await expect(page.getByText('Signed in with Firebase.')).toBeVisible()
   await page.getByRole('button', { name: 'Verify with backend' }).click()
   await expect(page.getByRole('status').filter({ hasText: 'Backend verified' })).toContainText(process.env.E2E_ROLE || 'Player')
+  await page.getByRole('link', { name: 'Account', exact: true }).click()
+  await expect(page.getByRole('heading', { name: 'Account foundation' })).toBeVisible()
+  await page.reload()
+  await expect(page.getByRole('heading', { name: 'Account foundation' })).toBeVisible()
+  await page.getByRole('link', { name: 'Court Owner', exact: true }).click()
+  if (process.env.E2E_ROLE === 'Court Owner') {
+    await expect(page.getByRole('heading', { name: 'Court Owner foundation' })).toBeVisible()
+  } else {
+    await expect(page.getByRole('alert')).toHaveText('Court Owner access is required.')
+    await page.getByRole('link', { name: 'Account', exact: true }).click()
+  }
   await page.getByRole('button', { name: 'Sign out' }).click()
   await expect(page.getByRole('button', { name: 'Sign in', exact: true })).toBeVisible()
+  await page.reload()
+  await expect(page.getByRole('button', { name: 'Sign in', exact: true })).toBeVisible()
+  await expect(page.getByRole('heading', { name: /foundation/ })).toHaveCount(0)
 })
 
 test('development page accessibility @a11y', async ({ page }) => {

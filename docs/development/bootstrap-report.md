@@ -1,6 +1,6 @@
 # CourtMate bootstrap — kết quả nghiệm thu
 
-Ngày thực hiện ban đầu: **24/10/2026**, múi giờ Asia/Ho_Chi_Minh. Mục 1–8 dưới đây lưu bằng chứng lịch sử của bootstrap React/Vite + FastAPI. Xem phần cập nhật ngày 27/10 ở cuối file cho trạng thái database/Auth/CI/deployment hiện tại; không dùng kết quả lịch sử để suy ra các tích hợp mới đã READY.
+Ngày thực hiện ban đầu: **24/10/2026**, múi giờ Asia/Ho_Chi_Minh. Mục 1–8 dưới đây lưu bằng chứng lịch sử của bootstrap React/Vite + FastAPI. Xem các phần cập nhật ngày 27/10 và audit ngày 28/10 ở cuối file cho trạng thái database/Auth/CI/deployment hiện tại; không dùng kết quả lịch sử để suy ra các tích hợp mới đã READY.
 
 Quy ước: **PASS** = đã chạy kiểm tra thành công; **FIXED** = phát hiện và sửa; **BLOCKED** = chưa hoàn thành; **SKIPPED** = không cần trong phạm vi này. Không còn blocker cho bootstrap.
 
@@ -270,7 +270,7 @@ Phạm vi mới được chủ repo cho phép: Docker PostgreSQL, SQLAlchemy/psy
 - Hướng dẫn vận hành hiện tại: [setup.md](setup.md). Các thông tin deploy/CI/commit sau push sẽ được bổ sung theo kết quả thực tế; không ghi READY trước khi kiểm chứng các URL và luồng cloud.
 
 
-## Nghiệm thu cuối 27/10/2026 — READY cho nền tảng development/demo
+## Nghiệm thu 27/10/2026 — bằng chứng lịch sử (được audit lại ngày 28/10)
 
 Các điều kiện nghiệm thu hạ tầng đã đạt. READY ở đây dành cho nền tảng, không phải sản phẩm nghiệp vụ, các AC booking/room hay NFR hiệu năng.
 
@@ -403,3 +403,19 @@ A	src/frontend/vercel.json
 ```
 
 Tổng đợt mở rộng: 52 files (A: 36, M: 16).
+
+
+## Audit và sửa nền tảng ngày 28/10/2026
+
+Trạng thái trước push nghiệm thu: **PARTIAL — code/local checks đã đạt; còn chờ CI và deployment tự động của commit mới**. Phần này thay thế các kết luận về trạng thái hiện tại ở lần nghiệm thu 27/10; giữ nguyên bằng chứng lịch sử, không coi lần deploy thủ công cũ là chứng minh luồng auto-deploy mới.
+
+- Bắt đầu từ HEAD thực tế `7f6c622709ea3a01b9ea85c545f78b3cdabb077e`, working tree sạch, đúng nhánh `chore/project-bootstrap`. Fetch thấy origin/main `49a6961d6add28a3173b65fa2481801f75c4959b`; chỉ đọc, không merge/reset/rebase. Đọc CONTRIBUTING và SRS trực tiếp từ Google Docs; không sửa tài liệu PA/SRS/Figma.
+- Tái hiện không phá dữ liệu: URL SQLite/URL sai vẫn qua validate_runtime, cùng đích localhost `runtime_test` đổi driver/credentials vẫn lọt guard, preflight PATCH trả 400. Review xác nhận readiness chỉ kiểm tra revision khác rỗng, credential chỉ kiểm tra không rỗng và Firebase UserNotFoundError rơi vào 503. Các regression mới kiểm tra trực tiếp những trường hợp lỗi này.
+- Guard dùng chung reset/restore so sánh đích PostgreSQL chuẩn hóa (host, port, database), bỏ qua driver/credential/query thông thường; bảo vệ cả runtime/migration, từ chối production/cloud/đích query override và hỗ trợ loopback/default port. Guard restore còn kiểm tra port Compose trước pg_restore để tránh đổi đích ngầm. Tests xác minh entrypoint từ chối trước khi mở kết nối. Thử reset/restore thật chỉ dùng `courtmate_test` local riêng; không reset/downgrade/restore demo.
+- CORS cho GET/HEAD/POST/PUT/PATCH/DELETE/OPTIONS với origin cụ thể và Authorization/Content-Type. Validation phát hiện URL không phải PostgreSQL, sai port/đích migration, migration pooled, production emulator/demo, credential JSON/cấu trúc/private key sai. Không gọi cloud khi unit-test validation, không in secret. Firebase deleted/disabled/expired/revoked/invalid → 401; lỗi certificate/provider thật → 503. Roles vẫn lấy từ PostgreSQL.
+- Readiness so sánh tập revision hiện tại với migration heads trong source; thiếu bảng/revision, cũ, unknown hoặc mất kết nối → 503. Release vẫn giữ advisory lock và fail khi Alembic lỗi. `/health` là liveness; Render dùng `/ready`. Bổ sung commit header/API và frontend `/version.json` để kiểm tra code thực phục vụ.
+- Frontend có session loading/expiry/retry/sign-out và API client chung; routes public/account/Owner, SPA reload/deep link. React Router `8.5.1` là dependency duy nhất bổ sung vì nhu cầu routing cụ thể; không đổi stack/upgrade hàng loạt hay thêm nghiệp vụ. Foundation routes được ghi rõ là foundation, không tính hoàn thành F01 hay tính năng PA5.
+- Cloud đã đổi thực tế: Render service hiện có trỏ setup branch, checksPass, probe /ready; Vercel production branch setup, hai Deployment Checks bắt buộc frontend-push/integration-push trước alias. Git integration là cơ chế duy nhất mỗi host; không thêm deploy job/secret CI. Native check gate chỉ hỗ trợ deployment-alias trên project hiện tại, nên Vercel có thể build trước CI nhưng public release phải đợi checks. Không đổi gói/tạo service, không chuyển lại main.
+- Local: npm ci/lint/typecheck/build và audit production 0 vulnerabilities; uv sync --locked, Ruff check/format và 83 pytest pass, không skip; 6 Playwright/Chrome pass (3 real integration + 3 local failure regression), axe trên trang foundation. Migration lặp, seed lặp, export/restore/reset local riêng đã chạy. Kết quả không chứng minh AC nghiệp vụ hoặc NFR sản phẩm.
+
+Chi tiết vận hành, IDs/URLs tài nguyên, cấu hình an toàn máy mới, chuyển main trong tương lai và rollback tương thích migration: [setup.md](setup.md). Kết quả clean clone/CI/deploy/cloud của commit nghiệm thu sẽ được ghi tiếp sau khi kiểm chứng thực tế.

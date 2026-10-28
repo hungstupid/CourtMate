@@ -7,6 +7,7 @@ from pathlib import Path
 
 from sqlalchemy.engine import make_url
 
+from app.core.database_urls import local_host
 from app.core.settings import get_settings
 from app.scripts.reset_test import ensure_test_database
 
@@ -39,7 +40,19 @@ def main() -> None:
         PGSSLMODE=str(url.query.get("sslmode", "prefer")),
     )
     args.file.parent.mkdir(parents=True, exist_ok=True)
-    if url.host in {"localhost", "127.0.0.1", "db"}:
+    if local_host(url.host or ""):
+        # Docker exec targets this Compose server. Never silently redirect a
+        # guarded destination on another port into the Compose runtime server.
+        from dotenv import dotenv_values
+
+        compose_env = dotenv_values(REPO_ROOT / ".env")
+        compose_port = int(
+            os.getenv("POSTGRES_PORT") or compose_env.get("POSTGRES_PORT") or 5433
+        )
+        if (url.port or 5432) != compose_port:
+            raise SystemExit(
+                "Local backup/restore URL must target this Compose server port."
+            )
         env.update(PGHOST="127.0.0.1", PGPORT="5432")
     command = ["docker", "compose", "exec", "-T"]
     for key in ("PGHOST", "PGPORT", "PGUSER", "PGPASSWORD", "PGDATABASE", "PGSSLMODE"):

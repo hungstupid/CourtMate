@@ -1,3 +1,4 @@
+import pytest
 from fastapi.testclient import TestClient
 
 from app.main import app
@@ -38,3 +39,19 @@ def test_openapi_documents_health() -> None:
     assert response.status_code == 200
     assert "/health" in response.json()["paths"]
     assert client.get("/docs").status_code == 200
+
+
+@pytest.mark.parametrize("method", ["GET", "POST", "PUT", "PATCH", "DELETE", "HEAD"])
+def test_mutation_preflights(method):
+    headers = {
+        "Origin": "http://localhost:5173",
+        "Access-Control-Request-Method": method,
+        "Access-Control-Request-Headers": "authorization,content-type",
+    }
+    response = client.options("/api/me", headers=headers)
+    assert response.status_code == 200
+    assert response.headers["access-control-allow-origin"] == headers["Origin"]
+    headers["Origin"] = "https://unlisted.example"
+    response = client.options("/api/me", headers=headers)
+    assert response.status_code == 400
+    assert "access-control-allow-origin" not in response.headers

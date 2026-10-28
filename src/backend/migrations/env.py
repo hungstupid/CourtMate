@@ -1,6 +1,7 @@
 from alembic import context
 from sqlalchemy import create_engine, pool
 
+from app.core.database_urls import migration_url
 from app.core.settings import get_settings
 from app.db.models import Base
 from app.db.session import connection_options, normalize_url
@@ -10,14 +11,10 @@ target_metadata = Base.metadata
 
 def run_migrations() -> None:
     settings = get_settings()
-    value = (
-        settings.migration_database_url.get_secret_value()
-        or settings.database_url.get_secret_value()
+    value = migration_url(
+        settings.database_url.get_secret_value(),
+        settings.migration_database_url.get_secret_value(),
     )
-    if not value:
-        raise RuntimeError("MIGRATION_DATABASE_URL or DATABASE_URL is required.")
-    if "-pooler." in value:
-        raise RuntimeError("Use a direct PostgreSQL URL for Alembic migrations.")
     if context.is_offline_mode():
         context.configure(
             url=value, target_metadata=target_metadata, literal_binds=True

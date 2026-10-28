@@ -11,6 +11,7 @@ concurrency:
   cancel-in-progress: true
 jobs:
   frontend:
+    name: frontend-${{ github.event_name }}
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -27,6 +28,7 @@ jobs:
       - run: npm run typecheck
       - run: npm run build
   integration:
+    name: integration-${{ github.event_name }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
     services:

@@ -4,7 +4,12 @@ Stack: React/TypeScript/Vite, FastAPI/Python 3.12/uv, PostgreSQL 17, Firebase Au
 
 ## Clean local setup
 
-Install Node 24/npm, uv, Docker Desktop/Compose, and Firebase CLI 15.34.1 (`npm install -g firebase-tools@15.34.1`). Auth-only emulation does not require Java. Start Docker Desktop, then from the repository root:
+Install Node 24/npm, uv, Docker Desktop/Compose, and Firebase CLI 15.34.1 (`npm install -g firebase-tools@15.34.1`). Auth-only emulation does not require Java. Start Docker Desktop, then clone the setup branch and run from the repository root:
+
+```bash
+git clone --branch chore/project-bootstrap --single-branch https://github.com/hungstupid/CourtMate.git
+cd CourtMate
+```
 
 ```bash
 make setup
@@ -47,7 +52,7 @@ Stop each dev server with Ctrl+C in its own terminal. `make db-stop` stops only 
 
 Examples contain names and placeholders only. Local credentials and account fixtures live in ignored `.env`/`.secrets` files with restricted permissions. Backend keys never go into VITE variables. The Firebase Web API key is public SDK configuration, not a Firebase Admin credential. Firebase CLI login is operator access, not API runtime authentication. The runtime service account has read-only Firebase Auth access for ID-token revocation/disabled-account checks.
 
-Neon connections enforce certificate/hostname verification through psycopg and certifi; local Docker uses a loopback connection. Runtime pool is capped at 3 connections plus 2 overflow, with pre-ping and UTC. Migrations use a direct connection and separate transaction. Do not point TEST_DATABASE_URL at Neon/demo or put passwords in command arguments/logs.
+Neon connections enforce certificate/hostname verification through psycopg and certifi; local Docker uses a loopback connection. Runtime pool is capped at 3 connections plus 2 overflow, with pre-ping and UTC. Migrations use a direct connection to the same database as runtime (Neon direct/pooler hosts normalize to the same endpoint) and a separate transaction. Startup validates PostgreSQL URL structure, required production configuration and matching Firebase service-account structure/private key offline. Configuration errors fail startup with sanitized messages; network/provider outages are separate runtime 503 conditions. Local/test emulation needs no cloud credential. Do not point TEST_DATABASE_URL at Neon/demo or put passwords in command arguments/logs.
 
 ## Migration and role workflow
 
@@ -86,11 +91,18 @@ make export-demo
 make restore-test
 ```
 
-Use `BROWSER_CHANNEL=chrome make e2e` when Google Chrome is already installed. Playwright starts/stops its frontend server; the backend and emulator remain explicit prerequisites. Trace/video/screenshots are disabled for authenticated tests to avoid recording credentials/tokens. Database tests roll back per test. `make reset-test` only resets the explicitly configured local `_test` database; running tests migrates it again. CI fails if the real integration checks fail; no cloud secret is required.
+Use `BROWSER_CHANNEL=chrome make e2e` when Google Chrome is already installed. Playwright starts/stops its frontend server; the backend and emulator remain explicit prerequisites. Trace/video/screenshots are disabled for authenticated tests to avoid recording credentials/tokens. Database tests roll back per test. `make reset-test` and restore share the same destination guard: PostgreSQL, loopback host, database suffix `_test`, non-production environment, and a destination different from both runtime and migration databases. Driver spelling, user/password and ordinary query options do not make a database distinct. Default port 5432, localhost, IPv4 loopback and IPv6 loopback normalize together; DNS aliases such as `db` are not supported reset targets. Query options overriding host/port/database/service are rejected. Local backup/restore must match the port of this Compose server, preventing pg_restore from silently redirecting a different port. Running tests migrates the isolated database again. Missing database/emulator prerequisites fail integration tests instead of silently skipping them. CI fails if the real integration checks fail; no cloud secret is required.
 
 Export/restore uses pg_dump/pg_restore inside the CourtMate Docker container. Backups are ignored `.secrets/demo.dump` files; restore is restricted to localhost `_test`. Do not run restore against demo. For Neon export, use its direct URL through ignored configuration; keep the container/client PostgreSQL major version compatible. Cloud data is never reset by ordinary `make test`.
 
-The 20-request/5-worker load probe measures only liveness. Playwright/axe currently exercise the development/identity smoke UI. Add real page accessibility tests, booking/room race tests, boundary tests and repeatable load scenarios when their PA5 implementations exist. Current evidence does not establish business ACs or performance NFRs.
+The 20-request/5-worker load probe measures only liveness. Playwright/axe exercise the development/identity foundation UI. Local `client.spec.ts` deliberately injects API failures for HTTP error, timeout/cancellation and session regression tests; it is excluded from real cloud acceptance, which uses existing Firebase accounts and real API/PostgreSQL requests. Add real page accessibility tests, booking/room race tests, boundary tests and repeatable load scenarios when their PA5 implementations exist. Current evidence does not establish business ACs or performance NFRs.
+
+
+## Frontend foundations (not business features)
+
+`/` is public, `/account` requires a verified session, and `/owner` additionally requires the server-returned Owner role. Direct navigation and reload use Vercel's SPA rewrite; unknown paths show a not-found page. These are foundation routes, not completed account/court/booking screens. React Router is used only in declarative mode within the existing Vite app. Existing visual styles and accessible native buttons/fields are retained; no UI framework or replacement Figma design was added.
+
+`SessionProvider` waits for Firebase initialization and `/api/me` before showing protected content, cancels stale requests, handles sign-out/401 expiry, and offers retry for provider/network failure. `apiRequest` attaches the current Firebase ID token, JSON content type, cancellation and a bounded timeout (including token retrieval). It exposes status-aware errors for 401/403/409/422/5xx without echoing provider payloads. It never automatically replays mutations. Pass a relative API path and an AbortSignal; use `authenticated: false` only for public endpoints. Frontend guards are navigation helpers: every protected backend endpoint must still apply the appropriate role/ownership dependencies. A future expired/disabled/deleted identity gets 401; an actual Firebase provider outage gets 503.
 
 ## Cloud resources and deployment lifecycle
 
@@ -105,7 +117,13 @@ Verified public frontend: https://courtmate-court-mate.vercel.app (also https://
 
 Quality workflow `.github/workflows/quality.yml` runs on PRs, `main` and the setup branch. It installs from lockfiles, checks the frontend and tests backend/migrations/Auth/browser integration against fresh CI-only services. Keep `.github/workflows/repo-check.yml` for document/secret-filename checks. Existing team PR/review rules remain in CONTRIBUTING.md.
 
-The intended production source is `main`; no agent merges it automatically. Setup can be deployed explicitly for acceptance before the PR merges. Vercel Git deployments for the setup branch are disabled in `src/frontend/vercel.json`, preventing a manual acceptance deploy plus a duplicate auto-deploy. `main` remains enabled. Render is configured to deploy main after CI checks pass, without an extra GitHub Actions deploy trigger.
+The current demo source on **both hosts is `chore/project-bootstrap`**, without merging main. Each host has exactly one normal deployment mechanism: its Git integration. There is no Actions deploy job, deploy hook, or CI provider credential. Render waits for all CI checks (`autoDeployTrigger: checksPass`). Vercel builds the production branch through Git and holds public domain assignment until the exact commit's `frontend-push` and `integration-push` checks succeed. It may build before CI finishes; release to the public domain is gated. These job names intentionally differ from PR jobs to avoid check-name collisions. A failed check cannot release the new frontend. Vercel Native Deployment Checks were accepted on the existing Hobby project; no paid option was enabled.
+
+`render.yaml` records the setup branch, root, commands and `/ready` probe. `src/frontend/vercel.json` permits only the setup branch and includes a SPA fallback for client routes. Vercel's provider-side production branch must also be `chore/project-bootstrap`; project settings remain root `src/frontend`, Node `24.x`, install `npm ci`, build `npm run build`, output `dist`. Render remains Python `3.12.15`, root `src/backend`, build `pip install uv==0.13.5 && uv sync --locked --no-dev`, start `uv run --no-sync python -m app.scripts.start`. Changing repository files alone does not apply provider settings.
+
+After a push, inspect the **push** quality run, provider deployment SHA/ID, then `/version.json` on the public frontend and `X-CourtMate-Commit` on API `/health`; all must match the intended SHA. `/health` is process liveness and preserves its original JSON. `/ready` queries PostgreSQL and compares the full set of Alembic current revisions with this code's migration heads; disconnected, empty, older or unknown revisions return 503. Render uses `/ready`, so a listening server with the wrong revision cannot pass deployment readiness.
+
+To switch to main **later, after human review/merge approval**: update `render.yaml` branch and the allowed branch in `src/frontend/vercel.json`; change the existing Render service branch to main while retaining checksPass and `/ready`; change Vercel Settings → Environments → Production → Branch Tracking to main and retain both push check gates. Do these as one coordinated reviewed change. Do not enable a second Actions deploy trigger. This task does not perform that future switch.
 
 Render Free lacks a pre-deploy command. `app.scripts.start` takes a PostgreSQL advisory lock, applies Alembic and then execs Uvicorn on 0.0.0.0:$PORT. Failed/overlapping migration prevents startup; it does not silently run an incompatible release. Future migrations must be backward-compatible with the previous live version. `render.yaml` documents the target settings and was validated by Render CLI; existing live service settings/secrets are applied through authenticated service configuration, not by assuming a Blueprint file self-deploys.
 

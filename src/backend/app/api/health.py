@@ -1,9 +1,10 @@
+import os
 from typing import Literal
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Response
 from pydantic import BaseModel
-from sqlalchemy import text
 
+from app.db.readiness import check_schema
 from app.db.session import get_engine
 
 router = APIRouter()
@@ -15,7 +16,10 @@ class HealthResponse(BaseModel):
 
 
 @router.get("/health", response_model=HealthResponse, tags=["health"])
-def health() -> HealthResponse:
+def health(response: Response) -> HealthResponse:
+    commit = os.getenv("RENDER_GIT_COMMIT")
+    if commit:
+        response.headers["X-CourtMate-Commit"] = commit
     return HealthResponse()
 
 
@@ -23,8 +27,7 @@ def health() -> HealthResponse:
 def ready() -> dict[str, str]:
     try:
         with get_engine().connect() as connection:
-            if not connection.scalar(text("SELECT version_num FROM alembic_version")):
-                raise RuntimeError("No migration has been applied.")
+            check_schema(connection)
         return {"status": "ready", "database": "ok"}
     except Exception as error:
         raise HTTPException(

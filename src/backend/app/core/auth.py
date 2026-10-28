@@ -57,9 +57,16 @@ def verified_identity(
         return auth.verify_id_token(
             authorization.credentials, app=firebase_app(), check_revoked=True
         )
-    except (ValueError, auth.InvalidIdTokenError, auth.UserDisabledError) as error:
+    except (
+        ValueError,
+        auth.InvalidIdTokenError,
+        auth.UserDisabledError,
+        auth.UserNotFoundError,
+    ) as error:
         raise HTTPException(
-            401, "Invalid, expired, revoked or disabled Firebase identity."
+            401,
+            "Invalid, expired, revoked, disabled or deleted Firebase identity.",
+            headers={"WWW-Authenticate": "Bearer"},
         ) from error
     except Exception as error:
         # Fail closed during a Firebase outage, without logging credentials or tokens.

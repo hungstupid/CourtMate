@@ -15,7 +15,9 @@ from app.db.models import User
 def emulator_token() -> tuple[str, str]:
     host = get_settings().firebase_auth_emulator_host
     if not host:
-        pytest.skip("Auth integration requires a running Firebase Auth Emulator.")
+        pytest.fail(
+            "Auth integration requires Firebase Auth Emulator; see make auth-emulator."
+        )
     response = httpx.post(
         f"http://{host}/identitytoolkit.googleapis.com/v1/accounts:signUp?key=demo-key",
         json={
