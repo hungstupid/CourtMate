@@ -1,0 +1,172 @@
+flowchart TD
+    %% ============================================================================
+    %% CourtMate PA3 — Section 6.1 Master Screen Flow Diagram
+    %% Author: Bui Pham Quang (24127519) | Reviewer: Nguyen Duc Hung (24127174)
+    %% Covers UC-01..UC-17, FR-001..FR-049, BR-01..BR-10, NFR-02/03/04/05
+    %% ============================================================================
+
+    subgraph J1["1. Account Registration & Authentication (UC-01, UC-02 | Visitor / Player / Court Owner)"]
+        S03["S03: Register Account\n(Role = Player)"]
+        S151["S151: Register Account\n(Role = Court Owner)"]
+        S05["S05: Player Registration\nSuccess"]
+        S152["S152: Court Owner\nRegistration Success"]
+        S02["S02: Player Sign In"]
+        S04["S04: Court Owner Sign In"]
+        S17_19["S17 / S18 / S19 / S49 / S77:\nAuth Failure, Expired Session,\nRole Tampering or Access Denied"]
+
+        S03 <-->|"Switch initial role choice\nbefore submit"| S151
+        S03 -->|"Submit valid email/password\n+ Player role"| S05
+        S151 -->|"Submit valid email/password\n+ Court Owner role"| S152
+        S03 & S151 -.->|"Duplicate email / invalid role\nor IdP error (retain non-sensitive input)"| S17_19
+        S05 -->|"Proceed to Sign In"| S02
+        S152 -->|"Proceed to Sign In"| S04
+        S02 & S04 -.->|"Wrong credentials / expired token\nor unauthorized role claim"| S17_19
+        S17_19 -->|"Retry Sign In / Recovery"| S02
+    end
+
+    subgraph J2["2. Player Court Search, Slot Preview & Consecutive-Slot Booking (UC-03, UC-04, UC-05 | Visitor / Player)"]
+        S01["S01: Court Search & Independent Filters\n(Direct name, scrollable prefix sport,\nfree-text address/area, optional start/end)"]
+        S149["S149: Invalid Time Bounds\n(end <= start or malformed;\npreserve other criteria)"]
+        S50_150["S50 / S150: Explicit Empty Results\n(Zero matching active courts;\nChange or Clear all / Clear time)"]
+        S191["S191 (S192–S194): Filtered Active Courts\n(Retains all criteria; every card has View slots)"]
+        D01["D01 / D04: Slot Preview Overlay\n(With bounds: eligible AVAILABLE slots in [start, end];\nWithout bounds: nearest upcoming slots)"]
+        D08_10["D08: Empty Preview | D09: Loading\nD10: Preview Load Error (Retry/Close)"]
+        S06["S06: Court Details\n(Info, base price, optional map S69/S95\nwithout compulsory GPS)"]
+        S127["S127: Published Daily Slots & Selection\n(Select 1 or strictly consecutive AVAILABLE\nslots, 60–240 min total, same court/date)"]
+        S16["S16: Incompatible Selection Blocked\n(BOOKED, BLOCKED, nonconsecutive,\nor > 240 min with textual reason)"]
+        S217["S217 / S133: Review Selected Slots & Total\n(Ordered slots, combined interval, per-slot\nregular/F09 quotes, summed price; not reserved)"]
+        S218["S218: One Confirmed Booking Created\n(Single Booking ID, CONFIRMED status,\nimmutable accepted_total_vnd snapshot)"]
+        S10_11["S10 / S75: Slot Conflict (409)\nS11 / S70 / S137 / S138: Quote/Offer Changed\nS239: Court Deactivated (Whole request rejected)"]
+
+        S01 -->|"Submit Search (valid criteria)"| S191
+        S01 -.->|"Invalid datetime / end <= start"| S149
+        S149 -->|"Edit time / Clear time\n(preserves name, sport, location)"| S01
+        S01 -.->|"No active court matches conjunction"| S50_150
+        S50_150 -->|"Clear time / Clear all / Edit filter"| S01
+        S191 -->|"View slots (with or without time filter)"| D01
+        D01 -.->|"Loading / No eligible slots / Error"| D08_10
+        D08_10 -->|"Close / Escape (restores S191 + filters)"| S191
+        D01 -->|"Close / Escape\n(restores S191 + filters)"| S191
+        S191 -->|"Open court details"| S06
+        S06 -->|"Back to search results\n(retains criteria)"| S191
+        S06 -->|"View published availability"| S127
+        D01 -->|"Choose eligible slot"| S127
+        S127 -.->|"Select nonconsecutive / BOOKED /\nBLOCKED / >240m"| S16
+        S16 -->|"Adjust / Clear selection"| S127
+        S127 -->|"Review selection (authenticated Player)"| S217
+        S217 -->|"Change selection / Back\n(no slot reserved)"| S127
+        S217 -->|"Confirm one booking\n(atomic server revalidation)"| S218
+        S217 -.->|"Any slot taken, price/F09 changed,\nor court inactive (0 slots reserved)"| S10_11
+        S10_11 -->|"Refresh availability / Fresh review"| S127
+    end
+
+    subgraph J3["3. Player My Bookings, Whole-Booking Cancellation & Profile (UC-06, UC-07, UC-15 | Player)"]
+        S12["S12 (S100/S116): My Bookings\n(Up to 10 newest bookings; combined\nmulti-slot booking shown as 1 row)"]
+        S131_132["S131: Exact 6h Boundary Eligible\nS15 / S132: Ineligible (< 6h before first slot\nstart or already CANCELLED; disabled reason)"]
+        S13["S13: Confirm Whole-Booking Cancellation\n(Explains >= 6h rule, full slot release,\nand linked Open Play Room closure)"]
+        S14["S14 (S134–S136): Booking CANCELLED\n(All constituent slots released, history kept,\nlinked room CLOSED, eligible F09 re-evaluated)"]
+        S46["S46 / S76: Basic Profile (Should)\n(Edit display name & contact prefs;\nrole & email read-only -> S47 Saved / S48 Error)"]
+
+        S218 -->|"Open My Bookings"| S12
+        S12 -.->|"Check 6-hour cutoff against\nearliest constituent slot start"| S131_132
+        S12 -->|"Cancel Booking (>= 6h remaining)"| S13
+        S13 -->|"Keep Booking / Cancel dialog\n(no change)"| S12
+        S13 -->|"Confirm Cancellation\n(server receipt time >= 6h)"| S14
+        S13 -.->|"Server receipt time < 6h (5h59m)\nor concurrent state change"| S131_132
+    end
+
+    subgraph J4["4. Open Play Room Discovery, Creation, Join/Leave & Manual Closure (UC-11..14, UC-17 | Visitor / Player / Organizer)"]
+        S20["S20 / S94: Search Public Rooms\n(Free-text court address/area filter,\nno compulsory GPS; Clear location)"]
+        S212["S212: Empty Room Search Result\n(Change or Clear location)"]
+        S21["S21: Public Room Details\n(Inherited court/full interval, organizer,\nmember count/C, OPEN/FULL/CLOSED, VND/person)"]
+        S22["S22: Joined Room / FULL Sample\n(Active membership added; C reached -> FULL;\nrecalculated per-person estimate)"]
+        S63_78["S63 / S78 / S79: Join/Leave Rejected\n(Last place taken, already member,\nroom FULL/CLOSED, or booking started)"]
+        S23["S23: Confirm Leave Room\n(Non-organizer before earliest slot start)"]
+        S24["S24: Left Room Result\n(Count decremented; FULL -> OPEN if eligible;\nsource booking unchanged)"]
+        S25["S25 (S145): Create Room from Own Booking\n(Future CONFIRMED unlinked booking;\ninteger capacity 2 <= C <= 2 * max_players)"]
+        S27_29["S27 / S29: Invalid Capacity or\nBooking Already Linked/Closed"]
+        S26["S26 / S155 / S175: Organizer Room View\n(OPEN 3/4 or FULL 4/4 with current members;\nClose Room action visible to organizer only)"]
+        S153["S153 / S176: Confirm Manual Room Closure\n(Explains irreversible CLOSED, retained roster,\nand unchanged CONFIRMED court booking)"]
+        S154["S154 / S177: Manually CLOSED Room\n(3/4 or 4/4 history kept; Join/Leave disabled;\nno second room allowed)"]
+        S186["S186 / S187: Source Booking Still CONFIRMED\n(Same slots, interval and accepted total)"]
+
+        S20 -.->|"No matching public room"| S212
+        S212 -->|"Clear location / Edit"| S20
+        S20 -->|"View Room"| S21
+        S21 -->|"Back to room list\n(retains location query)"| S20
+        S21 -->|"Join Room (authenticated Player)"| S22
+        S21 -.->|"Concurrent full / duplicate / closed"| S63_78
+        S22 -->|"Leave Room (non-organizer)"| S23
+        S23 -->|"Stay in Room / Cancel"| S22
+        S23 -->|"Confirm Leave"| S24
+        S12 & S20 -->|"Create Open Play Room"| S25
+        S25 -.->|"C < 2 or C > 2*max_players\nor booking already linked"| S27_29
+        S27_29 -->|"Fix capacity / Back"| S25
+        S25 -->|"Create Room (valid C)"| S26
+        S26 -->|"Close Room (Organizer of OPEN/FULL)"| S153
+        S153 -->|"Keep Room Open / Cancel"| S26
+        S153 -->|"Confirm Close Room"| S154
+        S154 -->|"View linked booking"| S186
+    end
+
+    subgraph J5["5. Court Owner Listings, Daily Calendar, Batch Slots, Maintenance & Bookings (UC-08, UC-09, UC-10 | Court Owner)"]
+        S30["S30: Owned Courts & Quick Actions"]
+        S31_32["S31: Create Court | S32: Edit Court\n(Positive VND base price, 2 <= max_players <= 30)"]
+        S41_129["S41 / S129: Invalid Court Input or\n2*max_players < Active Room Capacity"]
+        S33["S33 -> S219: Confirm Court Deactivation\n(Stops new bookings; existing bookings intact)"]
+        S34["S34 (S221): Daily Court Calendar\n(Scoped to 1 owned court & date; scrollable\nAVAILABLE, BOOKED, BLOCKED, unpublished)"]
+        S201["S201: Configure Multiple Dated Slots\n(Interval, 60–240m duration on 30m grid,\npositive whole-VND quote)"]
+        S202["S202: Preview & Edit Draft Slot Rows\n(Scrollable draft list; no 2-slot cap;\nnot published until explicit Confirm)"]
+        S206["S206 / S204: Edit Draft or Single AVAILABLE Slot\n(S210: Operating Hours)"]
+        S203["S203: Published Slot Calendar Updated"]
+        S157_158["S157 / S158: Confirmed Booking Lock\n(Rejects edit/hours/batch overlapping\nany CONFIRMED single/multi-slot booking)"]
+        S35["S35: Configure Maintenance Interval"]
+        S208["S208: Preview Maintenance Impact"]
+        S209["S209: Maintenance Applied (BLOCKED)"]
+        S36["S36: Maintenance Rejected\n(Overlaps CONFIRMED booking)"]
+        S38_39["S38 -> S39: Owned-Court Bookings & Details\n(Discloses only Player email + display name;\nS40 rejects cross-Owner access)"]
+
+        S04 -->|"Owner Sign In"| S30
+        S30 -->|"Create / Edit Owned Court"| S31_32
+        S31_32 -.->|"Invalid price/capacity or room conflict"| S41_129
+        S41_129 -->|"Correct input"| S31_32
+        S30 -->|"Deactivate Court"| S33
+        S30 -->|"Open Daily Schedule"| S34
+        S34 -->|"Create batch slots"| S201
+        S201 -->|"Generate draft preview"| S202
+        S202 -->|"Edit row"| S206
+        S206 -->|"Save draft row"| S202
+        S201 & S202 -->|"Back / Cancel (publishes nothing)"| S34
+        S202 -->|"Confirm Publish (all rows valid)"| S203
+        S202 & S206 -.->|"Overlap or touches CONFIRMED booking"| S157_158
+        S34 -->|"Add maintenance"| S35
+        S35 -->|"Preview impact"| S208
+        S208 -->|"Confirm maintenance"| S209
+        S208 -.->|"Intersects CONFIRMED booking"| S36
+        S30 -->|"View Owned Bookings"| S38_39
+    end
+
+    subgraph J6["6. Court Owner Slot-Specific Manual & Automatic Offers (UC-16 Should | Court Owner)"]
+        S42["S42 / S258: Owned Slot-Specific Offers\n(R04: Clock/Boundary Review Fixtures)"]
+        S43["S43 / S44 / S159: Manual Offer Creation\n(Requires 0 < delta <= 24h; S44 offers switch\nto Automatic when > 24h)"]
+        S241["S241 / S249 / S251: Configure Automatic Offer\n(Whole-slot VND < regular; lead time 0 < h <= 24h,\nfractions & h=24 allowed; shows start - h)"]
+        S244_257["S244: Invalid h (<=0, >24, nonnumeric) or Quote\nS257: Duplicate SCHEDULED/ACTIVE Rejected"]
+        S242["S242 / S254: Offer SCHEDULED\n(Waiting for 0 < delta <= h window)"]
+        S245["S245 / S255 -> S246 / S256: Confirm Cancel\nPending Schedule (Terminal CANCELLED)"]
+        S243["S243 / S250: Offer ACTIVE\n(0 < delta <= h and court/slot/price eligible;\napplies only to this slot)"]
+        S247_248["S247: Reached Window but Withheld (Slot Booked/Blocked)\nS248: Slot Start Reached (Terminal EXPIRED)"]
+        S252["S252 / S220 -> S253: Confirm Deactivate ACTIVE Offer\n(Terminal DEACTIVATED; prior booking totals intact)"]
+
+        S34 & S30 -->|"Manage Offers (F09 Should)"| S42
+        S42 -->|"Manual mode"| S43
+        S42 -->|"Automatic mode"| S241
+        S241 -.->|"Invalid h/price or duplicate config"| S244_257
+        S244_257 -->|"Edit input"| S241
+        S241 -->|"Save Schedule (outside window)"| S242
+        S241 -->|"Save Schedule (already in 0 < delta <= h)"| S243
+        S242 -->|"Cancel Schedule"| S245
+        S242 -->|"Threshold start - h reached & eligible"| S243
+        S242 -.->|"Window reached while slot unavailable\nor slot start arrived"| S247_248
+        S243 -->|"Deactivate Offer"| S252
+    end
+

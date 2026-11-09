@@ -1,0 +1,190 @@
+<mxfile host="app.diagrams.net" modified="2026-11-09T22:30:00.000Z" agent="CourtMate-PA3" version="24.0.0" type="device">
+  <diagram id="courtmate-pa3-screen-flow" name="PA3 Section 6.1 Master Screen Flow">
+    <mxGraphModel dx="1800" dy="1200" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2200" pageHeight="2620" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <!-- Panel 1: Account & Auth -->
+        <mxCell id="p1" value="1. Account Registration, Authentication &amp; Basic Profile (UC-01, UC-02, UC-15 Should)" style="swimlane;whiteSpace=wrap;html=1;fillColor=#E4EEE6;strokeColor=#C6D6CA;fontStyle=1;fontSize=14;startSize=36;" vertex="1" parent="1">
+          <mxGeometry x="30" y="40" width="2140" height="260" as="geometry" />
+        </mxCell>
+        <mxCell id="S03" value="&lt;b&gt;S03 / S151&lt;/b&gt;&lt;br&gt;Register Account&lt;br&gt;(Select 1 initial role: Player or Court Owner)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EEF4EE;strokeColor=#2B5040;" vertex="1" parent="p1">
+          <mxGeometry x="30" y="70" width="290" height="95" as="geometry" />
+        </mxCell>
+        <mxCell id="S05" value="&lt;b&gt;S05 / S152&lt;/b&gt;&lt;br&gt;Registration Success&lt;br&gt;(1 role stored on backend; no self-edit)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DCFCE7;strokeColor=#15803D;" vertex="1" parent="p1">
+          <mxGeometry x="420" y="70" width="290" height="95" as="geometry" />
+        </mxCell>
+        <mxCell id="S02" value="&lt;b&gt;S02 / S04&lt;/b&gt;&lt;br&gt;Sign In / Sign Out&lt;br&gt;(Firebase email/password; resolves stored role)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EEF4EE;strokeColor=#2B5040;" vertex="1" parent="p1">
+          <mxGeometry x="810" y="70" width="290" height="95" as="geometry" />
+        </mxCell>
+        <mxCell id="S17" value="&lt;b&gt;S17 / S18 / S19 / S49 / S77&lt;/b&gt;&lt;br&gt;Auth / Role / Session Error&lt;br&gt;(Wrong credentials, expired token, role tampering)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FEF2F2;strokeColor=#B91C1C;dashed=1;" vertex="1" parent="p1">
+          <mxGeometry x="1200" y="70" width="380" height="95" as="geometry" />
+        </mxCell>
+        <mxCell id="S46" value="&lt;b&gt;S46 / S76 -&amp;gt; S47 / S48&lt;/b&gt;&lt;br&gt;Basic Profile (UC-15 Should)&lt;br&gt;(Display name &amp;amp; contact prefs; role/email read-only)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EEF4EE;strokeColor=#2B5040;" vertex="1" parent="p1">
+          <mxGeometry x="1680" y="70" width="430" height="95" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" value="Submit valid" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="p1" source="S03" target="S05">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" value="Go to Sign In" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="p1" source="S05" target="S02">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" value="Invalid / Expired" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#B91C1C;dashed=1;" edge="1" parent="p1" source="S02" target="S17">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Panel 2: Player Search, Slot Preview & Booking -->
+        <mxCell id="p2" value="2. Player Court Search, Slot Preview &amp; Consecutive-Slot Booking (UC-03, UC-04, UC-05)" style="swimlane;whiteSpace=wrap;html=1;fillColor=#E4EEE6;strokeColor=#C6D6CA;fontStyle=1;fontSize=14;startSize=36;" vertex="1" parent="1">
+          <mxGeometry x="30" y="330" width="2140" height="420" as="geometry" />
+        </mxCell>
+        <mxCell id="S01" value="&lt;b&gt;S01&lt;/b&gt;&lt;br&gt;Court Search &amp;amp; Independent Filters&lt;br&gt;(Direct name, prefix sport dropdown, free-text address/area, optional start/end)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EEF4EE;strokeColor=#2B5040;" vertex="1" parent="p2">
+          <mxGeometry x="30" y="60" width="330" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="S149" value="&lt;b&gt;S149 / S50 / S150&lt;/b&gt;&lt;br&gt;Invalid Time Bounds or Empty Results&lt;br&gt;(Preserves other criteria; Clear time / Clear all)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FEF2F2;strokeColor=#B91C1C;dashed=1;" vertex="1" parent="p2">
+          <mxGeometry x="30" y="230" width="330" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="S191" value="&lt;b&gt;S191 (S192–S194)&lt;/b&gt;&lt;br&gt;Filtered Active Courts&lt;br&gt;(Retains criteria; every card has View slots)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EEF4EE;strokeColor=#2B5040;" vertex="1" parent="p2">
+          <mxGeometry x="460" y="60" width="330" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="S06" value="&lt;b&gt;S06 (S69 / S95)&lt;/b&gt;&lt;br&gt;Court Details &amp;amp; Optional Map&lt;br&gt;(GPS denial never blocks viewing)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EEF4EE;strokeColor=#2B5040;" vertex="1" parent="p2">
+          <mxGeometry x="460" y="230" width="330" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="D01" value="&lt;b&gt;D01 / D04&lt;/b&gt;&lt;br&gt;Slot Preview Overlay&lt;br&gt;(With bounds: AVAILABLE in [start, end]; Without: nearest upcoming; Close keeps S191)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EEF4EE;strokeColor=#2B5040;" vertex="1" parent="p2">
+          <mxGeometry x="890" y="60" width="350" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="D08" value="&lt;b&gt;D08 / D09 / D10&lt;/b&gt;&lt;br&gt;Preview Empty / Loading / Error" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFBEB;strokeColor=#B45309;" vertex="1" parent="p2">
+          <mxGeometry x="890" y="230" width="350" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="S127" value="&lt;b&gt;S127 (S16)&lt;/b&gt;&lt;br&gt;Select Consecutive Slots&lt;br&gt;(1 or adjacent AVAILABLE slots, 60–240m, same court/date)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EEF4EE;strokeColor=#2B5040;" vertex="1" parent="p2">
+          <mxGeometry x="1340" y="60" width="350" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="S217" value="&lt;b&gt;S217 (S133)&lt;/b&gt;&lt;br&gt;Review Selected Slots &amp;amp; Total&lt;br&gt;(Ordered slots, combined interval, per-slot quotes &amp;amp; sum)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EEF4EE;strokeColor=#2B5040;" vertex="1" parent="p2">
+          <mxGeometry x="1780" y="60" width="330" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="S218" value="&lt;b&gt;S218&lt;/b&gt;&lt;br&gt;One Booking CONFIRMED&lt;br&gt;(Single Booking ID, immutable accepted_total_vnd)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DCFCE7;strokeColor=#15803D;" vertex="1" parent="p2">
+          <mxGeometry x="1780" y="230" width="330" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="S10" value="&lt;b&gt;S10 / S11 / S137 / S138 / S239&lt;/b&gt;&lt;br&gt;Conflict (409) / Repricing / Inactive Court&lt;br&gt;(Whole request rejected; 0 slots booked)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FEF2F2;strokeColor=#B91C1C;dashed=1;" vertex="1" parent="p2">
+          <mxGeometry x="1340" y="230" width="350" height="100" as="geometry" />
+        </mxCell>
+
+        <!-- Panel 3: My Bookings & Cancellation -->
+        <mxCell id="p3" value="3. Player My Bookings &amp; Whole-Booking Cancellation (UC-06, UC-07)" style="swimlane;whiteSpace=wrap;html=1;fillColor=#E4EEE6;strokeColor=#C6D6CA;fontStyle=1;fontSize=14;startSize=36;" vertex="1" parent="1">
+          <mxGeometry x="30" y="780" width="2140" height="230" as="geometry" />
+        </mxCell>
+        <mxCell id="S12" value="&lt;b&gt;S12 (S100 / S116)&lt;/b&gt;&lt;br&gt;My Booking History (10 newest; multi-slot = 1 row)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EEF4EE;strokeColor=#2B5040;" vertex="1" parent="p3">
+          <mxGeometry x="30" y="70" width="430" height="105" as="geometry" />
+        </mxCell>
+        <mxCell id="S13" value="&lt;b&gt;S13 (S131 Exact 6h)&lt;/b&gt;&lt;br&gt;Confirm Whole-Booking Cancellation (&amp;gt;= 6h before first slot start)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFBEB;strokeColor=#B45309;" vertex="1" parent="p3">
+          <mxGeometry x="580" y="70" width="450" height="105" as="geometry" />
+        </mxCell>
+        <mxCell id="S14" value="&lt;b&gt;S14 (S134–S136)&lt;/b&gt;&lt;br&gt;Booking CANCELLED (All constituent slots released; linked room CLOSED)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DCFCE7;strokeColor=#15803D;" vertex="1" parent="p3">
+          <mxGeometry x="1150" y="70" width="440" height="105" as="geometry" />
+        </mxCell>
+        <mxCell id="S15" value="&lt;b&gt;S15 / S132&lt;/b&gt;&lt;br&gt;Cancellation Rejected (&amp;lt; 6h or ineligible; stays CONFIRMED)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FEF2F2;strokeColor=#B91C1C;dashed=1;" vertex="1" parent="p3">
+          <mxGeometry x="1700" y="70" width="410" height="105" as="geometry" />
+        </mxCell>
+
+        <!-- Panel 4: Open Play Room -->
+        <mxCell id="p4" value="4. Open Play Room Discovery, Creation, Join/Leave &amp; Organizer Manual Closure (UC-11..14, UC-17)" style="swimlane;whiteSpace=wrap;html=1;fillColor=#E4EEE6;strokeColor=#C6D6CA;fontStyle=1;fontSize=14;startSize=36;" vertex="1" parent="1">
+          <mxGeometry x="30" y="1040" width="2140" height="400" as="geometry" />
+        </mxCell>
+        <mxCell id="S20" value="&lt;b&gt;S20 / S94 (S212 Empty)&lt;/b&gt;&lt;br&gt;Search Public Rooms by Court Address/Area" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EEF4EE;strokeColor=#2B5040;" vertex="1" parent="p4">
+          <mxGeometry x="30" y="60" width="330" height="105" as="geometry" />
+        </mxCell>
+        <mxCell id="S21" value="&lt;b&gt;S21&lt;/b&gt;&lt;br&gt;Public Room Details (Inherited court/interval, count/C, VND/person)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EEF4EE;strokeColor=#2B5040;" vertex="1" parent="p4">
+          <mxGeometry x="450" y="60" width="340" height="105" as="geometry" />
+        </mxCell>
+        <mxCell id="S22" value="&lt;b&gt;S22 (S63 / S78 Reject)&lt;/b&gt;&lt;br&gt;Joined Room / FULL Sample" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DCFCE7;strokeColor=#15803D;" vertex="1" parent="p4">
+          <mxGeometry x="880" y="60" width="340" height="105" as="geometry" />
+        </mxCell>
+        <mxCell id="S23" value="&lt;b&gt;S23&lt;/b&gt;&lt;br&gt;Confirm Leave Room (Non-organizer before start)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFBEB;strokeColor=#B45309;" vertex="1" parent="p4">
+          <mxGeometry x="1310" y="60" width="340" height="105" as="geometry" />
+        </mxCell>
+        <mxCell id="S24" value="&lt;b&gt;S24&lt;/b&gt;&lt;br&gt;Left Room / OPEN Sample" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DCFCE7;strokeColor=#15803D;" vertex="1" parent="p4">
+          <mxGeometry x="1740" y="60" width="370" height="105" as="geometry" />
+        </mxCell>
+        <mxCell id="S25" value="&lt;b&gt;S25 (S27 / S29 Invalid)&lt;/b&gt;&lt;br&gt;Create Room from Own Booking (2 &amp;lt;= C &amp;lt;= 2 * max_players)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EEF4EE;strokeColor=#2B5040;" vertex="1" parent="p4">
+          <mxGeometry x="30" y="220" width="330" height="105" as="geometry" />
+        </mxCell>
+        <mxCell id="S26" value="&lt;b&gt;S26 / S155 / S175&lt;/b&gt;&lt;br&gt;Organizer Room (OPEN 3/4 or FULL 4/4)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EEF4EE;strokeColor=#2B5040;" vertex="1" parent="p4">
+          <mxGeometry x="450" y="220" width="340" height="105" as="geometry" />
+        </mxCell>
+        <mxCell id="S153" value="&lt;b&gt;S153 / S176&lt;/b&gt;&lt;br&gt;Confirm Manual Room Closure (UC-17)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFBEB;strokeColor=#B45309;" vertex="1" parent="p4">
+          <mxGeometry x="880" y="220" width="340" height="105" as="geometry" />
+        </mxCell>
+        <mxCell id="S154" value="&lt;b&gt;S154 / S177&lt;/b&gt;&lt;br&gt;Manually CLOSED Room (History retained; Join/Leave disabled)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DCFCE7;strokeColor=#15803D;" vertex="1" parent="p4">
+          <mxGeometry x="1310" y="220" width="340" height="105" as="geometry" />
+        </mxCell>
+        <mxCell id="S186" value="&lt;b&gt;S186 / S187&lt;/b&gt;&lt;br&gt;Source Booking Still CONFIRMED (Same slots &amp;amp; accepted total)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DCFCE7;strokeColor=#15803D;" vertex="1" parent="p4">
+          <mxGeometry x="1740" y="220" width="370" height="105" as="geometry" />
+        </mxCell>
+
+        <!-- Panel 5: Court Owner Schedule & Maintenance -->
+        <mxCell id="p5" value="5. Court Owner Listings, Daily Calendar, Batch Slot Publication, Maintenance &amp; Bookings (UC-08, UC-09, UC-10)" style="swimlane;whiteSpace=wrap;html=1;fillColor=#E4EEE6;strokeColor=#C6D6CA;fontStyle=1;fontSize=14;startSize=36;" vertex="1" parent="1">
+          <mxGeometry x="30" y="1470" width="2140" height="400" as="geometry" />
+        </mxCell>
+        <mxCell id="S30" value="&lt;b&gt;S30 -&amp;gt; S31 / S32 / S33&lt;/b&gt;&lt;br&gt;Owned Courts &amp;amp; Deactivation (S219)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EEF4EE;strokeColor=#2B5040;" vertex="1" parent="p5">
+          <mxGeometry x="30" y="60" width="330" height="105" as="geometry" />
+        </mxCell>
+        <mxCell id="S34" value="&lt;b&gt;S34 (S221)&lt;/b&gt;&lt;br&gt;Daily Court Calendar (AVAILABLE, BOOKED, BLOCKED, unpublished)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EEF4EE;strokeColor=#2B5040;" vertex="1" parent="p5">
+          <mxGeometry x="450" y="60" width="340" height="105" as="geometry" />
+        </mxCell>
+        <mxCell id="S201" value="&lt;b&gt;S201&lt;/b&gt;&lt;br&gt;Configure Multiple Dated Slots (60–240m on 30m grid)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EEF4EE;strokeColor=#2B5040;" vertex="1" parent="p5">
+          <mxGeometry x="880" y="60" width="340" height="105" as="geometry" />
+        </mxCell>
+        <mxCell id="S202" value="&lt;b&gt;S202&lt;/b&gt;&lt;br&gt;Preview &amp;amp; Edit Draft Rows (Scrollable; no 2-slot cap)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EEF4EE;strokeColor=#2B5040;" vertex="1" parent="p5">
+          <mxGeometry x="1310" y="60" width="340" height="105" as="geometry" />
+        </mxCell>
+        <mxCell id="S203" value="&lt;b&gt;S203&lt;/b&gt;&lt;br&gt;Published Daily Slots (Confirmed bookings untouched)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DCFCE7;strokeColor=#15803D;" vertex="1" parent="p5">
+          <mxGeometry x="1740" y="60" width="370" height="105" as="geometry" />
+        </mxCell>
+        <mxCell id="S38" value="&lt;b&gt;S38 -&amp;gt; S39 (S40 Denied)&lt;/b&gt;&lt;br&gt;Owned-Court Bookings (UC-10)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EEF4EE;strokeColor=#2B5040;" vertex="1" parent="p5">
+          <mxGeometry x="30" y="220" width="330" height="105" as="geometry" />
+        </mxCell>
+        <mxCell id="S35" value="&lt;b&gt;S35 -&amp;gt; S208 -&amp;gt; S209&lt;/b&gt;&lt;br&gt;Maintenance Interval &amp;amp; Impact Preview" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EEF4EE;strokeColor=#2B5040;" vertex="1" parent="p5">
+          <mxGeometry x="450" y="220" width="340" height="105" as="geometry" />
+        </mxCell>
+        <mxCell id="S36" value="&lt;b&gt;S36 / S157 / S158&lt;/b&gt;&lt;br&gt;Confirmed Booking Lock (BR-03 Rejection)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FEF2F2;strokeColor=#B91C1C;dashed=1;" vertex="1" parent="p5">
+          <mxGeometry x="880" y="220" width="340" height="105" as="geometry" />
+        </mxCell>
+        <mxCell id="S206" value="&lt;b&gt;S206 / S204 / S210&lt;/b&gt;&lt;br&gt;Edit Draft / Single Slot / Operating Hours" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EEF4EE;strokeColor=#2B5040;" vertex="1" parent="p5">
+          <mxGeometry x="1310" y="220" width="340" height="105" as="geometry" />
+        </mxCell>
+
+        <!-- Panel 6: Slot-Specific Manual & Automatic Offers -->
+        <mxCell id="p6" value="6. Court Owner Slot-Specific Manual &amp; Automatic Offers (UC-16 Should — F09 Last-Minute Deals, 0 &amp;lt; h &amp;lt;= 24h)" style="swimlane;whiteSpace=wrap;html=1;fillColor=#E4EEE6;strokeColor=#C6D6CA;fontStyle=1;fontSize=14;startSize=36;" vertex="1" parent="1">
+          <mxGeometry x="30" y="1900" width="2140" height="400" as="geometry" />
+        </mxCell>
+        <mxCell id="S42" value="&lt;b&gt;S42 / S258 (R04 Fixtures)&lt;/b&gt;&lt;br&gt;Owned Slot-Specific Offers" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EEF4EE;strokeColor=#2B5040;" vertex="1" parent="p6">
+          <mxGeometry x="30" y="60" width="330" height="105" as="geometry" />
+        </mxCell>
+        <mxCell id="S241" value="&lt;b&gt;S241 / S249 / S251&lt;/b&gt;&lt;br&gt;Configure Automatic Offer (0 &amp;lt; h &amp;lt;= 24h; shows start - h)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EEF4EE;strokeColor=#2B5040;" vertex="1" parent="p6">
+          <mxGeometry x="450" y="60" width="340" height="105" as="geometry" />
+        </mxCell>
+        <mxCell id="S242" value="&lt;b&gt;S242 / S254&lt;/b&gt;&lt;br&gt;Offer SCHEDULED (Waiting for start - h)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFBEB;strokeColor=#B45309;" vertex="1" parent="p6">
+          <mxGeometry x="880" y="60" width="340" height="105" as="geometry" />
+        </mxCell>
+        <mxCell id="S243" value="&lt;b&gt;S243 / S250&lt;/b&gt;&lt;br&gt;Offer ACTIVE (0 &amp;lt; delta &amp;lt;= h &amp;amp; eligible)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DCFCE7;strokeColor=#15803D;" vertex="1" parent="p6">
+          <mxGeometry x="1310" y="60" width="340" height="105" as="geometry" />
+        </mxCell>
+        <mxCell id="S252" value="&lt;b&gt;S252 / S220 -&amp;gt; S253&lt;/b&gt;&lt;br&gt;Deactivate ACTIVE Offer (Terminal DEACTIVATED)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EEF4EE;strokeColor=#2B5040;" vertex="1" parent="p6">
+          <mxGeometry x="1740" y="60" width="370" height="105" as="geometry" />
+        </mxCell>
+        <mxCell id="S43" value="&lt;b&gt;S43 / S44 / S159&lt;/b&gt;&lt;br&gt;Manual Offer (0 &amp;lt; delta &amp;lt;= 24h)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EEF4EE;strokeColor=#2B5040;" vertex="1" parent="p6">
+          <mxGeometry x="30" y="220" width="330" height="105" as="geometry" />
+        </mxCell>
+        <mxCell id="S244" value="&lt;b&gt;S244 / S257&lt;/b&gt;&lt;br&gt;Invalid Threshold h or Duplicate Config Rejected" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FEF2F2;strokeColor=#B91C1C;dashed=1;" vertex="1" parent="p6">
+          <mxGeometry x="450" y="220" width="340" height="105" as="geometry" />
+        </mxCell>
+        <mxCell id="S245" value="&lt;b&gt;S245 / S255 -&amp;gt; S246 / S256&lt;/b&gt;&lt;br&gt;Cancel Pending Schedule (Terminal CANCELLED)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EEF4EE;strokeColor=#2B5040;" vertex="1" parent="p6">
+          <mxGeometry x="880" y="220" width="340" height="105" as="geometry" />
+        </mxCell>
+        <mxCell id="S247" value="&lt;b&gt;S247 / S248&lt;/b&gt;&lt;br&gt;Withheld (Booked/Blocked) or Terminal EXPIRED" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FEF2F2;strokeColor=#B91C1C;dashed=1;" vertex="1" parent="p6">
+          <mxGeometry x="1310" y="220" width="340" height="105" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
+
