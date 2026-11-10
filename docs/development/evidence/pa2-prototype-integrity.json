@@ -1,0 +1,3913 @@
+{
+  "date": "2026-11-11",
+  "baselineGit": "4bd1fd1face17148c6fad791216aed3e15c90b4a",
+  "fileKey": "2EFad23oucNwIjREtvVUPE",
+  "pageId": "23:561",
+  "manifestSha256": "056abab298755565fba05527fdc2656ed3f0f9f0f68beaf32c65158cf972a4bd",
+  "pa2PdfSha256": "058dc87addbd5696348d3e76e6d403ad638875afd24112a0c6508ef09c3d4c9f",
+  "pa2PdfPages": 106,
+  "pa2Section8PdfPages": "78–99",
+  "srsModifiedTime": "2026-11-10T11:58:03.963Z",
+  "frameCount": 179,
+  "uniqueManifestIds": 179,
+  "missingIds": [],
+  "recursiveActionCount": 4367,
+  "conditionalActionCount": 133,
+  "unresolvedDestinations": [],
+  "allReactionSnapshotsUnchanged": true,
+  "fingerprintAlgorithm": "FNV-1a32 + DJB2-32 over node ID and full JSON-serialized reactions, including triggers, conditional branches, variable values and transitions; serialized character count also compared",
+  "scope": "All 179 referenced frames and their descendants; metadata indexed the complete page once. Read-only calls only. PA2 PDF and Figma nodes/IDs/connections were not edited.",
+  "verificationBoundary": "Stored prototype topology and before/after reaction fingerprints, not live Figma prototype playback. Conditional outcomes/variables were not executed or fabricated. Browser business behavior is separately tested against the real local app/API/database.",
+  "screenTransitions": [
+    {
+      "uc": "UC-01",
+      "paths": [
+        [
+          "S03",
+          "S05"
+        ],
+        [
+          "S151",
+          "S152"
+        ]
+      ],
+      "edgeChecks": [
+        {
+          "from": "S03",
+          "to": "S05",
+          "fromId": "27:242",
+          "toId": "27:284",
+          "directConditionalOrUnconditionalEdge": true
+        },
+        {
+          "from": "S151",
+          "to": "S152",
+          "fromId": "181:1638",
+          "toId": "181:1682",
+          "directConditionalOrUnconditionalEdge": true
+        }
+      ]
+    },
+    {
+      "uc": "UC-02",
+      "paths": [
+        [
+          "S02",
+          "S01"
+        ],
+        [
+          "S04",
+          "S30"
+        ]
+      ],
+      "edgeChecks": [
+        {
+          "from": "S02",
+          "to": "S01",
+          "fromId": "27:134",
+          "toId": "27:2",
+          "directConditionalOrUnconditionalEdge": true
+        },
+        {
+          "from": "S04",
+          "to": "S30",
+          "fromId": "27:188",
+          "toId": "44:857",
+          "directConditionalOrUnconditionalEdge": true
+        }
+      ]
+    },
+    {
+      "uc": "UC-03",
+      "paths": [
+        [
+          "S01",
+          "S191",
+          "D01"
+        ]
+      ],
+      "edgeChecks": [
+        {
+          "from": "S01",
+          "to": "S191",
+          "fromId": "27:2",
+          "toId": "196:2104",
+          "directConditionalOrUnconditionalEdge": true
+        },
+        {
+          "from": "S191",
+          "to": "D01",
+          "fromId": "196:2104",
+          "toId": "180:1409",
+          "directConditionalOrUnconditionalEdge": true
+        }
+      ]
+    },
+    {
+      "uc": "UC-04",
+      "paths": [
+        [
+          "S06",
+          "S127"
+        ]
+      ],
+      "edgeChecks": [
+        {
+          "from": "S06",
+          "to": "S127",
+          "fromId": "27:310",
+          "toId": "92:1199",
+          "directConditionalOrUnconditionalEdge": true
+        }
+      ]
+    },
+    {
+      "uc": "UC-05",
+      "paths": [
+        [
+          "S127",
+          "S217",
+          "S218"
+        ]
+      ],
+      "edgeChecks": [
+        {
+          "from": "S127",
+          "to": "S217",
+          "fromId": "92:1199",
+          "toId": "221:3508",
+          "directConditionalOrUnconditionalEdge": true
+        },
+        {
+          "from": "S217",
+          "to": "S218",
+          "fromId": "221:3508",
+          "toId": "221:3564",
+          "directConditionalOrUnconditionalEdge": true
+        }
+      ]
+    },
+    {
+      "uc": "UC-06",
+      "paths": [
+        [
+          "S12"
+        ]
+      ],
+      "edgeChecks": []
+    },
+    {
+      "uc": "UC-07",
+      "paths": [
+        [
+          "S12",
+          "S13",
+          "S14"
+        ]
+      ],
+      "edgeChecks": [
+        {
+          "from": "S12",
+          "to": "S13",
+          "fromId": "44:122",
+          "toId": "44:241",
+          "directConditionalOrUnconditionalEdge": true
+        },
+        {
+          "from": "S13",
+          "to": "S14",
+          "fromId": "44:241",
+          "toId": "44:283",
+          "directConditionalOrUnconditionalEdge": true
+        }
+      ]
+    },
+    {
+      "uc": "UC-08",
+      "paths": [
+        [
+          "S30",
+          "S31",
+          "S221"
+        ],
+        [
+          "S30",
+          "S32"
+        ],
+        [
+          "S30",
+          "S33",
+          "S219"
+        ]
+      ],
+      "edgeChecks": [
+        {
+          "from": "S30",
+          "to": "S31",
+          "fromId": "44:857",
+          "toId": "44:921",
+          "directConditionalOrUnconditionalEdge": true
+        },
+        {
+          "from": "S31",
+          "to": "S221",
+          "fromId": "44:921",
+          "toId": "221:3748",
+          "directConditionalOrUnconditionalEdge": true
+        },
+        {
+          "from": "S30",
+          "to": "S32",
+          "fromId": "44:857",
+          "toId": "44:979",
+          "directConditionalOrUnconditionalEdge": true
+        },
+        {
+          "from": "S30",
+          "to": "S33",
+          "fromId": "44:857",
+          "toId": "44:1040",
+          "directConditionalOrUnconditionalEdge": true
+        },
+        {
+          "from": "S33",
+          "to": "S219",
+          "fromId": "44:1040",
+          "toId": "221:3620",
+          "directConditionalOrUnconditionalEdge": true
+        }
+      ]
+    },
+    {
+      "uc": "UC-09",
+      "paths": [
+        [
+          "S34",
+          "S201",
+          "S202",
+          "S203"
+        ],
+        [
+          "S34",
+          "S35",
+          "S208",
+          "S209"
+        ]
+      ],
+      "edgeChecks": [
+        {
+          "from": "S34",
+          "to": "S201",
+          "fromId": "44:1070",
+          "toId": "221:2490",
+          "directConditionalOrUnconditionalEdge": true
+        },
+        {
+          "from": "S201",
+          "to": "S202",
+          "fromId": "221:2490",
+          "toId": "221:2554",
+          "directConditionalOrUnconditionalEdge": true
+        },
+        {
+          "from": "S202",
+          "to": "S203",
+          "fromId": "221:2554",
+          "toId": "221:2618",
+          "directConditionalOrUnconditionalEdge": true
+        },
+        {
+          "from": "S34",
+          "to": "S35",
+          "fromId": "44:1070",
+          "toId": "44:1123",
+          "directConditionalOrUnconditionalEdge": true
+        },
+        {
+          "from": "S35",
+          "to": "S208",
+          "fromId": "44:1123",
+          "toId": "221:2938",
+          "directConditionalOrUnconditionalEdge": true
+        },
+        {
+          "from": "S208",
+          "to": "S209",
+          "fromId": "221:2938",
+          "toId": "221:3002",
+          "directConditionalOrUnconditionalEdge": true
+        }
+      ]
+    },
+    {
+      "uc": "UC-10",
+      "paths": [
+        [
+          "S38",
+          "S39"
+        ]
+      ],
+      "edgeChecks": [
+        {
+          "from": "S38",
+          "to": "S39",
+          "fromId": "44:1234",
+          "toId": "44:1281",
+          "directConditionalOrUnconditionalEdge": true
+        }
+      ]
+    },
+    {
+      "uc": "UC-11",
+      "paths": [
+        [
+          "S20",
+          "S21"
+        ]
+      ],
+      "edgeChecks": [
+        {
+          "from": "S20",
+          "to": "S21",
+          "fromId": "44:445",
+          "toId": "44:499",
+          "directConditionalOrUnconditionalEdge": true
+        }
+      ]
+    },
+    {
+      "uc": "UC-12",
+      "paths": [
+        [
+          "S25",
+          "S26"
+        ]
+      ],
+      "edgeChecks": [
+        {
+          "from": "S25",
+          "to": "S26",
+          "fromId": "44:679",
+          "toId": "44:728",
+          "directConditionalOrUnconditionalEdge": true
+        }
+      ]
+    },
+    {
+      "uc": "UC-13",
+      "paths": [
+        [
+          "S21",
+          "S22"
+        ]
+      ],
+      "edgeChecks": [
+        {
+          "from": "S21",
+          "to": "S22",
+          "fromId": "44:499",
+          "toId": "44:555",
+          "directConditionalOrUnconditionalEdge": true
+        }
+      ]
+    },
+    {
+      "uc": "UC-14",
+      "paths": [
+        [
+          "S22",
+          "S23",
+          "S24"
+        ]
+      ],
+      "edgeChecks": [
+        {
+          "from": "S22",
+          "to": "S23",
+          "fromId": "44:555",
+          "toId": "44:603",
+          "directConditionalOrUnconditionalEdge": true
+        },
+        {
+          "from": "S23",
+          "to": "S24",
+          "fromId": "44:603",
+          "toId": "44:631",
+          "directConditionalOrUnconditionalEdge": true
+        }
+      ]
+    },
+    {
+      "uc": "UC-15",
+      "paths": [
+        [
+          "S46"
+        ]
+      ],
+      "edgeChecks": []
+    },
+    {
+      "uc": "UC-16",
+      "paths": [
+        [
+          "S42",
+          "S43"
+        ],
+        [
+          "S241",
+          "S242"
+        ],
+        [
+          "S245",
+          "S246"
+        ]
+      ],
+      "edgeChecks": [
+        {
+          "from": "S42",
+          "to": "S43",
+          "fromId": "44:1393",
+          "toId": "44:1433",
+          "directConditionalOrUnconditionalEdge": true
+        },
+        {
+          "from": "S241",
+          "to": "S242",
+          "fromId": "284:4249",
+          "toId": "284:4279",
+          "directConditionalOrUnconditionalEdge": true
+        },
+        {
+          "from": "S245",
+          "to": "S246",
+          "fromId": "284:4369",
+          "toId": "284:4399",
+          "directConditionalOrUnconditionalEdge": true
+        }
+      ]
+    },
+    {
+      "uc": "UC-17",
+      "paths": [
+        [
+          "S155",
+          "S153",
+          "S154"
+        ],
+        [
+          "S175",
+          "S176",
+          "S177"
+        ]
+      ],
+      "edgeChecks": [
+        {
+          "from": "S155",
+          "to": "S153",
+          "fromId": "182:2012",
+          "toId": "182:1935",
+          "directConditionalOrUnconditionalEdge": true
+        },
+        {
+          "from": "S153",
+          "to": "S154",
+          "fromId": "182:1935",
+          "toId": "182:1971",
+          "directConditionalOrUnconditionalEdge": true
+        },
+        {
+          "from": "S175",
+          "to": "S176",
+          "fromId": "185:2059",
+          "toId": "186:2263",
+          "directConditionalOrUnconditionalEdge": true
+        },
+        {
+          "from": "S176",
+          "to": "S177",
+          "fromId": "186:2263",
+          "toId": "186:2289",
+          "directConditionalOrUnconditionalEdge": true
+        }
+      ]
+    }
+  ],
+  "frames": [
+    {
+      "id": "27:2",
+      "name": "S01 · Tìm sân",
+      "fingerprint": "693be68c-8e3cd3ee",
+      "serializedCharacters": 714818,
+      "actions": 153,
+      "conditional": 1,
+      "destinations": [
+        "180:1409",
+        "180:1439",
+        "180:1469",
+        "180:1663",
+        "196:2104",
+        "27:310",
+        "44:122",
+        "44:1538",
+        "44:3067",
+        "44:3220",
+        "44:445",
+        "51:1029"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "693be68c-8e3cd3ee",
+      "unchanged": true
+    },
+    {
+      "id": "27:134",
+      "name": "S02 · Đăng nhập",
+      "fingerprint": "d2dec5d7-2ec33003",
+      "serializedCharacters": 1672,
+      "actions": 5,
+      "conditional": 0,
+      "destinations": [
+        "27:2",
+        "27:242",
+        "44:1778",
+        "44:3445"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "d2dec5d7-2ec33003",
+      "unchanged": true
+    },
+    {
+      "id": "27:188",
+      "name": "S04 · Đăng nhập chủ sân",
+      "fingerprint": "588d47a8-e1678aec",
+      "serializedCharacters": 2348,
+      "actions": 7,
+      "conditional": 0,
+      "destinations": [
+        "181:1638",
+        "27:134",
+        "44:1778",
+        "44:3445",
+        "44:857"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "588d47a8-e1678aec",
+      "unchanged": true
+    },
+    {
+      "id": "27:242",
+      "name": "S03 · Đăng ký",
+      "fingerprint": "91f07d6-a72b75c8",
+      "serializedCharacters": 2684,
+      "actions": 8,
+      "conditional": 0,
+      "destinations": [
+        "181:1638",
+        "27:134",
+        "27:284",
+        "44:1778",
+        "44:3445"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "91f07d6-a72b75c8",
+      "unchanged": true
+    },
+    {
+      "id": "27:284",
+      "name": "S05 · Tài khoản đã sẵn sàng",
+      "fingerprint": "723c5cfe-b7e61ee2",
+      "serializedCharacters": 2010,
+      "actions": 6,
+      "conditional": 0,
+      "destinations": [
+        "27:134",
+        "44:1778",
+        "44:3445"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "723c5cfe-b7e61ee2",
+      "unchanged": true
+    },
+    {
+      "id": "27:310",
+      "name": "S06 · Chi tiết sân",
+      "fingerprint": "4c031267-9f45f42d",
+      "serializedCharacters": 2612,
+      "actions": 8,
+      "conditional": 0,
+      "destinations": [
+        "27:2",
+        "44:122",
+        "44:1538",
+        "44:1974",
+        "44:445",
+        "92:1199"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "4c031267-9f45f42d",
+      "unchanged": true
+    },
+    {
+      "id": "27:481",
+      "name": "S09 · Đặt sân thành công",
+      "fingerprint": "93c99a76-6186588",
+      "serializedCharacters": 2332,
+      "actions": 7,
+      "conditional": 0,
+      "destinations": [
+        "27:2",
+        "44:122",
+        "44:1538",
+        "44:445",
+        "44:679"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "93c99a76-6186588",
+      "unchanged": true
+    },
+    {
+      "id": "27:534",
+      "name": "S10 · Khung giờ vừa được đặt",
+      "fingerprint": "6eb88a5b-a383c6cb",
+      "serializedCharacters": 1946,
+      "actions": 6,
+      "conditional": 0,
+      "destinations": [
+        "27:2",
+        "44:122",
+        "44:1538",
+        "44:445",
+        "92:1199"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "6eb88a5b-a383c6cb",
+      "unchanged": true
+    },
+    {
+      "id": "27:560",
+      "name": "S11 · Giá thay đổi",
+      "fingerprint": "80afc3ed-d8cc492b",
+      "serializedCharacters": 2280,
+      "actions": 7,
+      "conditional": 0,
+      "destinations": [
+        "27:2",
+        "27:373",
+        "44:122",
+        "44:1538",
+        "44:445",
+        "96:1276"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "80afc3ed-d8cc492b",
+      "unchanged": true
+    },
+    {
+      "id": "44:122",
+      "name": "S12 · Lịch đặt của tôi",
+      "fingerprint": "c68f0bb6-cbe44544",
+      "serializedCharacters": 2332,
+      "actions": 7,
+      "conditional": 0,
+      "destinations": [
+        "27:2",
+        "44:1538",
+        "44:241",
+        "44:313",
+        "44:445",
+        "44:679"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "c68f0bb6-cbe44544",
+      "unchanged": true
+    },
+    {
+      "id": "44:241",
+      "name": "S13 · Xác nhận hủy lịch",
+      "fingerprint": "49e06e6f-f0a9468b",
+      "serializedCharacters": 2332,
+      "actions": 7,
+      "conditional": 0,
+      "destinations": [
+        "27:2",
+        "44:122",
+        "44:1538",
+        "44:283",
+        "44:445"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "49e06e6f-f0a9468b",
+      "unchanged": true
+    },
+    {
+      "id": "44:283",
+      "name": "S14 · Hủy lịch thành công",
+      "fingerprint": "fa4a6fc6-1bac60a2",
+      "serializedCharacters": 2332,
+      "actions": 7,
+      "conditional": 0,
+      "destinations": [
+        "27:2",
+        "44:1538",
+        "44:445",
+        "44:802",
+        "46:876"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "fa4a6fc6-1bac60a2",
+      "unchanged": true
+    },
+    {
+      "id": "44:313",
+      "name": "S15 · Lịch này không thể hủy",
+      "fingerprint": "9318611a-b8f6e2a",
+      "serializedCharacters": 1998,
+      "actions": 6,
+      "conditional": 0,
+      "destinations": [
+        "27:2",
+        "44:122",
+        "44:1538",
+        "44:445"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "9318611a-b8f6e2a",
+      "unchanged": true
+    },
+    {
+      "id": "44:339",
+      "name": "S16 · Khung giờ chưa hợp lệ",
+      "fingerprint": "d2fed988-48df6eec",
+      "serializedCharacters": 1946,
+      "actions": 6,
+      "conditional": 0,
+      "destinations": [
+        "27:2",
+        "44:122",
+        "44:1538",
+        "44:445",
+        "92:1199"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "d2fed988-48df6eec",
+      "unchanged": true
+    },
+    {
+      "id": "44:365",
+      "name": "S17 · Phiên đăng nhập đã hết hạn",
+      "fingerprint": "8f930cb0-a3a7cd20",
+      "serializedCharacters": 2346,
+      "actions": 7,
+      "conditional": 0,
+      "destinations": [
+        "27:134",
+        "44:1778",
+        "44:3445"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "8f930cb0-a3a7cd20",
+      "unchanged": true
+    },
+    {
+      "id": "44:393",
+      "name": "S18 · Bạn không có quyền thực hiện",
+      "fingerprint": "d664b7a6-fccfa82a",
+      "serializedCharacters": 1994,
+      "actions": 6,
+      "conditional": 0,
+      "destinations": [
+        "27:2",
+        "44:122",
+        "44:1538",
+        "44:445"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "d664b7a6-fccfa82a",
+      "unchanged": true
+    },
+    {
+      "id": "44:419",
+      "name": "S19 · Tài khoản chưa có vai trò hợp lệ",
+      "fingerprint": "1ef24a9a-27fb4d48",
+      "serializedCharacters": 2010,
+      "actions": 6,
+      "conditional": 0,
+      "destinations": [
+        "27:134",
+        "44:1778",
+        "44:3445"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "1ef24a9a-27fb4d48",
+      "unchanged": true
+    },
+    {
+      "id": "44:445",
+      "name": "S20 · Open Play · tìm theo địa điểm",
+      "fingerprint": "27570d00-2458e31c",
+      "serializedCharacters": 17980,
+      "actions": 38,
+      "conditional": 2,
+      "destinations": [
+        "224:2822",
+        "224:2899",
+        "27:2",
+        "44:122",
+        "44:1538",
+        "44:499",
+        "44:679"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "27570d00-2458e31c",
+      "unchanged": true
+    },
+    {
+      "id": "44:499",
+      "name": "S21 · Phòng còn chỗ",
+      "fingerprint": "f8fad504-efd83a4a",
+      "serializedCharacters": 2332,
+      "actions": 7,
+      "conditional": 0,
+      "destinations": [
+        "27:2",
+        "44:122",
+        "44:1538",
+        "44:445",
+        "44:555"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "f8fad504-efd83a4a",
+      "unchanged": true
+    },
+    {
+      "id": "44:555",
+      "name": "S22 · Đã tham gia · phòng đầy",
+      "fingerprint": "1590a2f-bb988807",
+      "serializedCharacters": 1998,
+      "actions": 6,
+      "conditional": 0,
+      "destinations": [
+        "27:2",
+        "44:122",
+        "44:1538",
+        "44:445",
+        "44:603"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "1590a2f-bb988807",
+      "unchanged": true
+    },
+    {
+      "id": "44:603",
+      "name": "S23 · Xác nhận rời phòng",
+      "fingerprint": "1dcdf7fa-f9569fe2",
+      "serializedCharacters": 2332,
+      "actions": 7,
+      "conditional": 0,
+      "destinations": [
+        "27:2",
+        "44:122",
+        "44:1538",
+        "44:445",
+        "44:555",
+        "44:631"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "1dcdf7fa-f9569fe2",
+      "unchanged": true
+    },
+    {
+      "id": "44:631",
+      "name": "S24 · Đã rời · phòng mở lại",
+      "fingerprint": "7ac5d7d8-fbda9ea0",
+      "serializedCharacters": 2332,
+      "actions": 7,
+      "conditional": 0,
+      "destinations": [
+        "27:2",
+        "44:122",
+        "44:1538",
+        "44:445",
+        "44:555"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "7ac5d7d8-fbda9ea0",
+      "unchanged": true
+    },
+    {
+      "id": "44:679",
+      "name": "S25 · Tạo phòng từ booking",
+      "fingerprint": "4be07dac-7529b982",
+      "serializedCharacters": 2618,
+      "actions": 8,
+      "conditional": 0,
+      "destinations": [
+        "110:1358",
+        "27:2",
+        "44:122",
+        "44:1538",
+        "44:445",
+        "44:728"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "4be07dac-7529b982",
+      "unchanged": true
+    },
+    {
+      "id": "44:728",
+      "name": "S26 · Phòng mới của người tổ chức",
+      "fingerprint": "75473116-a2aed784",
+      "serializedCharacters": 3016,
+      "actions": 9,
+      "conditional": 0,
+      "destinations": [
+        "182:2012",
+        "185:1881",
+        "27:2",
+        "44:1538",
+        "44:445",
+        "44:831",
+        "46:1004"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "75473116-a2aed784",
+      "unchanged": true
+    },
+    {
+      "id": "44:773",
+      "name": "S27 · Số người không hợp lệ",
+      "fingerprint": "b7e10059-7c33c427",
+      "serializedCharacters": 1998,
+      "actions": 6,
+      "conditional": 0,
+      "destinations": [
+        "27:2",
+        "44:122",
+        "44:1538",
+        "44:445",
+        "44:679"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "b7e10059-7c33c427",
+      "unchanged": true
+    },
+    {
+      "id": "44:802",
+      "name": "S28 · Phòng đóng sau hủy booking",
+      "fingerprint": "9cec1dc5-4b35b32b",
+      "serializedCharacters": 1998,
+      "actions": 6,
+      "conditional": 0,
+      "destinations": [
+        "27:2",
+        "44:1538",
+        "44:445",
+        "46:876"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "9cec1dc5-4b35b32b",
+      "unchanged": true
+    },
+    {
+      "id": "44:831",
+      "name": "S29 · Không thể tạo thêm phòng",
+      "fingerprint": "da7102ef-16cda70f",
+      "serializedCharacters": 1998,
+      "actions": 6,
+      "conditional": 0,
+      "destinations": [
+        "27:2",
+        "44:122",
+        "44:1538",
+        "44:445",
+        "44:728"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "da7102ef-16cda70f",
+      "unchanged": true
+    },
+    {
+      "id": "44:857",
+      "name": "S30 · Sân của tôi · thao tác nhanh",
+      "fingerprint": "46c1669e-9692fe40",
+      "serializedCharacters": 4610,
+      "actions": 13,
+      "conditional": 1,
+      "destinations": [
+        "221:3748",
+        "229:3133",
+        "229:3298",
+        "44:1040",
+        "44:1070",
+        "44:1234",
+        "44:1393",
+        "44:2892",
+        "44:921",
+        "44:979"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "46c1669e-9692fe40",
+      "unchanged": true
+    },
+    {
+      "id": "44:921",
+      "name": "S31 · Thêm sân · form gọn",
+      "fingerprint": "f8445c83-d3ef7589",
+      "serializedCharacters": 2786,
+      "actions": 9,
+      "conditional": 0,
+      "destinations": [
+        "221:3748",
+        "44:1070",
+        "44:1234",
+        "44:1393",
+        "44:2892",
+        "44:857"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "f8445c83-d3ef7589",
+      "unchanged": true
+    },
+    {
+      "id": "44:979",
+      "name": "S32 · Chỉnh thông tin sân · form gọn",
+      "fingerprint": "b24c318b-d0f88e69",
+      "serializedCharacters": 2688,
+      "actions": 8,
+      "conditional": 0,
+      "destinations": [
+        "221:3812",
+        "44:1070",
+        "44:1234",
+        "44:1393",
+        "44:2892",
+        "44:857"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "b24c318b-d0f88e69",
+      "unchanged": true
+    },
+    {
+      "id": "44:1040",
+      "name": "S33 · Xác nhận ngừng nhận booking mới",
+      "fingerprint": "e525b4a1-c862ff63",
+      "serializedCharacters": 2947,
+      "actions": 10,
+      "conditional": 0,
+      "destinations": [
+        "221:3620",
+        "44:1070",
+        "44:1234",
+        "44:1393",
+        "44:2892",
+        "44:857"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "e525b4a1-c862ff63",
+      "unchanged": true
+    },
+    {
+      "id": "44:1070",
+      "name": "S34 · Lịch sân theo ngày",
+      "fingerprint": "ae2ff7a-e2b7a034",
+      "serializedCharacters": 14435,
+      "actions": 66,
+      "conditional": 0,
+      "destinations": [
+        "221:2426",
+        "221:2490",
+        "221:2682",
+        "221:2810",
+        "221:3066",
+        "227:3149",
+        "232:3600",
+        "44:1123",
+        "44:1234",
+        "44:1281",
+        "44:1393",
+        "44:2892",
+        "44:857"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "ae2ff7a-e2b7a034",
+      "unchanged": true
+    },
+    {
+      "id": "44:1123",
+      "name": "S35 · Thêm bảo trì và xem trước",
+      "fingerprint": "403c85dd-b19f4a0d",
+      "serializedCharacters": 2696,
+      "actions": 8,
+      "conditional": 0,
+      "destinations": [
+        "221:2938",
+        "44:1070",
+        "44:1234",
+        "44:1393",
+        "44:2892",
+        "44:857"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "403c85dd-b19f4a0d",
+      "unchanged": true
+    },
+    {
+      "id": "44:1174",
+      "name": "S36 · Thay đổi lịch bị từ chối",
+      "fingerprint": "6f23c600-3feb1dc6",
+      "serializedCharacters": 2692,
+      "actions": 8,
+      "conditional": 0,
+      "destinations": [
+        "44:1070",
+        "44:1123",
+        "44:1234",
+        "44:1281",
+        "44:1393",
+        "44:2892",
+        "44:857"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "6f23c600-3feb1dc6",
+      "unchanged": true
+    },
+    {
+      "id": "44:1234",
+      "name": "S38 · Booking của sân · lọc và xem chi tiết",
+      "fingerprint": "b6403b12-dab99a52",
+      "serializedCharacters": 4829,
+      "actions": 18,
+      "conditional": 0,
+      "destinations": [
+        "227:3149",
+        "44:1070",
+        "44:1281",
+        "44:1393",
+        "44:2892",
+        "44:857",
+        "59:1184",
+        "59:1232"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "b6403b12-dab99a52",
+      "unchanged": true
+    },
+    {
+      "id": "44:1281",
+      "name": "S39 · Chi tiết booking · đọc rõ",
+      "fingerprint": "93ac2b38-fcafa7ca",
+      "serializedCharacters": 2694,
+      "actions": 8,
+      "conditional": 0,
+      "destinations": [
+        "44:1070",
+        "44:1234",
+        "44:1393",
+        "44:2892",
+        "44:857"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "93ac2b38-fcafa7ca",
+      "unchanged": true
+    },
+    {
+      "id": "44:1331",
+      "name": "S40 · Không truy cập sân chủ khác",
+      "fingerprint": "505f520c-4f5a2732",
+      "serializedCharacters": 2353,
+      "actions": 7,
+      "conditional": 0,
+      "destinations": [
+        "44:1070",
+        "44:1234",
+        "44:1393",
+        "44:2892",
+        "44:857"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "505f520c-4f5a2732",
+      "unchanged": true
+    },
+    {
+      "id": "44:1358",
+      "name": "S41 · Thông tin sân không hợp lệ",
+      "fingerprint": "f9f8680d-d1b72117",
+      "serializedCharacters": 2353,
+      "actions": 7,
+      "conditional": 0,
+      "destinations": [
+        "44:1070",
+        "44:1234",
+        "44:1393",
+        "44:2892",
+        "44:857",
+        "44:979"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "f9f8680d-d1b72117",
+      "unchanged": true
+    },
+    {
+      "id": "44:1393",
+      "name": "S42 · Ưu đãi theo slot",
+      "fingerprint": "79972c80-c5054ddc",
+      "serializedCharacters": 6837,
+      "actions": 23,
+      "conditional": 6,
+      "destinations": [
+        "221:3684",
+        "284:4249",
+        "284:4279",
+        "284:4309",
+        "284:4399",
+        "284:4459",
+        "284:4519",
+        "284:4611",
+        "44:1070",
+        "44:1234",
+        "44:1433",
+        "44:2892",
+        "44:857"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "79972c80-c5054ddc",
+      "unchanged": true
+    },
+    {
+      "id": "44:1433",
+      "name": "S43 · Tạo ưu đãi cho slot hợp lệ",
+      "fingerprint": "f0f4c44e-72a2e0fa",
+      "serializedCharacters": 3538,
+      "actions": 13,
+      "conditional": 0,
+      "destinations": [
+        "284:4249",
+        "44:1070",
+        "44:1234",
+        "44:1393",
+        "44:2892",
+        "44:857"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "f0f4c44e-72a2e0fa",
+      "unchanged": true
+    },
+    {
+      "id": "44:1484",
+      "name": "S44 · Ưu đãi chưa hợp lệ",
+      "fingerprint": "cdf74460-c680d54",
+      "serializedCharacters": 2695,
+      "actions": 8,
+      "conditional": 0,
+      "destinations": [
+        "284:4249",
+        "44:1070",
+        "44:1234",
+        "44:1393",
+        "44:1433",
+        "44:2892",
+        "44:857"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "cdf74460-c680d54",
+      "unchanged": true
+    },
+    {
+      "id": "44:1538",
+      "name": "S46 · Hồ sơ",
+      "fingerprint": "9a55b992-9c00b08",
+      "serializedCharacters": 2006,
+      "actions": 6,
+      "conditional": 0,
+      "destinations": [
+        "27:2",
+        "44:122",
+        "44:1584",
+        "44:1778",
+        "44:445"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "9a55b992-9c00b08",
+      "unchanged": true
+    },
+    {
+      "id": "44:1584",
+      "name": "S47 · Hồ sơ đã lưu",
+      "fingerprint": "f2a3deef-528faad",
+      "serializedCharacters": 2006,
+      "actions": 6,
+      "conditional": 0,
+      "destinations": [
+        "27:2",
+        "44:122",
+        "44:1538",
+        "44:445"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "f2a3deef-528faad",
+      "unchanged": true
+    },
+    {
+      "id": "44:1609",
+      "name": "S48 · Hồ sơ lỗi",
+      "fingerprint": "ca3599cd-1239e7c9",
+      "serializedCharacters": 2006,
+      "actions": 6,
+      "conditional": 0,
+      "destinations": [
+        "27:2",
+        "44:122",
+        "44:1538",
+        "44:445"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "ca3599cd-1239e7c9",
+      "unchanged": true
+    },
+    {
+      "id": "44:1640",
+      "name": "S49 · Chưa thể xác thực",
+      "fingerprint": "64679bff-c3558137",
+      "serializedCharacters": 2351,
+      "actions": 7,
+      "conditional": 0,
+      "destinations": [
+        "27:134",
+        "27:242",
+        "44:1778",
+        "44:3445"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "64679bff-c3558137",
+      "unchanged": true
+    },
+    {
+      "id": "44:1668",
+      "name": "S50 · Không có kết quả",
+      "fingerprint": "de2ce429-8948faf9",
+      "serializedCharacters": 2331,
+      "actions": 7,
+      "conditional": 0,
+      "destinations": [
+        "27:2",
+        "44:122",
+        "44:1538",
+        "44:445"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "de2ce429-8948faf9",
+      "unchanged": true
+    },
+    {
+      "id": "44:1704",
+      "name": "S51 · Đang tải sân",
+      "fingerprint": "722db8d6-96c687fc",
+      "serializedCharacters": 1669,
+      "actions": 5,
+      "conditional": 0,
+      "destinations": [
+        "27:2",
+        "44:122",
+        "44:1538",
+        "44:445"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "722db8d6-96c687fc",
+      "unchanged": true
+    },
+    {
+      "id": "44:1726",
+      "name": "S52 · Chưa tải được dữ liệu",
+      "fingerprint": "efa9c21d-c185286b",
+      "serializedCharacters": 2004,
+      "actions": 6,
+      "conditional": 0,
+      "destinations": [
+        "27:2",
+        "27:373",
+        "44:122",
+        "44:1538",
+        "44:445"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "efa9c21d-c185286b",
+      "unchanged": true
+    },
+    {
+      "id": "44:1851",
+      "name": "S63 · Chỗ cuối vừa được nhận",
+      "fingerprint": "f4c061a1-7188ae79",
+      "serializedCharacters": 2341,
+      "actions": 7,
+      "conditional": 0,
+      "destinations": [
+        "27:2",
+        "44:122",
+        "44:1538",
+        "44:2973",
+        "44:445"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "f4c061a1-7188ae79",
+      "unchanged": true
+    },
+    {
+      "id": "44:1974",
+      "name": "S69 · Vị trí sân · GPS không cho phép",
+      "fingerprint": "89767ea7-3b8fe103",
+      "serializedCharacters": 2678,
+      "actions": 8,
+      "conditional": 0,
+      "destinations": [
+        "27:2",
+        "27:310",
+        "44:122",
+        "44:1538",
+        "44:3476",
+        "44:445"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "89767ea7-3b8fe103",
+      "unchanged": true
+    },
+    {
+      "id": "44:2009",
+      "name": "S70 · Xác nhận giá cập nhật",
+      "fingerprint": "5d8a4cf-3e6a8a0b",
+      "serializedCharacters": 2004,
+      "actions": 6,
+      "conditional": 0,
+      "destinations": [
+        "27:2",
+        "44:1538",
+        "44:445",
+        "46:919"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "5d8a4cf-3e6a8a0b",
+      "unchanged": true
+    },
+    {
+      "id": "44:2478",
+      "name": "S56 · Tìm sân · responsive",
+      "fingerprint": "4d0c6a00-6672d8ae",
+      "serializedCharacters": 712800,
+      "actions": 147,
+      "conditional": 1,
+      "destinations": [
+        "180:1523",
+        "180:1663",
+        "196:2437",
+        "27:2",
+        "44:2656",
+        "44:2726"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "4d0c6a00-6672d8ae",
+      "unchanged": true
+    },
+    {
+      "id": "44:2567",
+      "name": "S60 · Tìm sân · responsive",
+      "fingerprint": "a9ba25cc-e6c93108",
+      "serializedCharacters": 712798,
+      "actions": 147,
+      "conditional": 1,
+      "destinations": [
+        "180:1553",
+        "180:1663",
+        "196:2563",
+        "27:2",
+        "27:310",
+        "44:2726"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "a9ba25cc-e6c93108",
+      "unchanged": true
+    },
+    {
+      "id": "44:2856",
+      "name": "S75 · Đang xác nhận booking",
+      "fingerprint": "712a7e71-f2392d1",
+      "serializedCharacters": 1983,
+      "actions": 6,
+      "conditional": 0,
+      "destinations": [
+        "27:2",
+        "27:481",
+        "44:122",
+        "44:1538",
+        "44:445"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "712a7e71-f2392d1",
+      "unchanged": true
+    },
+    {
+      "id": "44:2892",
+      "name": "S76 · Hồ sơ chủ sân",
+      "fingerprint": "ba53a6ce-d8303134",
+      "serializedCharacters": 2355,
+      "actions": 7,
+      "conditional": 0,
+      "destinations": [
+        "44:1070",
+        "44:1234",
+        "44:1393",
+        "44:1778",
+        "44:857",
+        "46:1046"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "ba53a6ce-d8303134",
+      "unchanged": true
+    },
+    {
+      "id": "44:2935",
+      "name": "S77 · Vai trò tài khoản khi đăng ký",
+      "fingerprint": "48ed1e2b-89493955",
+      "serializedCharacters": 2637,
+      "actions": 8,
+      "conditional": 0,
+      "destinations": [
+        "181:1638",
+        "27:134",
+        "27:188",
+        "27:242",
+        "44:1778",
+        "44:3445"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "48ed1e2b-89493955",
+      "unchanged": true
+    },
+    {
+      "id": "44:2973",
+      "name": "S78 · Phòng đầy · chưa tham gia",
+      "fingerprint": "4e166d07-22475fe9",
+      "serializedCharacters": 2004,
+      "actions": 6,
+      "conditional": 0,
+      "destinations": [
+        "27:2",
+        "44:122",
+        "44:1538",
+        "44:445"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "4e166d07-22475fe9",
+      "unchanged": true
+    },
+    {
+      "id": "44:3011",
+      "name": "S79 · Trận đã bắt đầu",
+      "fingerprint": "c0c96a43-96e97d4f",
+      "serializedCharacters": 1950,
+      "actions": 6,
+      "conditional": 0,
+      "destinations": [
+        "27:2",
+        "44:122",
+        "44:1538",
+        "44:445"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "c0c96a43-96e97d4f",
+      "unchanged": true
+    },
+    {
+      "id": "44:3067",
+      "name": "S84 · Chi tiết · Sân bóng Đông Thành",
+      "fingerprint": "aa738cd6-3022cfc0",
+      "serializedCharacters": 2006,
+      "actions": 6,
+      "conditional": 0,
+      "destinations": [
+        "27:2",
+        "44:122",
+        "44:1538",
+        "44:3116",
+        "44:445"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "aa738cd6-3022cfc0",
+      "unchanged": true
+    },
+    {
+      "id": "44:3220",
+      "name": "S85 · Chi tiết · Sân bóng rổ Riverside",
+      "fingerprint": "b9f1604c-a19d3cca",
+      "serializedCharacters": 2006,
+      "actions": 6,
+      "conditional": 0,
+      "destinations": [
+        "27:2",
+        "44:122",
+        "44:1538",
+        "44:3269",
+        "44:445"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "b9f1604c-a19d3cca",
+      "unchanged": true
+    },
+    {
+      "id": "44:3373",
+      "name": "S92 · Chi tiết sân · khách",
+      "fingerprint": "67d3faf5-104d91a3",
+      "serializedCharacters": 2018,
+      "actions": 6,
+      "conditional": 0,
+      "destinations": [
+        "27:134",
+        "44:1778",
+        "44:3417",
+        "44:3445"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "67d3faf5-104d91a3",
+      "unchanged": true
+    },
+    {
+      "id": "44:3417",
+      "name": "S93 · Giờ trống · khách",
+      "fingerprint": "243ee81a-beb5ff34",
+      "serializedCharacters": 2353,
+      "actions": 7,
+      "conditional": 0,
+      "destinations": [
+        "27:134",
+        "44:1778",
+        "44:3373",
+        "44:3445"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "243ee81a-beb5ff34",
+      "unchanged": true
+    },
+    {
+      "id": "44:3445",
+      "name": "S94 · Open Play · tìm khu vực · khách",
+      "fingerprint": "c4bd4ed5-2a40fef5",
+      "serializedCharacters": 17650,
+      "actions": 37,
+      "conditional": 2,
+      "destinations": [
+        "27:134",
+        "44:1778"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "c4bd4ed5-2a40fef5",
+      "unchanged": true
+    },
+    {
+      "id": "44:3476",
+      "name": "S95 · Chỉ đường với điểm đi thủ công",
+      "fingerprint": "c627632-ca69e4de",
+      "serializedCharacters": 2415,
+      "actions": 7,
+      "conditional": 0,
+      "destinations": [
+        "27:2",
+        "27:310",
+        "44:122",
+        "44:1538",
+        "44:445"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "c627632-ca69e4de",
+      "unchanged": true
+    },
+    {
+      "id": "46:876",
+      "name": "S100 · Lịch sử sau khi hủy",
+      "fingerprint": "93adf3cf-1af2ef87",
+      "serializedCharacters": 1994,
+      "actions": 6,
+      "conditional": 0,
+      "destinations": [
+        "27:2",
+        "44:122",
+        "44:1538",
+        "44:445"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "93adf3cf-1af2ef87",
+      "unchanged": true
+    },
+    {
+      "id": "46:1004",
+      "name": "S116 · Lịch đặt đã có phòng",
+      "fingerprint": "22fd10d8-640d2e24",
+      "serializedCharacters": 2616,
+      "actions": 8,
+      "conditional": 0,
+      "destinations": [
+        "27:2",
+        "44:122",
+        "44:1538",
+        "44:241",
+        "44:445",
+        "44:728"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "22fd10d8-640d2e24",
+      "unchanged": true
+    },
+    {
+      "id": "47:1000",
+      "name": "R00 · CourtMate prototype guide",
+      "fingerprint": "649a42bc-21b0aace",
+      "serializedCharacters": 2642,
+      "actions": 8,
+      "conditional": 0,
+      "destinations": [
+        "184:1807",
+        "27:188",
+        "44:1070",
+        "44:1778",
+        "44:2478",
+        "44:2567",
+        "44:445",
+        "47:1021"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "649a42bc-21b0aace",
+      "unchanged": true
+    },
+    {
+      "id": "47:1021",
+      "name": "R01 · Requirements review navigator",
+      "fingerprint": "2a1c2021-1f77c2b",
+      "serializedCharacters": 22536,
+      "actions": 69,
+      "conditional": 0,
+      "destinations": [
+        "110:1358",
+        "180:1613",
+        "180:1663",
+        "180:1704",
+        "180:1741",
+        "180:1750",
+        "180:1756",
+        "182:2012",
+        "182:2151",
+        "182:2189",
+        "183:1660",
+        "183:1698",
+        "183:1736",
+        "183:1831",
+        "183:1931",
+        "184:1807",
+        "185:2059",
+        "212:2800",
+        "212:2995",
+        "212:3183",
+        "27:2",
+        "27:242",
+        "27:534",
+        "27:560",
+        "284:4737",
+        "44:1070",
+        "44:1123",
+        "44:1174",
+        "44:1281",
+        "44:1331",
+        "44:1433",
+        "44:1484",
+        "44:1609",
+        "44:1640",
+        "44:1668",
+        "44:1704",
+        "44:1726",
+        "44:1752",
+        "44:1825",
+        "44:1851",
+        "44:1944",
+        "44:2530",
+        "44:2619",
+        "44:2798",
+        "44:2856",
+        "44:2973",
+        "44:3011",
+        "44:313",
+        "44:339",
+        "44:365",
+        "44:393",
+        "44:419",
+        "44:679",
+        "44:773",
+        "44:802",
+        "44:831",
+        "44:979",
+        "47:1000",
+        "52:1038",
+        "52:1083",
+        "92:1199",
+        "93:1276",
+        "94:1236",
+        "94:1262",
+        "95:1249",
+        "95:1275",
+        "96:1384"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "2a1c2021-1f77c2b",
+      "unchanged": true
+    },
+    {
+      "id": "51:1029",
+      "name": "S120 · Ưu đãi giờ gần · người chơi",
+      "fingerprint": "1080e942-7fd116d6",
+      "serializedCharacters": 2621,
+      "actions": 8,
+      "conditional": 0,
+      "destinations": [
+        "184:1787",
+        "27:2",
+        "44:122",
+        "44:1538",
+        "44:445",
+        "95:1249"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "1080e942-7fd116d6",
+      "unchanged": true
+    },
+    {
+      "id": "52:1038",
+      "name": "S121 · Ưu đãi được mở lại khi đủ điều kiện",
+      "fingerprint": "553ef980-895fe55c",
+      "serializedCharacters": 2355,
+      "actions": 7,
+      "conditional": 0,
+      "destinations": [
+        "44:1070",
+        "44:1234",
+        "44:1393",
+        "44:2892",
+        "44:857"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "553ef980-895fe55c",
+      "unchanged": true
+    },
+    {
+      "id": "59:1184",
+      "name": "S125 · Chi tiết booking CM-1026",
+      "fingerprint": "2fd61720-a5605f6",
+      "serializedCharacters": 1977,
+      "actions": 7,
+      "conditional": 0,
+      "destinations": [
+        "44:1070",
+        "44:1234",
+        "44:1393",
+        "44:2892",
+        "44:857"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "2fd61720-a5605f6",
+      "unchanged": true
+    },
+    {
+      "id": "59:1232",
+      "name": "S126 · Chi tiết booking CM-1019",
+      "fingerprint": "a7f7ac3a-50d28f5e",
+      "serializedCharacters": 1977,
+      "actions": 7,
+      "conditional": 0,
+      "destinations": [
+        "44:1070",
+        "44:1234",
+        "44:1393",
+        "44:2892",
+        "44:857"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "a7f7ac3a-50d28f5e",
+      "unchanged": true
+    },
+    {
+      "id": "92:1199",
+      "name": "S127 · Các slot đã công bố trong ngày",
+      "fingerprint": "2a0ec976-d944000a",
+      "serializedCharacters": 95172,
+      "actions": 226,
+      "conditional": 30,
+      "destinations": [
+        "221:3508",
+        "27:2",
+        "44:122",
+        "44:1538",
+        "44:445"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "2a0ec976-d944000a",
+      "unchanged": true
+    },
+    {
+      "id": "93:1217",
+      "name": "S129 · Giảm sức chứa bị từ chối",
+      "fingerprint": "56c84bfd-c6f7e313",
+      "serializedCharacters": 2299,
+      "actions": 7,
+      "conditional": 0,
+      "destinations": [
+        "44:1070",
+        "44:1234",
+        "44:1393",
+        "44:2892",
+        "44:857",
+        "44:979"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "56c84bfd-c6f7e313",
+      "unchanged": true
+    },
+    {
+      "id": "94:1236",
+      "name": "S131 · Hủy tại đúng mốc 6 giờ",
+      "fingerprint": "cd853b3d-62920ffd",
+      "serializedCharacters": 2231,
+      "actions": 7,
+      "conditional": 0,
+      "destinations": [
+        "27:2",
+        "44:122",
+        "44:1538",
+        "44:283",
+        "44:445"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "cd853b3d-62920ffd",
+      "unchanged": true
+    },
+    {
+      "id": "94:1262",
+      "name": "S132 · Máy chủ từ chối hủy",
+      "fingerprint": "ac34e617-b8341577",
+      "serializedCharacters": 2233,
+      "actions": 7,
+      "conditional": 0,
+      "destinations": [
+        "27:2",
+        "44:122",
+        "44:1538",
+        "44:445",
+        "46:1004"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "ac34e617-b8341577",
+      "unchanged": true
+    },
+    {
+      "id": "95:1249",
+      "name": "S133 · Chọn slot ưu đãi và slot thường",
+      "fingerprint": "4b0ca762-3cc77cb4",
+      "serializedCharacters": 2235,
+      "actions": 7,
+      "conditional": 0,
+      "destinations": [
+        "27:2",
+        "44:122",
+        "44:1538",
+        "44:1906",
+        "44:445",
+        "51:1029"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "4b0ca762-3cc77cb4",
+      "unchanged": true
+    },
+    {
+      "id": "95:1275",
+      "name": "S134 · Hủy toàn bộ booking ưu đãi",
+      "fingerprint": "69815ba0-41ea1d0",
+      "serializedCharacters": 2233,
+      "actions": 7,
+      "conditional": 0,
+      "destinations": [
+        "27:2",
+        "44:122",
+        "44:1538",
+        "44:445",
+        "46:961",
+        "95:1301"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "69815ba0-41ea1d0",
+      "unchanged": true
+    },
+    {
+      "id": "95:1301",
+      "name": "S135 · Booking ưu đãi đã hủy",
+      "fingerprint": "40a9e083-9a907c51",
+      "serializedCharacters": 2235,
+      "actions": 7,
+      "conditional": 0,
+      "destinations": [
+        "27:2",
+        "44:122",
+        "44:1538",
+        "44:445",
+        "52:1038",
+        "95:1327"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "40a9e083-9a907c51",
+      "unchanged": true
+    },
+    {
+      "id": "95:1327",
+      "name": "S136 · Phòng ưu đãi đã đóng",
+      "fingerprint": "9f031210-388135a8",
+      "serializedCharacters": 1952,
+      "actions": 6,
+      "conditional": 0,
+      "destinations": [
+        "27:2",
+        "44:122",
+        "44:1538",
+        "44:445",
+        "95:1301"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "9f031210-388135a8",
+      "unchanged": true
+    },
+    {
+      "id": "96:1276",
+      "name": "S137 · Review lại giá slot thay đổi",
+      "fingerprint": "d159706c-3ef55a50",
+      "serializedCharacters": 2235,
+      "actions": 7,
+      "conditional": 0,
+      "destinations": [
+        "27:2",
+        "44:122",
+        "44:1538",
+        "44:2009",
+        "44:445",
+        "92:1199"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "d159706c-3ef55a50",
+      "unchanged": true
+    },
+    {
+      "id": "96:1314",
+      "name": "S138 · Review sau khi ưu đãi hết hiệu lực",
+      "fingerprint": "1b6968f1-e6546835",
+      "serializedCharacters": 2235,
+      "actions": 7,
+      "conditional": 0,
+      "destinations": [
+        "27:2",
+        "44:122",
+        "44:1538",
+        "44:445",
+        "51:1029",
+        "96:1340"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "1b6968f1-e6546835",
+      "unchanged": true
+    },
+    {
+      "id": "96:1384",
+      "name": "S140 · Điều chỉnh số người chơi đồng thời",
+      "fingerprint": "c95f6c57-f6696d03",
+      "serializedCharacters": 2582,
+      "actions": 8,
+      "conditional": 0,
+      "destinations": [
+        "44:1070",
+        "44:1234",
+        "44:1393",
+        "44:2892",
+        "44:857",
+        "44:979",
+        "93:1217"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "c95f6c57-f6696d03",
+      "unchanged": true
+    },
+    {
+      "id": "110:1358",
+      "name": "S145 · Tạo phòng sức chứa 16",
+      "fingerprint": "816efc0b-3dbfe829",
+      "serializedCharacters": 2578,
+      "actions": 8,
+      "conditional": 0,
+      "destinations": [
+        "110:1407",
+        "27:2",
+        "44:122",
+        "44:1538",
+        "44:445",
+        "44:679"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "816efc0b-3dbfe829",
+      "unchanged": true
+    },
+    {
+      "id": "110:1407",
+      "name": "S146 · Phòng 16 người đã tạo",
+      "fingerprint": "689874cb-4f494a87",
+      "serializedCharacters": 2586,
+      "actions": 8,
+      "conditional": 0,
+      "destinations": [
+        "110:1452",
+        "185:1940",
+        "27:2",
+        "44:1538",
+        "44:445",
+        "44:831"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "689874cb-4f494a87",
+      "unchanged": true
+    },
+    {
+      "id": "180:1409",
+      "name": "D01 · Slot An Phú · không lọc",
+      "fingerprint": "5dc755b7-fdabd6c7",
+      "serializedCharacters": 434,
+      "actions": 2,
+      "conditional": 0,
+      "destinations": [
+        "92:1199"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "5dc755b7-fdabd6c7",
+      "unchanged": true
+    },
+    {
+      "id": "180:1499",
+      "name": "D04 · Slot An Phú · có lọc",
+      "fingerprint": "243f4b4b-c583f007",
+      "serializedCharacters": 434,
+      "actions": 2,
+      "conditional": 0,
+      "destinations": [
+        "92:1199"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "243f4b4b-c583f007",
+      "unchanged": true
+    },
+    {
+      "id": "180:1523",
+      "name": "D05 · Slot An Phú · mobile",
+      "fingerprint": "ff5bad8f-f09ac8c3",
+      "serializedCharacters": 436,
+      "actions": 2,
+      "conditional": 0,
+      "destinations": [
+        "183:1736"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "ff5bad8f-f09ac8c3",
+      "unchanged": true
+    },
+    {
+      "id": "180:1553",
+      "name": "D06 · Slot An Phú · tablet",
+      "fingerprint": "5bd04b17-21ec130b",
+      "serializedCharacters": 434,
+      "actions": 2,
+      "conditional": 0,
+      "destinations": [
+        "92:1199"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "5bd04b17-21ec130b",
+      "unchanged": true
+    },
+    {
+      "id": "180:1583",
+      "name": "D07 · Slot An Phú · khách",
+      "fingerprint": "fa0794b8-15bbf42c",
+      "serializedCharacters": 378,
+      "actions": 2,
+      "conditional": 0,
+      "destinations": [
+        "27:134"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "fa0794b8-15bbf42c",
+      "unchanged": true
+    },
+    {
+      "id": "180:1663",
+      "name": "S149 · Bộ lọc thời gian chưa hợp lệ",
+      "fingerprint": "c34d6f3d-57e8f077",
+      "serializedCharacters": 713241,
+      "actions": 148,
+      "conditional": 1,
+      "destinations": [
+        "196:2104",
+        "27:2",
+        "44:122",
+        "44:1538",
+        "44:445"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "c34d6f3d-57e8f077",
+      "unchanged": true
+    },
+    {
+      "id": "180:1704",
+      "name": "S150 · Không có sân khớp thời gian",
+      "fingerprint": "df7ea30e-6d6e808",
+      "serializedCharacters": 2338,
+      "actions": 7,
+      "conditional": 0,
+      "destinations": [
+        "27:2",
+        "44:122",
+        "44:1538",
+        "44:445"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "df7ea30e-6d6e808",
+      "unchanged": true
+    },
+    {
+      "id": "180:1741",
+      "name": "D08 · Chưa có slot công bố",
+      "fingerprint": "80e52b20-27725d46",
+      "serializedCharacters": 428,
+      "actions": 2,
+      "conditional": 0,
+      "destinations": [
+        "180:1409"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "80e52b20-27725d46",
+      "unchanged": true
+    },
+    {
+      "id": "180:1750",
+      "name": "D09 · Đang tải slot",
+      "fingerprint": "ea3205f-9eadf865",
+      "serializedCharacters": 96,
+      "actions": 1,
+      "conditional": 0,
+      "destinations": [],
+      "nodeType": "frame",
+      "afterFingerprint": "ea3205f-9eadf865",
+      "unchanged": true
+    },
+    {
+      "id": "180:1756",
+      "name": "D10 · Chưa tải được slot",
+      "fingerprint": "daf0c5d7-e50619ed",
+      "serializedCharacters": 428,
+      "actions": 2,
+      "conditional": 0,
+      "destinations": [
+        "180:1409"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "daf0c5d7-e50619ed",
+      "unchanged": true
+    },
+    {
+      "id": "181:1638",
+      "name": "S151 · Đăng ký Chủ sân",
+      "fingerprint": "e0cb181f-8d83bdc3",
+      "serializedCharacters": 2698,
+      "actions": 8,
+      "conditional": 0,
+      "destinations": [
+        "181:1682",
+        "27:134",
+        "27:242",
+        "44:1778",
+        "44:3445"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "e0cb181f-8d83bdc3",
+      "unchanged": true
+    },
+    {
+      "id": "181:1682",
+      "name": "S152 · Tài khoản Chủ sân đã tạo",
+      "fingerprint": "a4ea298e-636aaaea",
+      "serializedCharacters": 2010,
+      "actions": 6,
+      "conditional": 0,
+      "destinations": [
+        "27:188",
+        "27:2",
+        "44:122",
+        "44:1538",
+        "44:445"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "a4ea298e-636aaaea",
+      "unchanged": true
+    },
+    {
+      "id": "182:1935",
+      "name": "S153 · Xác nhận đóng room thủ công",
+      "fingerprint": "51367f1b-718542e1",
+      "serializedCharacters": 2354,
+      "actions": 7,
+      "conditional": 0,
+      "destinations": [
+        "182:1971",
+        "182:2012",
+        "27:2",
+        "44:122",
+        "44:1538",
+        "44:445"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "51367f1b-718542e1",
+      "unchanged": true
+    },
+    {
+      "id": "182:1971",
+      "name": "S154 · Room đã đóng thủ công",
+      "fingerprint": "e651be5f-6cc478cf",
+      "serializedCharacters": 2350,
+      "actions": 7,
+      "conditional": 0,
+      "destinations": [
+        "190:1965",
+        "27:2",
+        "44:122",
+        "44:1538",
+        "44:445"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "e651be5f-6cc478cf",
+      "unchanged": true
+    },
+    {
+      "id": "182:2012",
+      "name": "S155 · Organizer · room có thành viên",
+      "fingerprint": "9915090f-29b868cf",
+      "serializedCharacters": 2352,
+      "actions": 7,
+      "conditional": 0,
+      "destinations": [
+        "182:1935",
+        "27:2",
+        "44:122",
+        "44:1538",
+        "44:445",
+        "46:1004"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "9915090f-29b868cf",
+      "unchanged": true
+    },
+    {
+      "id": "182:2110",
+      "name": "S157 · Slot BOOKED · khóa giờ và giá",
+      "fingerprint": "275cae61-f3f6a149",
+      "serializedCharacters": 2700,
+      "actions": 8,
+      "conditional": 0,
+      "destinations": [
+        "44:1070",
+        "44:1234",
+        "44:1281",
+        "44:1393",
+        "44:2892",
+        "44:857"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "275cae61-f3f6a149",
+      "unchanged": true
+    },
+    {
+      "id": "182:2151",
+      "name": "S158 · Từ chối sửa giờ hoặc giá slot BOOKED",
+      "fingerprint": "9f488a12-a859d32e",
+      "serializedCharacters": 2362,
+      "actions": 7,
+      "conditional": 0,
+      "destinations": [
+        "44:1070",
+        "44:1234",
+        "44:1393",
+        "44:2892",
+        "44:857"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "9f488a12-a859d32e",
+      "unchanged": true
+    },
+    {
+      "id": "182:2189",
+      "name": "S159 · Slot đã có ưu đãi ACTIVE",
+      "fingerprint": "64a145e3-59cda9a5",
+      "serializedCharacters": 2362,
+      "actions": 7,
+      "conditional": 0,
+      "destinations": [
+        "44:1070",
+        "44:1234",
+        "44:1393",
+        "44:2892",
+        "44:857"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "64a145e3-59cda9a5",
+      "unchanged": true
+    },
+    {
+      "id": "182:2227",
+      "name": "S160 · Tạo ưu đãi mới sau khi tắt",
+      "fingerprint": "4f899ba9-bf2194e3",
+      "serializedCharacters": 2364,
+      "actions": 7,
+      "conditional": 0,
+      "destinations": [
+        "186:2321",
+        "44:1070",
+        "44:1234",
+        "44:1393",
+        "44:2892",
+        "44:857"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "4f899ba9-bf2194e3",
+      "unchanged": true
+    },
+    {
+      "id": "183:1660",
+      "name": "S162 · Chỉ lọc từ thời điểm bắt đầu",
+      "fingerprint": "dc92b1d8-cf850e1e",
+      "serializedCharacters": 713805,
+      "actions": 150,
+      "conditional": 1,
+      "destinations": [
+        "180:1499",
+        "180:1663",
+        "196:2104",
+        "27:2",
+        "27:310",
+        "44:122",
+        "44:1538",
+        "44:445"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "dc92b1d8-cf850e1e",
+      "unchanged": true
+    },
+    {
+      "id": "183:1698",
+      "name": "S163 · Chỉ lọc đến thời điểm kết thúc",
+      "fingerprint": "a794601b-30cf07b9",
+      "serializedCharacters": 713805,
+      "actions": 150,
+      "conditional": 1,
+      "destinations": [
+        "180:1499",
+        "180:1663",
+        "196:2104",
+        "27:2",
+        "27:310",
+        "44:122",
+        "44:1538",
+        "44:445"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "a794601b-30cf07b9",
+      "unchanged": true
+    },
+    {
+      "id": "183:1736",
+      "name": "S161 · Chọn slot cả ngày · mobile",
+      "fingerprint": "87209bf8-3f3c8d38",
+      "serializedCharacters": 90092,
+      "actions": 195,
+      "conditional": 30,
+      "destinations": [
+        "221:3508",
+        "27:2",
+        "44:2726"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "87209bf8-3f3c8d38",
+      "unchanged": true
+    },
+    {
+      "id": "183:1831",
+      "name": "S164 · Thêm slot · mobile",
+      "fingerprint": "caaa6e81-35a5cadd",
+      "serializedCharacters": 1581,
+      "actions": 6,
+      "conditional": 0,
+      "destinations": [
+        "221:3312",
+        "27:2",
+        "46:1431"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "caaa6e81-35a5cadd",
+      "unchanged": true
+    },
+    {
+      "id": "183:1931",
+      "name": "S165 · Thêm slot · tablet",
+      "fingerprint": "789947d5-c63ccf95",
+      "serializedCharacters": 1581,
+      "actions": 6,
+      "conditional": 0,
+      "destinations": [
+        "221:3382",
+        "27:2",
+        "46:1431"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "789947d5-c63ccf95",
+      "unchanged": true
+    },
+    {
+      "id": "183:2031",
+      "name": "S166 · Lọc thời gian · mobile",
+      "fingerprint": "44615df7-a22aadb",
+      "serializedCharacters": 712803,
+      "actions": 147,
+      "conditional": 1,
+      "destinations": [
+        "180:1523",
+        "180:1663",
+        "196:2437",
+        "27:2",
+        "44:2656",
+        "44:2726"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "44615df7-a22aadb",
+      "unchanged": true
+    },
+    {
+      "id": "183:2105",
+      "name": "S167 · Lọc thời gian · tablet",
+      "fingerprint": "d2030d85-e73ac6b7",
+      "serializedCharacters": 712801,
+      "actions": 147,
+      "conditional": 1,
+      "destinations": [
+        "180:1553",
+        "180:1663",
+        "196:2563",
+        "27:2",
+        "27:310",
+        "44:2726"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "d2030d85-e73ac6b7",
+      "unchanged": true
+    },
+    {
+      "id": "185:1881",
+      "name": "S169 · Đóng OP-1027 · 1 / 4",
+      "fingerprint": "d0f6873c-6ef77eca",
+      "serializedCharacters": 2350,
+      "actions": 7,
+      "conditional": 0,
+      "destinations": [
+        "185:1907",
+        "27:2",
+        "44:122",
+        "44:1538",
+        "44:445",
+        "44:728"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "d0f6873c-6ef77eca",
+      "unchanged": true
+    },
+    {
+      "id": "185:1907",
+      "name": "S170 · Đã đóng OP-1027 · 1 / 4",
+      "fingerprint": "9cd13f64-529849a4",
+      "serializedCharacters": 2350,
+      "actions": 7,
+      "conditional": 0,
+      "destinations": [
+        "190:2063",
+        "27:2",
+        "44:122",
+        "44:1538",
+        "44:445"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "9cd13f64-529849a4",
+      "unchanged": true
+    },
+    {
+      "id": "185:1940",
+      "name": "S171 · Đóng OP-1027 · 1 / 16",
+      "fingerprint": "85e81821-5c5b596f",
+      "serializedCharacters": 2354,
+      "actions": 7,
+      "conditional": 0,
+      "destinations": [
+        "110:1407",
+        "185:1966",
+        "27:2",
+        "44:122",
+        "44:1538",
+        "44:445"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "85e81821-5c5b596f",
+      "unchanged": true
+    },
+    {
+      "id": "185:1966",
+      "name": "S172 · Đã đóng OP-1027 · 1 / 16",
+      "fingerprint": "b8a1b3af-eb4839e5",
+      "serializedCharacters": 2350,
+      "actions": 7,
+      "conditional": 0,
+      "destinations": [
+        "190:2112",
+        "27:2",
+        "44:122",
+        "44:1538",
+        "44:445"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "b8a1b3af-eb4839e5",
+      "unchanged": true
+    },
+    {
+      "id": "185:1999",
+      "name": "S173 · Đóng OP-DEAL-01 · 1 / 4",
+      "fingerprint": "9cc59a08-f8c285ac",
+      "serializedCharacters": 2352,
+      "actions": 7,
+      "conditional": 0,
+      "destinations": [
+        "185:2025",
+        "27:2",
+        "44:122",
+        "44:1538",
+        "44:445",
+        "46:1339"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "9cc59a08-f8c285ac",
+      "unchanged": true
+    },
+    {
+      "id": "185:2025",
+      "name": "S174 · Đã đóng OP-DEAL-01 · 1 / 4",
+      "fingerprint": "acfbaf68-124f4282",
+      "serializedCharacters": 2350,
+      "actions": 7,
+      "conditional": 0,
+      "destinations": [
+        "190:2164",
+        "27:2",
+        "44:122",
+        "44:1538",
+        "44:445"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "acfbaf68-124f4282",
+      "unchanged": true
+    },
+    {
+      "id": "185:2059",
+      "name": "S175 · Organizer · room FULL",
+      "fingerprint": "b370b90a-39b29fc8",
+      "serializedCharacters": 2352,
+      "actions": 7,
+      "conditional": 0,
+      "destinations": [
+        "186:2263",
+        "27:2",
+        "44:122",
+        "44:1538",
+        "44:445",
+        "46:1004"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "b370b90a-39b29fc8",
+      "unchanged": true
+    },
+    {
+      "id": "186:2263",
+      "name": "S176 · Xác nhận đóng room FULL",
+      "fingerprint": "b8648d3f-30418aed",
+      "serializedCharacters": 2354,
+      "actions": 7,
+      "conditional": 0,
+      "destinations": [
+        "185:2059",
+        "186:2289",
+        "27:2",
+        "44:122",
+        "44:1538",
+        "44:445"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "b8648d3f-30418aed",
+      "unchanged": true
+    },
+    {
+      "id": "186:2289",
+      "name": "S177 · Room FULL đã đóng",
+      "fingerprint": "8a86fbbc-eccd4046",
+      "serializedCharacters": 2350,
+      "actions": 7,
+      "conditional": 0,
+      "destinations": [
+        "190:2014",
+        "27:2",
+        "44:122",
+        "44:1538",
+        "44:445"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "8a86fbbc-eccd4046",
+      "unchanged": true
+    },
+    {
+      "id": "190:1965",
+      "name": "S186 · Booking giữ nguyên · room CLOSED · 3/4",
+      "fingerprint": "f3ab4a8e-f3641540",
+      "serializedCharacters": 2628,
+      "actions": 8,
+      "conditional": 0,
+      "destinations": [
+        "182:1971",
+        "27:2",
+        "44:122",
+        "44:1538",
+        "44:241",
+        "44:445"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "f3ab4a8e-f3641540",
+      "unchanged": true
+    },
+    {
+      "id": "190:2014",
+      "name": "S187 · Booking giữ nguyên · room CLOSED · 4/4",
+      "fingerprint": "e7515d9c-afccf402",
+      "serializedCharacters": 2628,
+      "actions": 8,
+      "conditional": 0,
+      "destinations": [
+        "186:2289",
+        "27:2",
+        "44:122",
+        "44:1538",
+        "44:241",
+        "44:445"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "e7515d9c-afccf402",
+      "unchanged": true
+    },
+    {
+      "id": "196:2104",
+      "name": "S191 · Kết quả · giữ bộ lọc · desktop",
+      "fingerprint": "59df779c-594df2da",
+      "serializedCharacters": 714213,
+      "actions": 151,
+      "conditional": 1,
+      "destinations": [
+        "180:1409",
+        "180:1439",
+        "180:1469",
+        "180:1663",
+        "27:310",
+        "44:122",
+        "44:1538",
+        "44:3067",
+        "44:3220",
+        "44:445"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "59df779c-594df2da",
+      "unchanged": true
+    },
+    {
+      "id": "196:2264",
+      "name": "S192 · Kết quả · giữ bộ lọc · guest",
+      "fingerprint": "18538705-30d5b591",
+      "serializedCharacters": 714215,
+      "actions": 151,
+      "conditional": 1,
+      "destinations": [
+        "180:1583",
+        "180:1663",
+        "197:2368",
+        "197:2397",
+        "27:134",
+        "44:3067",
+        "44:3220",
+        "44:3373",
+        "44:3445"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "18538705-30d5b591",
+      "unchanged": true
+    },
+    {
+      "id": "196:2437",
+      "name": "S193 · Kết quả · giữ bộ lọc · mobile",
+      "fingerprint": "1fa3e18e-ba6250fe",
+      "serializedCharacters": 713875,
+      "actions": 150,
+      "conditional": 1,
+      "destinations": [
+        "180:1523",
+        "180:1663",
+        "197:2322",
+        "197:2343",
+        "27:2",
+        "44:2656",
+        "44:2726",
+        "44:3067",
+        "44:3220"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "1fa3e18e-ba6250fe",
+      "unchanged": true
+    },
+    {
+      "id": "196:2563",
+      "name": "S194 · Kết quả · giữ bộ lọc · tablet",
+      "fingerprint": "bfdd336e-585f14b6",
+      "serializedCharacters": 713873,
+      "actions": 150,
+      "conditional": 1,
+      "destinations": [
+        "180:1553",
+        "180:1663",
+        "197:2322",
+        "197:2343",
+        "27:2",
+        "27:310",
+        "44:2726",
+        "44:3067",
+        "44:3220"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "bfdd336e-585f14b6",
+      "unchanged": true
+    },
+    {
+      "id": "212:3183",
+      "name": "S197 · Nhập tên sân ngay trên form",
+      "fingerprint": "6971a90d-fecd4415",
+      "serializedCharacters": 714831,
+      "actions": 153,
+      "conditional": 1,
+      "destinations": [
+        "180:1409",
+        "180:1439",
+        "180:1469",
+        "180:1663",
+        "196:2104",
+        "27:310",
+        "44:122",
+        "44:1538",
+        "44:3067",
+        "44:3220",
+        "44:445",
+        "51:1029"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "6971a90d-fecd4415",
+      "unchanged": true
+    },
+    {
+      "id": "221:2426",
+      "name": "S200 · Lịch ngày chưa công bố",
+      "fingerprint": "88bee17d-9e0d118d",
+      "serializedCharacters": 3722,
+      "actions": 11,
+      "conditional": 0,
+      "destinations": [
+        "221:2490",
+        "221:2682",
+        "221:3066",
+        "44:1070",
+        "44:1123",
+        "44:1234",
+        "44:1393",
+        "44:2892",
+        "44:857"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "88bee17d-9e0d118d",
+      "unchanged": true
+    },
+    {
+      "id": "221:2490",
+      "name": "S201 · Tạo nhanh nhiều slot",
+      "fingerprint": "4e358d0-d673c024",
+      "serializedCharacters": 2364,
+      "actions": 7,
+      "conditional": 0,
+      "destinations": [
+        "221:2554",
+        "44:1070",
+        "44:1234",
+        "44:1393",
+        "44:2892",
+        "44:857"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "4e358d0-d673c024",
+      "unchanged": true
+    },
+    {
+      "id": "221:2554",
+      "name": "S202 · Xem trước8 slot",
+      "fingerprint": "d59b6620-336c6d12",
+      "serializedCharacters": 11086,
+      "actions": 55,
+      "conditional": 0,
+      "destinations": [
+        "221:2490",
+        "221:2618",
+        "221:2810",
+        "44:1234",
+        "44:1393",
+        "44:2892",
+        "44:857"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "d59b6620-336c6d12",
+      "unchanged": true
+    },
+    {
+      "id": "221:2618",
+      "name": "S203 · Lịch đã công bố8 slot",
+      "fingerprint": "5f643940-93948eda",
+      "serializedCharacters": 11840,
+      "actions": 56,
+      "conditional": 0,
+      "destinations": [
+        "221:2426",
+        "221:2490",
+        "221:2682",
+        "221:2810",
+        "221:3066",
+        "44:1070",
+        "44:1123",
+        "44:1234",
+        "44:1393",
+        "44:2892",
+        "44:857"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "5f643940-93948eda",
+      "unchanged": true
+    },
+    {
+      "id": "221:2682",
+      "name": "S204 · Thêm slot theo dòng",
+      "fingerprint": "6cdd9b9f-1e461677",
+      "serializedCharacters": 2962,
+      "actions": 10,
+      "conditional": 0,
+      "destinations": [
+        "221:2490",
+        "221:2746",
+        "44:1070",
+        "44:1234",
+        "44:1393",
+        "44:2892",
+        "44:857"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "6cdd9b9f-1e461677",
+      "unchanged": true
+    },
+    {
+      "id": "221:2746",
+      "name": "S205 · Lịch sau khi thêm slot",
+      "fingerprint": "776d518a-bd10e4a2",
+      "serializedCharacters": 14778,
+      "actions": 67,
+      "conditional": 0,
+      "destinations": [
+        "221:2426",
+        "221:2490",
+        "221:2682",
+        "221:2810",
+        "221:3066",
+        "227:3149",
+        "232:3600",
+        "44:1070",
+        "44:1123",
+        "44:1234",
+        "44:1281",
+        "44:1393",
+        "44:2892",
+        "44:857"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "776d518a-bd10e4a2",
+      "unchanged": true
+    },
+    {
+      "id": "221:2810",
+      "name": "S206 · Sửa slot trống",
+      "fingerprint": "562a2622-45641f62",
+      "serializedCharacters": 30212,
+      "actions": 86,
+      "conditional": 27,
+      "destinations": [
+        "221:2554",
+        "221:2874",
+        "44:1070",
+        "44:1234",
+        "44:1393",
+        "44:2892",
+        "44:857"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "562a2622-45641f62",
+      "unchanged": true
+    },
+    {
+      "id": "221:2874",
+      "name": "S207 · Lịch sau sửa slot",
+      "fingerprint": "8447f1a-48829184",
+      "serializedCharacters": 14778,
+      "actions": 67,
+      "conditional": 0,
+      "destinations": [
+        "221:2426",
+        "221:2490",
+        "221:2682",
+        "221:2810",
+        "221:3066",
+        "227:3149",
+        "232:3600",
+        "44:1070",
+        "44:1123",
+        "44:1234",
+        "44:1281",
+        "44:1393",
+        "44:2892",
+        "44:857"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "8447f1a-48829184",
+      "unchanged": true
+    },
+    {
+      "id": "221:2938",
+      "name": "S208 · Xem trước ảnh hưởng bảo trì",
+      "fingerprint": "cf18f57b-1b7a9143",
+      "serializedCharacters": 2702,
+      "actions": 8,
+      "conditional": 0,
+      "destinations": [
+        "221:3002",
+        "44:1070",
+        "44:1123",
+        "44:1234",
+        "44:1393",
+        "44:2892",
+        "44:857"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "cf18f57b-1b7a9143",
+      "unchanged": true
+    },
+    {
+      "id": "221:3002",
+      "name": "S209 · Lịch có bảo trì mới",
+      "fingerprint": "708b1da8-1a7ee76c",
+      "serializedCharacters": 13650,
+      "actions": 59,
+      "conditional": 0,
+      "destinations": [
+        "221:2426",
+        "221:2490",
+        "221:2682",
+        "221:2810",
+        "221:3066",
+        "227:3149",
+        "232:3600",
+        "44:1070",
+        "44:1123",
+        "44:1234",
+        "44:1281",
+        "44:1393",
+        "44:2892",
+        "44:857"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "708b1da8-1a7ee76c",
+      "unchanged": true
+    },
+    {
+      "id": "221:3066",
+      "name": "S210 · Giờ hoạt động của sân",
+      "fingerprint": "f1e0f30f-3bc990a1",
+      "serializedCharacters": 2364,
+      "actions": 7,
+      "conditional": 0,
+      "destinations": [
+        "221:3130",
+        "44:1070",
+        "44:1234",
+        "44:1393",
+        "44:2892",
+        "44:857"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "f1e0f30f-3bc990a1",
+      "unchanged": true
+    },
+    {
+      "id": "221:3130",
+      "name": "S211 · Lịch sau đổi giờ hoạt động",
+      "fingerprint": "69cd49b6-8e1a4400",
+      "serializedCharacters": 15118,
+      "actions": 68,
+      "conditional": 0,
+      "destinations": [
+        "221:2426",
+        "221:2490",
+        "221:2682",
+        "221:2810",
+        "221:3066",
+        "227:3149",
+        "232:3600",
+        "44:1070",
+        "44:1123",
+        "44:1234",
+        "44:1281",
+        "44:1393",
+        "44:2892",
+        "44:857"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "69cd49b6-8e1a4400",
+      "unchanged": true
+    },
+    {
+      "id": "221:3194",
+      "name": "S212 · Open Play không khớp khu vực",
+      "fingerprint": "18da082c-8c7793ac",
+      "serializedCharacters": 2010,
+      "actions": 6,
+      "conditional": 0,
+      "destinations": [
+        "27:2",
+        "44:122",
+        "44:1538",
+        "44:445"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "18da082c-8c7793ac",
+      "unchanged": true
+    },
+    {
+      "id": "221:3250",
+      "name": "S213 · Tìm phòng theo khu vực · mobile",
+      "fingerprint": "183cd76f-edb16ff7",
+      "serializedCharacters": 17324,
+      "actions": 36,
+      "conditional": 2,
+      "destinations": [
+        "224:2822",
+        "224:2899",
+        "44:2726",
+        "44:499",
+        "44:679",
+        "44:857"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "183cd76f-edb16ff7",
+      "unchanged": true
+    },
+    {
+      "id": "221:3312",
+      "name": "S214 · Lịch sân · mobile",
+      "fingerprint": "665b949e-e593cbe6",
+      "serializedCharacters": 13764,
+      "actions": 64,
+      "conditional": 0,
+      "destinations": [
+        "183:1831",
+        "221:2810",
+        "221:3066",
+        "231:3203",
+        "231:3566",
+        "232:3600",
+        "44:1070",
+        "44:1123",
+        "44:1281",
+        "44:857",
+        "46:1431"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "665b949e-e593cbe6",
+      "unchanged": true
+    },
+    {
+      "id": "221:3382",
+      "name": "S215 · Lịch sân · tablet",
+      "fingerprint": "2f87f9fa-845f2c26",
+      "serializedCharacters": 13764,
+      "actions": 64,
+      "conditional": 0,
+      "destinations": [
+        "183:1931",
+        "221:2426",
+        "221:2490",
+        "221:2810",
+        "221:3066",
+        "232:3600",
+        "44:1070",
+        "44:1123",
+        "44:1281",
+        "44:857",
+        "46:1431"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "2f87f9fa-845f2c26",
+      "unchanged": true
+    },
+    {
+      "id": "221:3508",
+      "name": "S217 · Xem lại các slot đã chọn",
+      "fingerprint": "30b4f466-d4022684",
+      "serializedCharacters": 2916,
+      "actions": 8,
+      "conditional": 1,
+      "destinations": [
+        "221:3564",
+        "232:3526",
+        "27:2",
+        "44:122",
+        "44:1538",
+        "92:1199"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "30b4f466-d4022684",
+      "unchanged": true
+    },
+    {
+      "id": "221:3564",
+      "name": "S218 · Đặt nhiều slot thành công",
+      "fingerprint": "39341be8-8c767d20",
+      "serializedCharacters": 1674,
+      "actions": 5,
+      "conditional": 0,
+      "destinations": [
+        "27:2",
+        "44:122",
+        "44:1538"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "39341be8-8c767d20",
+      "unchanged": true
+    },
+    {
+      "id": "221:3620",
+      "name": "S219 · Sân đã ngừng nhận mới",
+      "fingerprint": "d083d658-2e2dbc8a",
+      "serializedCharacters": 3034,
+      "actions": 9,
+      "conditional": 0,
+      "destinations": [
+        "44:1070",
+        "44:1234",
+        "44:1393",
+        "44:2892",
+        "44:857",
+        "44:921",
+        "44:979"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "d083d658-2e2dbc8a",
+      "unchanged": true
+    },
+    {
+      "id": "221:3684",
+      "name": "S220 · Xác nhận tắt ưu đãi",
+      "fingerprint": "6a326f54-760f32f4",
+      "serializedCharacters": 4517,
+      "actions": 14,
+      "conditional": 1,
+      "destinations": [
+        "44:1234",
+        "44:1393",
+        "44:2892",
+        "44:857"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "6a326f54-760f32f4",
+      "unchanged": true
+    },
+    {
+      "id": "221:3748",
+      "name": "S221 · Thiết lập lịch cho sân mới",
+      "fingerprint": "b0f06030-5a4830c6",
+      "serializedCharacters": 2362,
+      "actions": 7,
+      "conditional": 0,
+      "destinations": [
+        "229:2968",
+        "44:1234",
+        "44:1393",
+        "44:2892",
+        "44:857"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "b0f06030-5a4830c6",
+      "unchanged": true
+    },
+    {
+      "id": "221:3812",
+      "name": "S222 · Sân sau khi lưu thông tin",
+      "fingerprint": "fa48bafa-38ed584",
+      "serializedCharacters": 3372,
+      "actions": 10,
+      "conditional": 0,
+      "destinations": [
+        "44:1040",
+        "44:1070",
+        "44:1234",
+        "44:1393",
+        "44:2892",
+        "44:857",
+        "44:921",
+        "44:979"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "fa48bafa-38ed584",
+      "unchanged": true
+    },
+    {
+      "id": "224:2822",
+      "name": "S230 · Phòng tại Bình Thạnh",
+      "fingerprint": "a6af97f1-69eb7807",
+      "serializedCharacters": 3145,
+      "actions": 13,
+      "conditional": 0,
+      "destinations": [
+        "27:2",
+        "44:122",
+        "44:1538",
+        "44:445"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "a6af97f1-69eb7807",
+      "unchanged": true
+    },
+    {
+      "id": "224:2899",
+      "name": "S231 · Phòng tại Quận7",
+      "fingerprint": "9acb004a-74c7e2c6",
+      "serializedCharacters": 3143,
+      "actions": 13,
+      "conditional": 0,
+      "destinations": [
+        "27:2",
+        "44:122",
+        "44:1538",
+        "44:445"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "9acb004a-74c7e2c6",
+      "unchanged": true
+    },
+    {
+      "id": "227:3149",
+      "name": "S232 · Booking CM-1051",
+      "fingerprint": "189c512f-9be85607",
+      "serializedCharacters": 2362,
+      "actions": 7,
+      "conditional": 0,
+      "destinations": [
+        "44:1070",
+        "44:1234",
+        "44:1393",
+        "44:2892",
+        "44:857"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "189c512f-9be85607",
+      "unchanged": true
+    },
+    {
+      "id": "229:2968",
+      "name": "S233 · Xem trước lịch sân mới",
+      "fingerprint": "e76a6a8f-dbc32f01",
+      "serializedCharacters": 2464,
+      "actions": 8,
+      "conditional": 0,
+      "destinations": [
+        "221:3748",
+        "229:3133",
+        "44:1234",
+        "44:1393",
+        "44:2892",
+        "44:857"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "e76a6a8f-dbc32f01",
+      "unchanged": true
+    },
+    {
+      "id": "229:3133",
+      "name": "S234 · Lịch sân mới đã công bố",
+      "fingerprint": "d4b4d08c-3edc81ca",
+      "serializedCharacters": 2362,
+      "actions": 7,
+      "conditional": 0,
+      "destinations": [
+        "229:3298",
+        "44:1234",
+        "44:1393",
+        "44:2892",
+        "44:857"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "d4b4d08c-3edc81ca",
+      "unchanged": true
+    },
+    {
+      "id": "229:3298",
+      "name": "S235 · Booking sân mới trống",
+      "fingerprint": "e86a8ab2-e92282ae",
+      "serializedCharacters": 2362,
+      "actions": 7,
+      "conditional": 0,
+      "destinations": [
+        "229:3133",
+        "44:1234",
+        "44:1393",
+        "44:2892",
+        "44:857"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "e86a8ab2-e92282ae",
+      "unchanged": true
+    },
+    {
+      "id": "231:3203",
+      "name": "S236 · Tạo nhiều slot · mobile",
+      "fingerprint": "ee8fa60d-f7ada4ef",
+      "serializedCharacters": 1354,
+      "actions": 4,
+      "conditional": 0,
+      "destinations": [
+        "221:3312",
+        "231:3395",
+        "44:857",
+        "46:1431"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "ee8fa60d-f7ada4ef",
+      "unchanged": true
+    },
+    {
+      "id": "231:3395",
+      "name": "S237 · Xem trước slot · mobile",
+      "fingerprint": "2c4a3f6-ddd099ae",
+      "serializedCharacters": 1956,
+      "actions": 7,
+      "conditional": 0,
+      "destinations": [
+        "231:3203",
+        "231:3566",
+        "44:857",
+        "46:1431"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "2c4a3f6-ddd099ae",
+      "unchanged": true
+    },
+    {
+      "id": "231:3566",
+      "name": "S238 · Lịch 28/10 · mobile",
+      "fingerprint": "9d1dc288-6f30b3ca",
+      "serializedCharacters": 1692,
+      "actions": 5,
+      "conditional": 0,
+      "destinations": [
+        "221:3312",
+        "231:3203",
+        "44:2530",
+        "44:857",
+        "46:1431"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "9d1dc288-6f30b3ca",
+      "unchanged": true
+    },
+    {
+      "id": "232:3526",
+      "name": "S239 · Sân đã ngừng nhận booking",
+      "fingerprint": "f4ad6fa1-51ba2aef",
+      "serializedCharacters": 1670,
+      "actions": 5,
+      "conditional": 0,
+      "destinations": [
+        "27:2",
+        "44:122",
+        "44:1538"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "f4ad6fa1-51ba2aef",
+      "unchanged": true
+    },
+    {
+      "id": "232:3600",
+      "name": "S240 · Chi tiết bảo trì đang có",
+      "fingerprint": "4d7bd2fa-ce270d04",
+      "serializedCharacters": 2362,
+      "actions": 7,
+      "conditional": 0,
+      "destinations": [
+        "44:1070",
+        "44:1123",
+        "44:1234",
+        "44:1393",
+        "44:2892",
+        "44:857"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "4d7bd2fa-ce270d04",
+      "unchanged": true
+    },
+    {
+      "id": "284:4249",
+      "name": "S241 · Hẹn ưu đãi tự động",
+      "fingerprint": "790ef9f7-16407807",
+      "serializedCharacters": 6828,
+      "actions": 15,
+      "conditional": 1,
+      "destinations": [
+        "284:4279",
+        "284:4489",
+        "293:3221",
+        "44:1070",
+        "44:1234",
+        "44:1393",
+        "44:1433",
+        "44:2892",
+        "44:857"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "790ef9f7-16407807",
+      "unchanged": true
+    },
+    {
+      "id": "284:4279",
+      "name": "S242 · Ưu đãi đã được hẹn",
+      "fingerprint": "96df9fae-70420d48",
+      "serializedCharacters": 2364,
+      "actions": 7,
+      "conditional": 0,
+      "destinations": [
+        "284:4369",
+        "44:1070",
+        "44:1234",
+        "44:1393",
+        "44:2892",
+        "44:857"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "96df9fae-70420d48",
+      "unchanged": true
+    },
+    {
+      "id": "284:4309",
+      "name": "S243 · Ưu đãi đang tự áp dụng",
+      "fingerprint": "5360a42e-e234b4e2",
+      "serializedCharacters": 2364,
+      "actions": 7,
+      "conditional": 0,
+      "destinations": [
+        "284:4581",
+        "44:1070",
+        "44:1234",
+        "44:1393",
+        "44:2892",
+        "44:857"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "5360a42e-e234b4e2",
+      "unchanged": true
+    },
+    {
+      "id": "284:4339",
+      "name": "S244 · Kiểm tra thời điểm áp dụng",
+      "fingerprint": "acab9679-42fbaf27",
+      "serializedCharacters": 2364,
+      "actions": 7,
+      "conditional": 0,
+      "destinations": [
+        "284:4249",
+        "44:1070",
+        "44:1234",
+        "44:1393",
+        "44:2892",
+        "44:857"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "acab9679-42fbaf27",
+      "unchanged": true
+    },
+    {
+      "id": "284:4369",
+      "name": "S245 · Hủy lịch ưu đãi này?",
+      "fingerprint": "f401808-f886aa36",
+      "serializedCharacters": 10523,
+      "actions": 37,
+      "conditional": 14,
+      "destinations": [
+        "284:4279",
+        "284:4309",
+        "284:4399",
+        "284:4459",
+        "284:4519",
+        "284:4581",
+        "284:4611",
+        "44:1070",
+        "44:1234",
+        "44:1393",
+        "44:2892",
+        "44:857"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "f401808-f886aa36",
+      "unchanged": true
+    },
+    {
+      "id": "284:4399",
+      "name": "S246 · Đã hủy lịch ưu đãi",
+      "fingerprint": "f612dd50-7b69b0c6",
+      "serializedCharacters": 2024,
+      "actions": 6,
+      "conditional": 0,
+      "destinations": [
+        "44:1070",
+        "44:1234",
+        "44:1393",
+        "44:2892",
+        "44:857"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "f612dd50-7b69b0c6",
+      "unchanged": true
+    },
+    {
+      "id": "284:4429",
+      "name": "S247 · Đã đến giờ · đang chờ slot trống",
+      "fingerprint": "7e3f122b-1a723825",
+      "serializedCharacters": 2024,
+      "actions": 6,
+      "conditional": 0,
+      "destinations": [
+        "44:1070",
+        "44:1234",
+        "44:1393",
+        "44:2892",
+        "44:857"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "7e3f122b-1a723825",
+      "unchanged": true
+    },
+    {
+      "id": "284:4459",
+      "name": "S248 · Ưu đãi đã hết hiệu lực",
+      "fingerprint": "6c988542-1fc7fe2",
+      "serializedCharacters": 2024,
+      "actions": 6,
+      "conditional": 0,
+      "destinations": [
+        "44:1070",
+        "44:1234",
+        "44:1393",
+        "44:2892",
+        "44:857"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "6c988542-1fc7fe2",
+      "unchanged": true
+    },
+    {
+      "id": "284:4489",
+      "name": "S249 · Hẹn ưu đãi tự động",
+      "fingerprint": "535f2774-c022a64a",
+      "serializedCharacters": 6834,
+      "actions": 15,
+      "conditional": 1,
+      "destinations": [
+        "284:4249",
+        "284:4519",
+        "293:3221",
+        "44:1070",
+        "44:1234",
+        "44:1393",
+        "44:1433",
+        "44:2892",
+        "44:857"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "535f2774-c022a64a",
+      "unchanged": true
+    },
+    {
+      "id": "284:4519",
+      "name": "S250 · Ưu đãi đang tự áp dụng",
+      "fingerprint": "aa1e5588-9aae8c28",
+      "serializedCharacters": 2364,
+      "actions": 7,
+      "conditional": 0,
+      "destinations": [
+        "284:4581",
+        "44:1070",
+        "44:1234",
+        "44:1393",
+        "44:2892",
+        "44:857"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "aa1e5588-9aae8c28",
+      "unchanged": true
+    },
+    {
+      "id": "284:4549",
+      "name": "S251 · Hẹn ưu đãi",
+      "fingerprint": "5f349789-2a0829e7",
+      "serializedCharacters": 4804,
+      "actions": 9,
+      "conditional": 1,
+      "destinations": [
+        "284:4641",
+        "293:3221",
+        "300:3229",
+        "44:1433"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "5f349789-2a0829e7",
+      "unchanged": true
+    },
+    {
+      "id": "284:4581",
+      "name": "S252 · Tắt ưu đãi tự động này?",
+      "fingerprint": "80fbf9c9-9f27ba75",
+      "serializedCharacters": 3973,
+      "actions": 13,
+      "conditional": 1,
+      "destinations": [
+        "284:4309",
+        "284:4519",
+        "284:4611",
+        "44:1070",
+        "44:1234",
+        "44:2892",
+        "44:857"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "80fbf9c9-9f27ba75",
+      "unchanged": true
+    },
+    {
+      "id": "284:4611",
+      "name": "S253 · Đã tắt ưu đãi tự động",
+      "fingerprint": "4cb458e4-b036f728",
+      "serializedCharacters": 2024,
+      "actions": 6,
+      "conditional": 0,
+      "destinations": [
+        "44:1070",
+        "44:1234",
+        "44:1393",
+        "44:2892",
+        "44:857"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "4cb458e4-b036f728",
+      "unchanged": true
+    },
+    {
+      "id": "284:4641",
+      "name": "S254 · Đã hẹn ưu đãi",
+      "fingerprint": "7cec83b5-1b74832f",
+      "serializedCharacters": 680,
+      "actions": 2,
+      "conditional": 0,
+      "destinations": [
+        "284:4549",
+        "284:4673"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "7cec83b5-1b74832f",
+      "unchanged": true
+    },
+    {
+      "id": "284:4673",
+      "name": "S255 · Hủy lịch ưu đãi?",
+      "fingerprint": "f53efc23-f301a809",
+      "serializedCharacters": 1284,
+      "actions": 6,
+      "conditional": 0,
+      "destinations": [
+        "284:4641",
+        "284:4705"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "f53efc23-f301a809",
+      "unchanged": true
+    },
+    {
+      "id": "284:4705",
+      "name": "S256 · Đã hủy lịch",
+      "fingerprint": "cfc8a31a-94084808",
+      "serializedCharacters": 340,
+      "actions": 1,
+      "conditional": 0,
+      "destinations": [
+        "284:4549"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "cfc8a31a-94084808",
+      "unchanged": true
+    },
+    {
+      "id": "284:4737",
+      "name": "R04 · Kiểm tra ưu đãi tự động",
+      "fingerprint": "8ea468e4-185de31c",
+      "serializedCharacters": 14241,
+      "actions": 76,
+      "conditional": 0,
+      "destinations": [
+        "284:4249",
+        "284:4279",
+        "284:4309",
+        "284:4339",
+        "284:4369",
+        "284:4429",
+        "284:4459",
+        "284:4489",
+        "284:4519",
+        "284:4549",
+        "284:4581",
+        "44:1070",
+        "44:1234",
+        "44:1393",
+        "44:2892",
+        "44:857"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "8ea468e4-185de31c",
+      "unchanged": true
+    },
+    {
+      "id": "293:3221",
+      "name": "S257 · Slot đã có lịch hoặc ưu đãi",
+      "fingerprint": "db7c2606-20d43e2a",
+      "serializedCharacters": 2362,
+      "actions": 7,
+      "conditional": 0,
+      "destinations": [
+        "44:1070",
+        "44:1234",
+        "44:1393",
+        "44:2892",
+        "44:857"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "db7c2606-20d43e2a",
+      "unchanged": true
+    },
+    {
+      "id": "300:3229",
+      "name": "S258 · Quản lý ưu đãi · điện thoại",
+      "fingerprint": "258912f6-3ddccbea",
+      "serializedCharacters": 340,
+      "actions": 1,
+      "conditional": 0,
+      "destinations": [
+        "284:4549"
+      ],
+      "nodeType": "frame",
+      "afterFingerprint": "258912f6-3ddccbea",
+      "unchanged": true
+    }
+  ]
+}
