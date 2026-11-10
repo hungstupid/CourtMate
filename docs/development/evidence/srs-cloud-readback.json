@@ -1,0 +1,77 @@
+{
+  "commit": "2b95e0934eeaea68b6ce55678e23f4aedb02b371",
+  "render_deploy": "dep-dbpj6c67bikc73dnbo8g",
+  "vercel_deploy": "dpl_E4gdTpZg1PkrWLxQVfjni4FemeAv",
+  "ci_run": 42840466467,
+  "checks": [
+    {
+      "path": "/health",
+      "status": 200
+    },
+    {
+      "path": "/ready",
+      "status": 200
+    },
+    {
+      "path": "/openapi.json",
+      "status": 200
+    },
+    {
+      "path": "/api/courts",
+      "status": 200
+    },
+    {
+      "path": "/api/rooms",
+      "status": 200
+    },
+    {
+      "path": "/api/deals",
+      "status": 200
+    },
+    {
+      "path": "/api/me",
+      "status": 401
+    },
+    {
+      "path": "/api/profile",
+      "status": 401
+    },
+    {
+      "path": "/api/bookings",
+      "status": 401
+    },
+    {
+      "path": "/api/owner/courts",
+      "status": 401
+    },
+    {
+      "cors": "allowed",
+      "status": 200
+    },
+    {
+      "cors": "unlisted",
+      "status": 400
+    }
+  ],
+  "scope": "Public reads, missing-token denial and CORS. No protected cloud business write/load or new account.",
+  "migration": {
+    "provider": "Neon",
+    "project_id": "divine-sun-63104113",
+    "branch_id": "br-small-glitter-aomatkd1",
+    "database": "neondb",
+    "version_num": "0006_room_closure_reason",
+    "verification": "Read-only SELECT current_database(), version_num FROM public.alembic_version"
+  },
+  "frontend": {
+    "production_url": "https://courtmate-court-mate.vercel.app",
+    "version_json": "2b95e0934eeaea68b6ce55678e23f4aedb02b371",
+    "svg_content_type": "image/svg+xml",
+    "font_content_type": "font/woff2",
+    "browser_page_errors": 0,
+    "checked_widths": [
+      375,
+      1280
+    ],
+    "cloud_writes": false
+  }
+}

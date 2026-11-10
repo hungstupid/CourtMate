@@ -31,4 +31,9 @@ Historical October evidence in `bootstrap-report.md` / `backend-core-report.md` 
 - `c69c8f5`: transactional manual/automatic slot offers.
 - `85e8932`: backend receipt-time cancellation, trusted legacy email recovery, safe room projections/closure reasons and public deal readback.
 - `7f1496c`: Figma-based application and real browser integration, with isolated fixture cleanup.
-- Final release documentation commit: pending hash assignment. CI/deployed SHAs remain pending push/provider verification; no cloud result is claimed PASS yet.
+- Release source [`2b95e0934eeaea68b6ce55678e23f4aedb02b371`](https://github.com/hungstupid/CourtMate/commit/2b95e0934eeaea68b6ce55678e23f4aedb02b371), pushed on the existing branch.
+- [GitHub Actions 42840466467](https://github.com/hungstupid/CourtMate/actions/runs/42840466467): **SUCCESS**, frontend-push and integration-push; CI independently ran **230 pytest / 12 Playwright** successfully.
+- Vercel deployment `dpl_E4gdTpZg1PkrWLxQVfjni4FemeAv`: **READY** at the same release SHA. [Production frontend](https://courtmate-court-mate.vercel.app) `/version.json` returned that SHA. SVG/WOFF2 responses have the correct types; desktop/mobile public/login browser checks found no JS error or page overflow.
+- Render deployment `dep-dbpj6c67bikc73dnbo8g`: **LIVE**, triggered automatically only after checks passed. [API](https://courtmate-api-cs7b.onrender.com/docs) health header returned the exact release SHA; `/ready`, OpenAPI/current routes and public courts/rooms/deals returned 200.
+- Neon read-only SQL on the existing application branch/database verified `0006_room_closure_reason`. Missing-token protected calls returned 401; allowed-origin CORS returned 200 and unlisted-origin 400. [Cloud readback evidence](evidence/srs-cloud-readback.json).
+- No real-account protected cloud write/load was run. Full business writes, authorization and races were exercised in local/CI PostgreSQL/Firebase Emulator instead. This subsequent evidence-only commit changes no application source or deployment configuration.
