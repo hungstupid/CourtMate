@@ -9,7 +9,7 @@ from fastapi import HTTPException
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
-from app.db.models import Booking, Slot, SlotOffer, User
+from app.db.models import Booking, Court, Slot, SlotClaim, SlotOffer, User
 from app.services import bookings, courts, offers
 
 race_data = races.race_data
@@ -271,3 +271,133 @@ def test_activation_racing_state_change_or_booking(race_data, action):
             )
             == 0
         )
+
+
+@pytest.mark.parametrize(
+    "mode,lead,terminal,discounted",
+    [
+        ("manual", 24, None, True),
+        ("automatic", 24, None, True),
+        ("automatic", 3, None, False),
+        ("automatic", 3, "cancel", False),
+        ("automatic", 24, "deactivate", False),
+        ("manual", 24, "expire", False),
+    ],
+)
+def test_eight_hour_combined_cancel_rechecks_offer_window_and_terminal_state(
+    race_data, mode, lead, terminal, discounted
+):
+    """AC-F09-04: release both slots, retain snapshots, discount only eligible one.
+
+    With h=3 a booking cancelled eight hours before play was necessarily quoted
+    at regular price. Do not invent backwards time to make it discounted first.
+    """
+    data = race_data
+    with Session(data["engine"]) as session:
+        now = session.get(Slot, data["slots"][0]).start_at - timedelta(hours=8)
+    configured = configure(data, mode=mode, lead=Decimal(lead), now=now)
+    with Session(data["engine"]) as session, session.begin():
+        owner = session.get(User, data["owner"])
+        player = session.get(User, data["players"][0])
+        if terminal == "expire":
+            old_start = session.get(Slot, data["slots"][0]).start_at
+            assert (
+                offers.list_offers(
+                    session, owner, data["slots"][0], lambda s: old_start
+                )[0]["status"]
+                == "EXPIRED"
+            )
+            # An allowed time edit on the unbooked slots cannot revive history.
+            for slot_id in data["slots"][:2]:
+                row = session.get(Slot, slot_id)
+                courts.update_slot(
+                    session,
+                    owner,
+                    slot_id,
+                    {
+                        "start_at": row.start_at + timedelta(days=7),
+                        "end_at": row.end_at + timedelta(days=7),
+                    },
+                    clock=lambda s: old_start,
+                )
+            now += timedelta(days=7)
+        elif terminal:
+            offers.finish_offer(
+                session, owner, configured["id"], terminal, lambda s: now
+            )
+        selected = data["slots"][:2]
+        review = bookings.review_booking(session, player, selected, lambda s: now)
+        prices = [80_000 if discounted else 100_000, 120_000]
+        assert [row["price_vnd"] for row in review["slots"]] == prices
+        booked = bookings.confirm_booking(
+            session, player, selected, review["quote"], lambda s: now
+        )
+        cancelled = bookings.cancel_booking(
+            session, player, booked["id"], lambda s: now
+        )
+        assert cancelled["status"] == "CANCELLED"
+        assert cancelled["total_price_vnd"] == sum(prices)
+        assert (
+            session.scalar(
+                select(func.count())
+                .select_from(SlotClaim)
+                .where(SlotClaim.booking_id == booked["id"])
+            )
+            == 0
+        )
+        state = offers.list_offers(session, owner, selected[0], lambda s: now)
+        assert len(state) == 1 and state[0]["id"] == configured["id"]
+        assert state[0]["eligible"] is discounted
+        assert state[0]["status"] == (
+            {
+                "cancel": "CANCELLED",
+                "deactivate": "DEACTIVATED",
+                "expire": "EXPIRED",
+            }.get(terminal)
+            or ("ACTIVE" if discounted else "SCHEDULED")
+        )
+        rereview = bookings.review_booking(session, player, selected, lambda s: now)
+        assert [row["price_vnd"] for row in rereview["slots"]] == prices
+        assert session.get(Booking, booked["id"]).total_price_vnd == sum(prices)
+
+
+def test_automatic_pending_inactive_court_recovers_same_offer_without_changing_booking(
+    race_data,
+):
+    """AC-F09-12: threshold reached while inactive; recovery before start."""
+    data = race_data
+    configured = configure(data, index=2)
+    with Session(data["engine"]) as session, session.begin():
+        owner = session.get(User, data["owner"])
+        player = session.get(User, data["players"][0])
+        target = session.get(Slot, data["slots"][2])
+        now = target.start_at - timedelta(hours=3)
+        selected = data["slots"][:2]
+        review = bookings.review_booking(session, player, selected, lambda s: now)
+        booked = bookings.confirm_booking(
+            session, player, selected, review["quote"], lambda s: now
+        )
+        courts.update_court(
+            session, owner, data["court"], {"active": False}, clock=lambda s: now
+        )
+        state = offers.list_offers(session, owner, target.id, lambda s: now)[0]
+        assert state["id"] == configured["id"] and state["status"] == "SCHEDULED"
+        assert not state["eligible"] and "inactive" in state["reason"]
+        assert (
+            offers.quote(session, session.get(Court, data["court"]), target, now)[0]
+            == 140_000
+        )
+        now += timedelta(minutes=1)
+        courts.update_court(
+            session, owner, data["court"], {"active": True}, clock=lambda s: now
+        )
+        for _ in range(2):
+            state = offers.list_offers(session, owner, target.id, lambda s: now)
+            assert len(state) == 1 and state[0]["id"] == configured["id"]
+            assert state[0]["status"] == "ACTIVE" and state[0]["eligible"]
+            assert (
+                offers.quote(session, session.get(Court, data["court"]), target, now)[0]
+                == 80_000
+            )
+        assert session.get(Booking, booked["id"]).status == "CONFIRMED"
+        assert session.get(Booking, booked["id"]).total_price_vnd == 220_000

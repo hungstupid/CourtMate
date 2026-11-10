@@ -81,7 +81,7 @@ class CourtPatch(Patch):
     address: Address | None = None
     area: Area | None = None
     description: Description | None = None
-    contact: Contact | None = None
+    contact: Contact | Literal[""] | None = None
     photo_urls: list[str] | None = Field(default=None, max_length=20)
     base_price_vnd: Money | None = None
     max_players: Capacity | None = None
