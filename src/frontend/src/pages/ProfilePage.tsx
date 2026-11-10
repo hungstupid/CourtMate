@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { apiRequest } from '../lib/api'
+import { useDraftGuard } from '../lib/draft-context'
 import { useSession } from '../lib/session-context'
 import { useResource } from '../lib/use-resource'
 import type { Profile } from '../lib/types'
@@ -11,6 +12,7 @@ function ProfileForm({ profile }: { profile: Profile }) {
   const [error, setError] = useState('')
   const [message, setMessage] = useState('')
   const [busy, setBusy] = useState(false)
+  const guard = useDraftGuard(busy)
   async function submit(event: FormSubmit) {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
@@ -26,6 +28,7 @@ function ProfileForm({ profile }: { profile: Profile }) {
         },
       })
       setMessage('Hồ sơ đã lưu thành công.')
+      guard.markClean()
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Không thể lưu hồ sơ.')
     } finally {
@@ -33,7 +36,11 @@ function ProfileForm({ profile }: { profile: Profile }) {
     }
   }
   return (
-    <form className="panel profile-form" onSubmit={(e) => void submit(e)}>
+    <form
+      onChangeCapture={guard.markDirty}
+      className="panel profile-form"
+      onSubmit={(e) => void submit(e)}
+    >
       <Field label="Tên hiển thị">
         <input
           name="display_name"
@@ -76,7 +83,7 @@ function ProfileForm({ profile }: { profile: Profile }) {
         <button
           type="button"
           className="ghost"
-          onClick={() => void session.logOut()}
+          onClick={() => guard.protect(() => void session.logOut())}
         >
           Đăng xuất
         </button>

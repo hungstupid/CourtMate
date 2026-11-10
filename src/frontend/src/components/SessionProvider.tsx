@@ -30,14 +30,14 @@ export function SessionProvider({ children }: { children: ReactNode }) {
         if (!controller.signal.aborted) setState({ user, identity, status: 'ready', message: '' })
       }).catch((error: unknown) => {
         if (!controller.signal.aborted && auth.currentUser?.uid === user.uid) {
-          setState({ user, identity: null, status: error instanceof ApiError && error.code === 'ACCOUNT_UNREGISTERED' ? 'unregistered' : 'error', message: error instanceof Error ? error.message : 'Unable to connect.' })
+          setState({ user, identity: null, status: error instanceof ApiError && error.code === 'ACCOUNT_UNREGISTERED' ? 'unregistered' : 'error', message: error instanceof Error ? error.message : 'Không thể kết nối. Vui lòng thử lại.' })
         }
       })
-    }, () => setState({ ...initial, status: 'error', message: 'Unable to load your session. Please retry.' }))
+    }, () => setState({ ...initial, status: 'error', message: 'Không thể tải phiên đăng nhập. Vui lòng thử lại.' }))
     const expire = () => {
       request?.abort()
-      setState({ ...initial, status: 'signed-out', message: 'Your session expired. Sign in again.' })
-      void signOut(auth).catch(() => setState({ ...initial, status: 'error', message: 'Please retry signing out.' }))
+      setState({ ...initial, status: 'signed-out', message: 'Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.' })
+      void signOut(auth).catch(() => setState({ ...initial, status: 'error', message: 'Vui lòng thử đăng xuất lại.' }))
     }
     window.addEventListener('courtmate:session-expired', expire)
     return () => {
@@ -53,7 +53,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
       await signOut(firebaseAuth)
       setState({ ...initial, status: 'signed-out' })
     } catch {
-      setState((old) => ({ ...old, message: 'Sign-out failed. Please retry.' }))
+      setState((old) => ({ ...old, message: 'Đăng xuất chưa thành công. Vui lòng thử lại.' }))
     }
   }
 

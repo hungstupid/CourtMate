@@ -15,8 +15,9 @@ import {
   Loading,
   Modal,
   PageHeading,
+  CourtImage,
 } from '../components/ui'
-import { apiRequest } from '../lib/api'
+import { ApiError, apiRequest } from '../lib/api'
 import { useResource } from '../lib/use-resource'
 import { useSession } from '../lib/session-context'
 import { interval, localDay, money, timeLabel } from '../lib/format'
@@ -40,16 +41,12 @@ export function CourtPage() {
       <div className="court-detail">
         <section>
           <div className="detail-image">
-            {c.photo_urls[0] ? (
-              <img src={c.photo_urls[0]} alt={c.name} />
-            ) : (
-              <img
-                src="/images/court-detail.svg"
-                width="680"
-                height="300"
-                alt="Hình minh họa sân; chủ sân chưa cung cấp ảnh thực tế"
-              />
-            )}
+            <CourtImage
+              urls={c.photo_urls}
+              name={c.name}
+              sport={c.sport}
+              detail
+            />
           </div>
           <Badge status={c.sport} />
           <h1>{c.name}</h1>
@@ -69,8 +66,13 @@ export function CourtPage() {
           </dl>
           {c.photo_urls.length > 1 && (
             <div className="photo-gallery">
-              {c.photo_urls.slice(1).map((url) => (
-                <img key={url} src={url} alt={`Ảnh ${c.name}`} loading="lazy" />
+              {c.photo_urls.slice(1).map((url, index) => (
+                <CourtImage
+                  key={`${index}-${url}`}
+                  urls={[url]}
+                  name={`Ảnh ${c.name}`}
+                  sport={c.sport}
+                />
               ))}
             </div>
           )}
@@ -152,6 +154,7 @@ export function SlotsPage() {
   const [error, setError] = useState('')
   const [review, setReview] = useState<Review | null>(null)
   const [busy, setBusy] = useState(false)
+  const [repriced, setRepriced] = useState(false)
   const session = useSession()
   const navigate = useNavigate()
   const chosen = (availability.data?.slots || [])
@@ -184,9 +187,28 @@ export function SlotsPage() {
     }
     setSelected(next)
   }
+  async function refreshSelection() {
+    try {
+      const fresh = await apiRequest<Availability>(
+        `/api/courts/${courtId}/availability?date=${day}`,
+        { authenticated: false }
+      )
+      setSelected((ids) =>
+        ids.filter((id) =>
+          fresh.slots.some(
+            (slot) => slot.id === id && slot.status === 'AVAILABLE'
+          )
+        )
+      )
+    } catch {
+      /* Keep the user's choice if current availability cannot be verified. */
+    }
+    availability.reload()
+  }
   async function getReview() {
     setBusy(true)
     setError('')
+    setRepriced(false)
     try {
       setReview(
         await apiRequest<Review>('/api/bookings/review', {
@@ -196,8 +218,11 @@ export function SlotsPage() {
       )
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Không thể xem lại booking.')
-      availability.reload()
-      setSelected([])
+      if (
+        e instanceof ApiError &&
+        ['SLOT_UNAVAILABLE', 'BOOKING_CONFLICT'].includes(e.code || '')
+      )
+        await refreshSelection()
     } finally {
       setBusy(false)
     }
@@ -217,9 +242,19 @@ export function SlotsPage() {
       })
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Không thể xác nhận booking.')
-      setReview(null)
-      setSelected([])
-      availability.reload()
+      if (e instanceof ApiError && e.code === 'QUOTE_CHANGED' && e.review) {
+        setError('')
+        setReview(e.review)
+        setSelected(e.review.slot_ids)
+        setRepriced(true)
+        availability.reload()
+      } else if (
+        e instanceof ApiError &&
+        ['SLOT_UNAVAILABLE', 'BOOKING_CONFLICT'].includes(e.code || '')
+      ) {
+        setReview(null)
+        await refreshSelection()
+      }
     } finally {
       setBusy(false)
     }
@@ -258,7 +293,7 @@ export function SlotsPage() {
           thể chọn.
         </p>
       </div>
-      {error && <ErrorNotice message={error} />}
+      {error && !review && <ErrorNotice message={error} />}
       {court.error && (
         <ErrorNotice message={court.error} retry={court.reload} />
       )}
@@ -357,6 +392,22 @@ export function SlotsPage() {
             if (!busy) setReview(null)
           }}
         >
+          {repriced && (
+            <div className="notice warning" role="status">
+              <h3>Giá đã thay đổi · Chưa có booking được tạo</h3>
+              <p>
+                Xem lại từng slot và tổng mới. Chỉ đặt khi bạn xác nhận lại.
+              </p>
+            </div>
+          )}
+          {error && (
+            <>
+              <ErrorNotice message={error} />
+              <Link className="text-link" to="/bookings">
+                Kiểm tra lịch đặt của tôi
+              </Link>
+            </>
+          )}
           <p>{court.data?.name}</p>
           <strong>
             {interval(review.start_at, review.end_at)} ·{' '}
@@ -388,7 +439,11 @@ export function SlotsPage() {
               Đổi lựa chọn
             </button>
             <button disabled={busy} onClick={() => void confirm()}>
-              {busy ? 'Đang xác nhận…' : 'Xác nhận đặt sân'}
+              {busy
+                ? 'Đang xác nhận…'
+                : repriced
+                  ? 'Xác nhận lại giá mới'
+                  : 'Xác nhận đặt sân'}
             </button>
           </div>
         </Modal>

@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import type { ReactNode } from 'react'
 import {
-  BrowserRouter,
+  createBrowserRouter,
+  RouterProvider,
   Link,
   Navigate,
   NavLink,
@@ -10,6 +11,7 @@ import {
   useLocation,
 } from 'react-router'
 import { SessionProvider } from '../components/SessionProvider'
+import { DraftProvider } from '../components/DraftProvider'
 import { useSession } from '../lib/session-context'
 import { ErrorNotice, Loading, Modal } from '../components/ui'
 import { AuthPage } from '../pages/AuthPage'
@@ -73,6 +75,7 @@ function Shell() {
     : [
         { to: '/', label: 'Tìm sân', end: true },
         { to: '/rooms', label: 'Open Play' },
+        { to: '/deals', label: 'Ưu đãi giờ chót' },
         { to: '/bookings', label: 'Lịch đặt' },
       ]
   useEffect(() => {
@@ -269,12 +272,18 @@ function Shell() {
     </>
   )
 }
-export function App() {
-  return (
-    <BrowserRouter>
+const router = createBrowserRouter([
+  {
+    path: '*',
+    element: (
       <SessionProvider>
-        <Shell />
+        <DraftProvider>
+          <Shell />
+        </DraftProvider>
       </SessionProvider>
-    </BrowserRouter>
-  )
+    ),
+  },
+])
+export function App() {
+  return <RouterProvider router={router} />
 }

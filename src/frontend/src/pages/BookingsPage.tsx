@@ -19,6 +19,7 @@ import {
 } from '../components/ui'
 import type { FormSubmit } from '../components/ui'
 import { apiRequest } from '../lib/api'
+import { cancellationMessage } from '../lib/messages'
 import { interval, localDay, money } from '../lib/format'
 import { useResource } from '../lib/use-resource'
 import type { Booking, Room } from '../lib/types'
@@ -121,13 +122,16 @@ export function BookingsPage({ owner = false }: { owner?: boolean }) {
                 <p className="muted">
                   {booking.can_cancel
                     ? 'Có thể hủy toàn bộ booking (trước giờ chơi ít nhất 6 giờ).'
-                    : booking.cancellation_reason}
+                    : cancellationMessage(booking)}
                 </p>
               )}
               <div className="actions">
                 <Link
                   className="button secondary"
                   to={`${prefix}/${booking.id}`}
+                  state={{
+                    search: `${prefix}${params.size ? `?${params}` : ''}`,
+                  }}
                 >
                   Xem chi tiết
                 </Link>
@@ -197,7 +201,12 @@ export function BookingPage({ owner = false }: { owner?: boolean }) {
   const booking = resource.data
   return (
     <>
-      <BackLink to={owner ? '/owner/bookings' : '/bookings'}>
+      <BackLink
+        to={
+          (location.state as { search?: string } | null)?.search ||
+          (owner ? '/owner/bookings' : '/bookings')
+        }
+      >
         Danh sách booking
       </BackLink>
       <PageHeading
@@ -260,8 +269,8 @@ export function BookingPage({ owner = false }: { owner?: boolean }) {
           <>
             <p className="muted">
               {booking.can_cancel
-                ? 'Bạn có thể hủy toàn bộ booking trước giờ chơi ít nhất 6 giờ. Backend sẽ kiểm tra lại khi nhận yêu cầu.'
-                : booking.cancellation_reason}
+                ? 'Bạn có thể hủy toàn bộ lượt đặt trước giờ chơi ít nhất 6 giờ. Điều kiện được kiểm tra lại khi nhận yêu cầu.'
+                : cancellationMessage(booking)}
             </p>
             <div className="actions">
               <button

@@ -5,6 +5,7 @@ import {
   useEffect,
   useId,
   useRef,
+  useState,
 } from 'react'
 import type { ReactNode, ReactElement, FormEvent } from 'react'
 import { Link } from 'react-router'
@@ -109,7 +110,7 @@ const statusLabels: Record<string, string> = {
 export function Badge({ status }: { status: string }) {
   return (
     <span className={`badge badge-${status.toLowerCase()}`}>
-      {statusLabels[status] ? `${statusLabels[status]} · ${status}` : status}
+      {statusLabels[status] || status}
     </span>
   )
 }
@@ -160,12 +161,16 @@ export function Field({
   label,
   children,
   hint,
+  error,
 }: {
   label: string
   children: ReactNode
   hint?: string
+  error?: string
 }) {
   const id = useId()
+  const [invalid, setInvalid] = useState('')
+  const message = error || invalid
   return (
     <div className="field">
       <label htmlFor={id}>{label}</label>
@@ -178,16 +183,54 @@ export function Field({
         const input = child as ReactElement<{
           id?: string
           'aria-describedby'?: string
+          onInvalid?: (event: FormEvent<HTMLInputElement>) => void
+          onInput?: (event: FormEvent<HTMLInputElement>) => void
         }>
         return cloneElement(input, {
           id,
+          ...{
+            'aria-invalid': message ? true : undefined,
+            onInvalid: (event: FormEvent<HTMLInputElement>) => {
+              event.preventDefault()
+              const field = event.currentTarget
+              const v = field.validity
+              setInvalid(
+                v.valueMissing
+                  ? `Vui lòng nhập ${label.toLocaleLowerCase()}.`
+                  : v.rangeUnderflow
+                    ? `Giá trị tối thiểu là ${field.min}.`
+                    : v.rangeOverflow
+                      ? `Giá trị tối đa là ${field.max}.`
+                      : v.stepMismatch
+                        ? 'Giá trị không đúng bước cho phép. Kiểm tra hướng dẫn của trường.'
+                        : v.typeMismatch
+                          ? 'Vui lòng nhập đúng định dạng.'
+                          : 'Kiểm tra định dạng và giới hạn của trường này.'
+              )
+              if (field.form?.querySelector(':invalid') === field) field.focus()
+              input.props.onInvalid?.(event)
+            },
+            onInput: (event: FormEvent<HTMLInputElement>) => {
+              setInvalid('')
+              input.props.onInput?.(event)
+            },
+          },
           'aria-describedby':
-            [input.props['aria-describedby'], hint ? `${id}-hint` : '']
+            [
+              input.props['aria-describedby'],
+              hint ? `${id}-hint` : '',
+              message ? `${id}-error` : '',
+            ]
               .filter(Boolean)
               .join(' ') || undefined,
         })
       })}
       {hint && <small id={`${id}-hint`}>{hint}</small>}
+      {message && (
+        <small className="field-error" id={`${id}-error`} role="alert">
+          {message}
+        </small>
+      )}
     </div>
   )
 }
@@ -228,7 +271,7 @@ export function Modal({
         <button
           type="button"
           className="icon-button secondary"
-          aria-label="Close dialog"
+          aria-label="Đóng hộp thoại"
           onClick={onClose}
         >
           <Icon name="close" />
@@ -247,6 +290,7 @@ export function ConfirmDialog({
   busy,
   error,
   danger = false,
+  allowKeepWhileBusy = false,
 }: {
   title: string
   children: ReactNode
@@ -256,18 +300,23 @@ export function ConfirmDialog({
   busy: boolean
   error: string
   danger?: boolean
+  allowKeepWhileBusy?: boolean
 }) {
   return (
     <Modal
       title={title}
       onClose={() => {
-        if (!busy) onClose()
+        if (!busy || allowKeepWhileBusy) onClose()
       }}
     >
       <div className="dialog-copy">{children}</div>
       {error && <ErrorNotice message={error} />}
       <div className="actions">
-        <button className="secondary" disabled={busy} onClick={onClose}>
+        <button
+          className="secondary"
+          disabled={busy && !allowKeepWhileBusy}
+          onClick={onClose}
+        >
           Giữ nguyên / Quay lại
         </button>
         <button
@@ -281,43 +330,76 @@ export function ConfirmDialog({
     </Modal>
   )
 }
-export function CourtImage({
+function CourtImageContent({
   urls,
   name,
   sport,
+  detail = false,
 }: {
   urls: string[]
   name: string
   sport: string
+  detail?: boolean
 }) {
+  const [broken, setBroken] = useState(false)
   const normalized = sport.toLocaleLowerCase()
   const illustration =
     normalized.includes('bóng đá') || normalized.includes('football')
       ? 'football'
       : normalized.includes('bóng rổ') || normalized.includes('basketball')
         ? 'basketball'
-        : 'badminton'
-  return urls[0] ? (
-    <img className="court-image" src={urls[0]} alt={name} loading="lazy" />
+        : normalized.includes('cầu lông') || normalized.includes('badminton')
+          ? 'badminton'
+          : 'generic'
+  return urls[0] && !broken ? (
+    <img
+      className="court-image"
+      src={urls[0]}
+      alt={name}
+      loading="lazy"
+      referrerPolicy="no-referrer"
+      onError={() => setBroken(true)}
+    />
+  ) : illustration === 'generic' ? (
+    <div
+      className="court-placeholder generic-court"
+      role="img"
+      aria-label={`Chưa có ảnh tải được cho sân ${sport || 'thể thao'}`}
+    >
+      <Icon size={48} />
+      <span>{sport || 'Sân thể thao'} · Chưa có ảnh tải được</span>
+    </div>
   ) : (
     <div className="court-placeholder">
       <picture>
-        {illustration === 'badminton' && (
+        {illustration === 'badminton' && !detail && (
           <source
             media="(max-width: 560px)"
             srcSet="/images/court-mobile.svg"
           />
         )}
         <img
-          src={`/images/court-${illustration}.svg`}
-          width="360"
-          height="150"
+          src={
+            detail && illustration === 'badminton'
+              ? '/images/court-detail.svg'
+              : `/images/court-${illustration}.svg`
+          }
+          width={detail && illustration === 'badminton' ? 680 : 360}
+          height={detail && illustration === 'badminton' ? 300 : 150}
           alt={`Hình minh họa ${sport}; chưa có ảnh sân thực tế`}
           loading="lazy"
         />
       </picture>
     </div>
   )
+}
+export function CourtImage(props: {
+  urls: string[]
+  name: string
+  sport: string
+  detail?: boolean
+}) {
+  return <CourtImageContent key={props.urls[0] || ''} {...props} />
 }
 export function BackLink({
   to,

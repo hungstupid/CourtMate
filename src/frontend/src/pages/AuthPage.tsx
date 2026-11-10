@@ -61,16 +61,18 @@ export function AuthPage({ register = false }: { register?: boolean }) {
         'auth/weak-password': 'Chọn mật khẩu mạnh hơn, ít nhất 6 ký tự.',
         'auth/invalid-email': 'Nhập email hợp lệ.',
         'auth/invalid-credential': 'Email hoặc mật khẩu không đúng.',
+        'auth/wrong-password': 'Email hoặc mật khẩu không đúng.',
+        'auth/user-not-found': 'Email hoặc mật khẩu không đúng.',
         'auth/too-many-requests':
-          'Too many attempts. Wait a moment and try again.',
+          'Bạn đã thử quá nhiều lần. Vui lòng đợi rồi thử lại.',
         'auth/network-request-failed':
-          'Unable to connect. Check your connection and retry.',
+          'Không thể kết nối. Kiểm tra mạng và thử lại.',
       }
       setError(
         messages[code] ||
           (error instanceof Error && error.name === 'ApiError'
             ? error.message
-            : 'Authentication failed. Check your credentials and try again.')
+            : 'Email hoặc mật khẩu không đúng. Vui lòng kiểm tra và thử lại.')
       )
     } finally {
       setBusy(false)
@@ -131,7 +133,7 @@ export function AuthPage({ register = false }: { register?: boolean }) {
               : 'Dùng email và mật khẩu đã đăng ký.'}
           </p>
           {!firebaseAuth ? (
-            <ErrorNotice message="Sign-in is temporarily unavailable. Please try again later." />
+            <ErrorNotice message="Đăng nhập tạm thời không khả dụng. Vui lòng thử lại sau." />
           ) : session.status === 'loading' ? (
             <Loading>Đang tải phiên đăng nhập…</Loading>
           ) : (

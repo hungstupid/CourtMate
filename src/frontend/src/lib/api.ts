@@ -1,4 +1,5 @@
 import { firebaseAuth } from './firebase'
+import type { Review } from './types'
 
 export const API_BASE_URL = (
   import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000'
@@ -6,6 +7,8 @@ export const API_BASE_URL = (
 
 export class ApiError extends Error {
   code?: string
+  review?: Review
+  fieldErrors: Record<string, string> = {}
   status: number
   kind: 'http' | 'network' | 'timeout' | 'cancelled'
   constructor(
@@ -65,7 +68,7 @@ export async function apiRequest<T>(
   try {
     if (authenticated) {
       const user = firebaseAuth?.currentUser
-      if (!user) throw new ApiError(401, 'Sign in to continue.')
+      if (!user) throw new ApiError(401, 'Vui lòng đăng nhập để tiếp tục.')
       const token = await abortable(user.getIdToken(), combined)
       headers.set('Authorization', `Bearer ${token}`)
     }
@@ -77,10 +80,10 @@ export async function apiRequest<T>(
     })
     if (!response.ok) {
       const messages: Record<number, string> = {
-        401: 'Your session expired. Sign in again.',
-        403: 'You do not have permission for this action.',
-        409: 'This information changed. Refresh and try again.',
-        422: 'Check the information you entered.',
+        401: 'Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.',
+        403: 'Bạn không có quyền thực hiện thao tác này.',
+        409: 'Dữ liệu đã thay đổi. Vui lòng làm mới và thử lại.',
+        422: 'Vui lòng kiểm tra thông tin đã nhập.',
       }
       const payload: unknown = await response.json().catch(() => null)
       const detail =
@@ -95,54 +98,84 @@ export async function apiRequest<T>(
           ? detail.code
           : undefined
       const business: Record<string, string> = {
-        ACCOUNT_UNREGISTERED: 'Complete your account registration to continue.',
+        ACCOUNT_UNREGISTERED: 'Hoàn tất đăng ký tài khoản để tiếp tục.',
         QUOTE_CHANGED:
-          'The price changed. Review the current slots and total before confirming again.',
+          'Giá đã thay đổi. Xem lại từng slot và tổng mới trước khi xác nhận lại.',
         SLOT_UNAVAILABLE:
-          'A selected slot is no longer available. Refresh and choose another time.',
+          'Một khung giờ đã chọn không còn trống. Lịch đã được kiểm tra lại; hãy chọn giờ phù hợp.',
         BOOKING_CONFLICT:
-          'Someone booked this interval. Refresh and choose another time.',
+          'Khung giờ vừa được người khác đặt. Hãy kiểm tra lịch và chọn lại.',
         INVALID_SELECTION:
-          'Select consecutive available slots on one day, totalling 60–240 minutes.',
-        ROOM_CLOSED:
-          'This room is closed. Joining and leaving are no longer available.',
+          'Chọn các slot trống liền nhau trong cùng ngày, tổng từ 60 đến 240 phút.',
+        ROOM_CLOSED: 'Phòng đã đóng, không thể tham gia hoặc rời phòng.',
         ROOM_FULL:
-          'The final place was taken. Refresh to see the current room.',
-        ALREADY_MEMBER: 'You already joined this room.',
-        ROOM_ALREADY_EXISTS: 'This booking already has an Open Play room.',
-        INVALID_CAPACITY:
-          'Check the allowed capacity shown for this court or room.',
+          'Chỗ cuối cùng vừa được nhận. Làm mới để xem trạng thái phòng.',
+        ALREADY_MEMBER: 'Bạn đã tham gia phòng này.',
+        ROOM_ALREADY_EXISTS: 'Lượt đặt này đã có một phòng Open Play.',
+        INVALID_CAPACITY: 'Kiểm tra giới hạn số người của sân hoặc phòng.',
         ROOM_CAPACITY_CONFLICT:
-          'This capacity would invalidate an existing Open Play room.',
+          'Số người mới không đáp ứng sức chứa của một phòng Open Play hiện có.',
         BOOKING_PROTECTED:
-          'An existing confirmed booking protects this interval and regular price.',
+          'Khung giờ đã có lượt đặt xác nhận; không thể thay đổi giờ và giá đã được bảo vệ.',
         BATCH_OVERLAP:
-          'Draft rows overlap. Correct the times; nothing was published.',
+          'Các dòng nháp bị trùng giờ. Chỉnh lại thời gian; chưa có slot nào được công bố.',
         SLOT_OVERLAP:
-          'A slot overlaps the published schedule. Nothing was published.',
-        OUTSIDE_HOURS: 'The slot must fit the court’s operating hours.',
+          'Khung giờ trùng với lịch đã công bố. Chưa có slot nào được công bố thêm.',
+        OUTSIDE_HOURS: 'Khung giờ phải nằm trong giờ hoạt động của sân.',
         MAINTENANCE_CONFLICT:
-          'A slot overlaps maintenance. Choose another interval.',
-        SCHEDULE_CONFLICT: 'These hours would invalidate a published slot.',
+          'Khung giờ trùng với lịch bảo trì. Vui lòng chọn khoảng khác.',
+        SCHEDULE_CONFLICT:
+          'Giờ hoạt động mới không bao phủ lịch đã công bố. Vui lòng kiểm tra lại.',
         MANUAL_WINDOW:
-          'Manual offers require a slot starting within 24 hours. Choose automatic for a later slot.',
-        OFFER_EXISTS: 'This slot already has a scheduled or active offer.',
+          'Ưu đãi thủ công chỉ áp dụng cho slot bắt đầu trong 24 giờ tới. Chọn tự động để đặt lịch sớm hơn.',
+        OFFER_EXISTS: 'Slot này đã có ưu đãi được hẹn hoặc đang áp dụng.',
         OFFER_STATE_CHANGED:
-          'The offer state changed. Refresh and confirm the appropriate action.',
+          'Trạng thái ưu đãi đã thay đổi. Làm mới và xác nhận thao tác phù hợp.',
         INVALID_OFFER_PRICE:
-          'Offer price must be a positive whole-VND amount below the regular quote.',
+          'Giá ưu đãi phải là số nguyên dương và thấp hơn giá thường.',
         CANCELLATION_NOT_ALLOWED:
-          'Cancellation requires a confirmed booking at least six hours before play.',
+          'Chỉ có thể hủy lượt đặt đã xác nhận trước giờ chơi ít nhất 6 giờ.',
       }
       const error = new ApiError(
         response.status,
         (code && business[code]) ||
           messages[response.status] ||
           (response.status >= 500
-            ? 'The service is temporarily unavailable. Please retry.'
-            : 'The request could not be completed.')
+            ? 'Dịch vụ tạm thời không khả dụng. Vui lòng thử lại.'
+            : 'Không thể hoàn tất yêu cầu. Vui lòng thử lại.')
       )
       error.code = code
+      if (Array.isArray(detail))
+        for (const item of detail) {
+          if (
+            item &&
+            Array.isArray(item.loc) &&
+            item.loc[0] === 'body' &&
+            typeof item.loc[1] === 'string'
+          )
+            error.fieldErrors[item.loc[1]] = [
+              'string_too_short',
+              'missing',
+            ].includes(item.type)
+              ? 'Vui lòng điền thông tin, không để trống hoặc chỉ nhập khoảng trắng.'
+              : 'Giá trị không hợp lệ. Kiểm tra định dạng và giới hạn của trường.'
+        }
+      if (
+        code === 'QUOTE_CHANGED' &&
+        detail &&
+        typeof detail === 'object' &&
+        'review' in detail
+      ) {
+        const review = detail.review as Review
+        if (
+          review &&
+          Array.isArray(review.slot_ids) &&
+          Array.isArray(review.slots) &&
+          typeof review.quote === 'string' &&
+          Number.isSafeInteger(review.total_price_vnd)
+        )
+          error.review = review
+      }
       throw error
     }
     return response.status === 204
@@ -155,9 +188,13 @@ export async function apiRequest<T>(
       throw error
     }
     if (signal?.aborted)
-      throw new ApiError(0, 'Request cancelled.', 'cancelled')
+      throw new ApiError(0, 'Yêu cầu đã được dừng.', 'cancelled')
     if (timeout.aborted)
-      throw new ApiError(0, 'The request timed out. Please retry.', 'timeout')
+      throw new ApiError(
+        0,
+        'Yêu cầu quá thời gian chờ. Vui lòng thử lại.',
+        'timeout'
+      )
     if (
       typeof error === 'object' &&
       error !== null &&
@@ -171,11 +208,14 @@ export async function apiRequest<T>(
       ].includes(error.code)
     ) {
       window.dispatchEvent(new Event('courtmate:session-expired'))
-      throw new ApiError(401, 'Your session expired. Sign in again.')
+      throw new ApiError(
+        401,
+        'Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.'
+      )
     }
     throw new ApiError(
       0,
-      'Unable to connect. Check your connection and retry.',
+      'Không thể kết nối. Kiểm tra mạng và thử lại.',
       'network'
     )
   }

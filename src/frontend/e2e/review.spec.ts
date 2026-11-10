@@ -364,7 +364,7 @@ test('AC-F03-01 real Owner photo URL decodes in discovery and court details', as
   const owner = await actor(browser, 'photo', true)
   try {
     const c = await court(owner.page, 'Photo', 'Tennis', [photo])
-    await owner.page.goto(`/?name=${encodeURIComponent(c.name)}`)
+    await owner.page.goto(`/?q=${encodeURIComponent(c.name)}`)
     const image = owner.page.getByRole('img', { name: c.name, exact: true })
     await expect(image).toHaveAttribute('src', photo)
     expect(
@@ -388,7 +388,7 @@ test('AC-F03-01 real Owner photo URL decodes in discovery and court details', as
   }
 })
 
-test('AC-F06-15 switching two owned courts and dates discards drafts and scopes booked/blocked/unpublished actions', async ({
+test('AC-F06-15 switching two owned courts and dates confirms draft discard and scopes booked/blocked/unpublished actions', async ({
   browser,
 }) => {
   const owner = await actor(browser, 'calendar', true)
@@ -474,6 +474,9 @@ test('AC-F06-15 switching two owned courts and dates discards drafts and scopes 
       await owner.page
         .getByLabel('Ngày xem lịch', { exact: true })
         .fill(nextDay)
+      await owner.page
+        .getByRole('button', { name: 'Bỏ thay đổi và tiếp tục', exact: true })
+        .click()
       await expect(
         owner.page.getByRole('heading', { name: '8 slot nháp' })
       ).toHaveCount(0)
@@ -494,6 +497,9 @@ test('AC-F06-15 switching two owned courts and dates discards drafts and scopes 
       await owner.page
         .getByLabel('Sân đang quản lý', { exact: true })
         .selectOption(other.c.id)
+      await owner.page
+        .getByRole('button', { name: 'Bỏ thay đổi và tiếp tục', exact: true })
+        .click()
       await expect(
         owner.page.getByRole('heading', { name: '8 slot nháp' })
       ).toHaveCount(0)
@@ -718,23 +724,25 @@ test('F09 real manual offer, accepted booking, Keep/deactivate and cancellation 
     expect(before.total_price_vnd).toBe(90000)
     await accessible(player.page, 'Confirmed discounted booking')
     await owner.page.reload()
-    await expect(owner.page.locator('.offer-record')).toContainText('ACTIVE')
+    await expect(owner.page.locator('.offer-record')).toContainText(
+      'Đang hoạt động'
+    )
     await owner.page
       .getByRole('button', { name: 'Tắt ưu đãi', exact: true })
       .click()
     await owner.page
       .getByRole('button', { name: 'Giữ nguyên / Quay lại', exact: true })
       .click()
-    await expect(owner.page.locator('.offer-record')).toContainText('ACTIVE')
+    await expect(owner.page.locator('.offer-record')).toContainText(
+      'Đang hoạt động'
+    )
     await owner.page
       .getByRole('button', { name: 'Tắt ưu đãi', exact: true })
       .click()
     await owner.page
       .getByRole('button', { name: 'Xác nhận tắt', exact: true })
       .click()
-    await expect(owner.page.locator('.offer-record')).toContainText(
-      'DEACTIVATED'
-    )
+    await expect(owner.page.locator('.offer-record')).toContainText('Đã tắt')
     expect(await api(player.page, `/api/bookings/${bookingId}`)).toEqual(before)
     await player.page
       .getByRole('button', { name: 'Hủy toàn bộ booking', exact: true })

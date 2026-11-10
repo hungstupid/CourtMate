@@ -121,7 +121,7 @@ test('session outage, retry and expiry fail closed', async ({ page }) => {
     })
   })
   await page.getByRole('button', { name: 'Tạo tài khoản', exact: true }).click()
-  await expect(page.getByRole('alert')).toContainText('temporarily unavailable')
+  await expect(page.getByRole('alert')).toContainText('tạm thời không khả dụng')
   await expect(
     page.getByRole('heading', { name: 'Thông tin cá nhân' })
   ).toHaveCount(0)
@@ -137,7 +137,9 @@ test('session outage, retry and expiry fail closed', async ({ page }) => {
   await expect(
     page.getByRole('button', { name: 'Đăng nhập', exact: true })
   ).toBeVisible()
-  await expect(page.getByRole('alert')).toContainText('session expired')
+  await expect(page.getByRole('alert')).toContainText(
+    'Phiên đăng nhập đã hết hạn'
+  )
   await expect(
     page.getByRole('heading', { name: 'Thông tin cá nhân' })
   ).toHaveCount(0)

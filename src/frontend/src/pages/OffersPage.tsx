@@ -10,6 +10,8 @@ import {
   PageHeading,
 } from '../components/ui'
 import { apiRequest } from '../lib/api'
+import { useDraftGuard } from '../lib/draft-context'
+import { offerMessage } from '../lib/messages'
 import { interval, localDay, money } from '../lib/format'
 import { useResource } from '../lib/use-resource'
 import type { Court, Offer, Slot } from '../lib/types'
@@ -24,6 +26,7 @@ function OfferManager({ slot, court }: { slot: Slot; court: Court }) {
     offer?: Offer
   } | null>(null)
   const [busy, setBusy] = useState(false)
+  const guard = useDraftGuard(busy)
   const [error, setError] = useState('')
   const [message, setMessage] = useState('')
   const regular = slot.regular_price_vnd ?? slot.price_vnd
@@ -54,6 +57,7 @@ function OfferManager({ slot, court }: { slot: Slot; court: Court }) {
         }
       )
       setConfirm(null)
+      guard.markClean()
       setMessage('Ưu đãi đã cập nhật. Giá booking đã xác nhận được giữ nguyên.')
       history.reload()
     } catch (e) {
@@ -74,8 +78,8 @@ function OfferManager({ slot, court }: { slot: Slot; court: Court }) {
           {court.name} · {interval(slot.start_at, slot.end_at)}
         </h2>
         <p>
-          Giá thường {money(regular)} · {slot.status}. Ưu đãi chỉ áp dụng cho
-          slot đã chọn.
+          Giá thường {money(regular)} · <Badge status={slot.status} />. Ưu đãi
+          chỉ áp dụng cho slot đã chọn.
         </p>
       </div>
       {message && (
@@ -103,11 +107,7 @@ function OfferManager({ slot, court }: { slot: Slot; court: Court }) {
                 {interval(offer.applies_at, offer.applies_at).split('–')[0]} ·
                 Ngưỡng {Number(offer.lead_hours)} giờ
               </p>
-              <p className="muted">
-                {offer.eligible
-                  ? 'Đang áp dụng cho lượt đặt mới.'
-                  : offer.reason}
-              </p>
+              <p className="muted">{offerMessage(offer)}</p>
               {['SCHEDULED', 'ACTIVE'].includes(offer.status) && (
                 <button
                   className="ghost"
@@ -129,6 +129,7 @@ function OfferManager({ slot, court }: { slot: Slot; court: Court }) {
           ))}
           {!nonterminal && (
             <form
+              onChangeCapture={guard.markDirty}
               className="offer-form"
               onSubmit={(e) => {
                 e.preventDefault()
@@ -150,7 +151,10 @@ function OfferManager({ slot, court }: { slot: Slot; court: Court }) {
                   type="button"
                   className={mode === 'manual' ? 'secondary' : 'ghost'}
                   aria-pressed={mode === 'manual'}
-                  onClick={() => setMode('manual')}
+                  onClick={() => {
+                    if (mode !== 'manual') guard.markDirty()
+                    setMode('manual')
+                  }}
                 >
                   Thủ công
                 </button>
@@ -158,7 +162,10 @@ function OfferManager({ slot, court }: { slot: Slot; court: Court }) {
                   type="button"
                   className={mode === 'automatic' ? 'secondary' : 'ghost'}
                   aria-pressed={mode === 'automatic'}
-                  onClick={() => setMode('automatic')}
+                  onClick={() => {
+                    if (mode !== 'automatic') guard.markDirty()
+                    setMode('automatic')
+                  }}
                 >
                   Tự động
                 </button>
@@ -201,14 +208,20 @@ function OfferManager({ slot, court }: { slot: Slot; court: Court }) {
                     <button
                       type="button"
                       className="ghost"
-                      onClick={() => setLead('3')}
+                      onClick={() => {
+                        if (lead !== '3') guard.markDirty()
+                        setLead('3')
+                      }}
                     >
                       3 giờ
                     </button>
                     <button
                       type="button"
                       className="ghost"
-                      onClick={() => setLead('24')}
+                      onClick={() => {
+                        if (lead !== '24') guard.markDirty()
+                        setLead('24')
+                      }}
                     >
                       24 giờ
                     </button>

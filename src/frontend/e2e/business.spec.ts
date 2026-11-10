@@ -235,11 +235,11 @@ test('real Owner → discovery → multi-slot booking → Open Play → close �
       owner.page.getByText(player.email, { exact: true })
     ).toBeVisible()
     await expect(owner.page.locator('.badge-confirmed')).toContainText(
-      'CONFIRMED'
+      'Đã xác nhận'
     )
     await player.page.goto(bookingUrl)
     await expect(player.page.locator('.badge-confirmed')).toContainText(
-      'CONFIRMED'
+      'Đã xác nhận'
     )
     await player.page
       .getByRole('button', { name: 'Hủy toàn bộ booking', exact: true })
@@ -248,7 +248,7 @@ test('real Owner → discovery → multi-slot booking → Open Play → close �
       .getByRole('button', { name: 'Xác nhận hủy booking', exact: true })
       .click()
     await expect(player.page.locator('.badge-cancelled')).toContainText(
-      'CANCELLED'
+      'Đã hủy'
     )
     await player.page.goto(`/courts/${court}/slots?date=${day}`)
     await expect(player.page.locator('.slot-row')).toHaveCount(8)
@@ -286,21 +286,21 @@ test('Owner automatic-offer confirmation, cancellation, profile and maintenance'
     await owner.page
       .getByRole('button', { name: 'Lưu lịch tự động', exact: true })
       .click()
-    await expect(owner.page.locator('.offer-record')).toContainText('SCHEDULED')
+    await expect(owner.page.locator('.offer-record')).toContainText('Đã hẹn')
     await owner.page
       .getByRole('button', { name: 'Hủy lịch ưu đãi', exact: true })
       .click()
     await owner.page
       .getByRole('button', { name: 'Giữ nguyên / Quay lại', exact: true })
       .click()
-    await expect(owner.page.locator('.offer-record')).toContainText('SCHEDULED')
+    await expect(owner.page.locator('.offer-record')).toContainText('Đã hẹn')
     await owner.page
       .getByRole('button', { name: 'Hủy lịch ưu đãi', exact: true })
       .click()
     await owner.page
       .getByRole('button', { name: 'Xác nhận hủy lịch', exact: true })
       .click()
-    await expect(owner.page.locator('.offer-record')).toContainText('CANCELLED')
+    await expect(owner.page.locator('.offer-record')).toContainText('Đã hủy')
     await owner.page.goto('/profile')
     await owner.page
       .getByLabel('Tên hiển thị', { exact: true })

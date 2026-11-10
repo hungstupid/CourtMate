@@ -11,6 +11,7 @@ import {
 } from '../components/ui'
 import type { FormSubmit } from '../components/ui'
 import { apiRequest } from '../lib/api'
+import { useDraftGuard } from '../lib/draft-context'
 import {
   formValue,
   interval,
@@ -64,6 +65,8 @@ function HoursEditor({
 }) {
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
+  const guard = useDraftGuard(busy)
+  const [enabled, setEnabled] = useState(initial.map((row) => row.weekday))
   async function submit(event: FormSubmit) {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
@@ -97,6 +100,7 @@ function HoursEditor({
         method: 'PUT',
         body: { windows },
       })
+      guard.markClean()
       onSave()
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Không thể lưu giờ hoạt động.')
@@ -108,14 +112,14 @@ function HoursEditor({
     <Modal
       title="Giờ hoạt động của sân"
       onClose={() => {
-        if (!busy) onClose()
+        if (!busy) guard.protect(onClose)
       }}
     >
       <p className="muted">
         Giờ Việt Nam · HH:mm; có thể đóng lúc 24:00. Không thay đổi giờ làm mất
         hiệu lực booking đã xác nhận.
       </p>
-      <form onSubmit={(e) => void submit(e)}>
+      <form onChangeCapture={guard.markDirty} onSubmit={(e) => void submit(e)}>
         {weekdays.map((name, weekday) => {
           const row = initial.find((value) => value.weekday === weekday)
           return (
@@ -124,13 +128,21 @@ function HoursEditor({
                 <input
                   type="checkbox"
                   name={`day-${weekday}`}
-                  defaultChecked={Boolean(row)}
+                  checked={enabled.includes(weekday)}
+                  onChange={(event) =>
+                    setEnabled((days) =>
+                      event.target.checked
+                        ? [...days, weekday]
+                        : days.filter((day) => day !== weekday)
+                    )
+                  }
                 />
                 {name}
               </label>
               <Field label={`Mở cửa ${name}`}>
                 <input
                   name={`open-${weekday}`}
+                  disabled={!enabled.includes(weekday)}
                   pattern="(?:[01][0-9]|2[0-3]):[0-5][0-9]"
                   defaultValue={minuteTime(row?.opens_minute ?? 360)}
                   required
@@ -139,6 +151,7 @@ function HoursEditor({
               <Field label={`Đóng cửa ${name}`}>
                 <input
                   name={`close-${weekday}`}
+                  disabled={!enabled.includes(weekday)}
                   pattern="(?:(?:[01][0-9]|2[0-3]):[0-5][0-9]|24:00)"
                   defaultValue={minuteTime(row?.closes_minute ?? 1320)}
                   required
@@ -156,7 +169,7 @@ function HoursEditor({
             type="button"
             className="ghost"
             disabled={busy}
-            onClick={onClose}
+            onClick={() => guard.protect(onClose)}
           >
             Hủy, chưa lưu
           </button>
@@ -181,6 +194,7 @@ function SlotEditor({
 }) {
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
+  const guard = useDraftGuard(busy)
   async function submit(event: FormSubmit) {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
@@ -208,6 +222,7 @@ function SlotEditor({
           },
         }
       )
+      guard.markClean()
       onSave()
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Không thể lưu slot.')
@@ -219,13 +234,13 @@ function SlotEditor({
     <Modal
       title={slot ? 'Sửa slot' : 'Thêm một slot'}
       onClose={() => {
-        if (!busy) onClose()
+        if (!busy) guard.protect(onClose)
       }}
     >
       <p>
         {court.name} · {day}
       </p>
-      <form onSubmit={(e) => void submit(e)}>
+      <form onChangeCapture={guard.markDirty} onSubmit={(e) => void submit(e)}>
         <div className="form-grid">
           <Field label="Bắt đầu">
             <input
@@ -285,7 +300,7 @@ function SlotEditor({
             type="button"
             className="ghost"
             disabled={busy}
-            onClick={onClose}
+            onClick={() => guard.protect(onClose)}
           >
             Hủy
           </button>
@@ -311,8 +326,13 @@ function MaintenanceEditor({
   const [range, setRange] = useState<{ start: string; end: string } | null>(
     null
   )
+  const [draft, setDraft] = useState({
+    start: `${day}T10:00`,
+    end: `${day}T12:00`,
+  })
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
+  const guard = useDraftGuard(busy)
   async function save() {
     setBusy(true)
     setError('')
@@ -324,6 +344,7 @@ function MaintenanceEditor({
           end_at: toInstant(range!.end),
         },
       })
+      guard.markClean()
       onSave()
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Không thể thêm bảo trì.')
@@ -335,11 +356,12 @@ function MaintenanceEditor({
     <Modal
       title={range ? 'Xem trước ảnh hưởng bảo trì' : 'Thêm bảo trì'}
       onClose={() => {
-        if (!busy) onClose()
+        if (!busy) guard.protect(onClose)
       }}
     >
       {!range ? (
         <form
+          onChangeCapture={guard.markDirty}
           onSubmit={(e) => {
             e.preventDefault()
             const data = new FormData(e.currentTarget)
@@ -348,6 +370,7 @@ function MaintenanceEditor({
             if (end <= start) setError('Kết thúc phải sau bắt đầu.')
             else {
               setError('')
+              guard.markDirty()
               setRange({ start, end })
             }
           }}
@@ -356,7 +379,10 @@ function MaintenanceEditor({
             <input
               name="start"
               type="datetime-local"
-              defaultValue={`${day}T10:00`}
+              value={draft.start}
+              onChange={(event) =>
+                setDraft((old) => ({ ...old, start: event.target.value }))
+              }
               required
             />
           </Field>
@@ -364,7 +390,10 @@ function MaintenanceEditor({
             <input
               name="end"
               type="datetime-local"
-              defaultValue={`${day}T12:00`}
+              value={draft.end}
+              onChange={(event) =>
+                setDraft((old) => ({ ...old, end: event.target.value }))
+              }
               required
             />
           </Field>
@@ -387,12 +416,14 @@ function MaintenanceEditor({
               )
               .map((slot) => (
                 <li key={slot.id}>
-                  {interval(slot.start_at, slot.end_at)} · {slot.status}
+                  {interval(slot.start_at, slot.end_at)} ·{' '}
+                  <Badge status={slot.status} />
                 </li>
               ))}
           </ul>
           <p className="muted">
-            Backend sẽ từ chối nếu bảo trì giao với booking đã xác nhận.
+            Không thể tạo bảo trì giao với lượt đặt đã xác nhận. Lịch cũ được
+            giữ nguyên nếu thao tác không thành công.
           </p>
           {error && <ErrorNotice message={error} />}
           <div className="actions">
@@ -428,6 +459,13 @@ function BatchEditor({
   const [preview, setPreview] = useState(false)
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
+  const guard = useDraftGuard(busy)
+  const [config, setConfig] = useState({
+    start: '06:00',
+    end: '14:00',
+    duration: '60',
+    price: String(court.base_price_vnd),
+  })
   function generate(event: FormSubmit) {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
@@ -461,6 +499,7 @@ function BatchEditor({
       return
     }
     setError('')
+    guard.markDirty()
     setDrafts(rows)
   }
   function update(key: number, patch: Partial<Draft>) {
@@ -482,6 +521,7 @@ function BatchEditor({
           })),
         },
       })
+      guard.markClean()
       onSave()
     } catch (e) {
       setError(
@@ -501,13 +541,20 @@ function BatchEditor({
         {court.name} · {day}. Chưa nhận booking cho các slot nháp.
       </PageHeading>
       {!preview && (
-        <form className="form-grid" onSubmit={generate}>
+        <form
+          onChangeCapture={guard.markDirty}
+          className="form-grid"
+          onSubmit={generate}
+        >
           <Field label="Từ giờ">
             <input
               name="start"
               type="time"
               step={1800}
-              defaultValue="06:00"
+              value={config.start}
+              onChange={(event) =>
+                setConfig((old) => ({ ...old, start: event.target.value }))
+              }
               required
             />
           </Field>
@@ -515,7 +562,10 @@ function BatchEditor({
             <input
               name="end"
               pattern="(?:(?:[01][0-9]|2[0-3]):[0-5][0-9]|24:00)"
-              defaultValue="14:00"
+              value={config.end}
+              onChange={(event) =>
+                setConfig((old) => ({ ...old, end: event.target.value }))
+              }
               required
             />
           </Field>
@@ -526,7 +576,10 @@ function BatchEditor({
               min={60}
               max={240}
               step={30}
-              defaultValue={60}
+              value={config.duration}
+              onChange={(event) =>
+                setConfig((old) => ({ ...old, duration: event.target.value }))
+              }
               required
             />
           </Field>
@@ -537,7 +590,10 @@ function BatchEditor({
               min={1}
               step={1}
               max={Number.MAX_SAFE_INTEGER}
-              defaultValue={court.base_price_vnd}
+              value={config.price}
+              onChange={(event) =>
+                setConfig((old) => ({ ...old, price: event.target.value }))
+              }
               required
             />
           </Field>
@@ -546,6 +602,7 @@ function BatchEditor({
       )}
       {!!drafts.length && (
         <form
+          onChangeCapture={guard.markDirty}
           onSubmit={(e) => {
             e.preventDefault()
             setError('')
@@ -668,7 +725,11 @@ function BatchEditor({
           </button>
         </div>
       )}
-      <button className="ghost" disabled={busy} onClick={onClose}>
+      <button
+        className="ghost"
+        disabled={busy}
+        onClick={() => guard.protect(onClose)}
+      >
         Hủy nháp, không công bố
       </button>
     </section>
@@ -690,6 +751,7 @@ function DailySchedule({ court, day }: { court: Court; day: string }) {
   const [editingSlot, setEditingSlot] = useState<Slot | undefined>()
   const [error, setError] = useState('')
   const [busy, setBusy] = useState(false)
+  const guard = useDraftGuard(busy)
   function refresh() {
     setEditor(null)
     slots.reload()
@@ -758,25 +820,31 @@ function DailySchedule({ court, day }: { court: Court; day: string }) {
         <button
           onClick={() => {
             setEditingSlot(undefined)
-            setEditor('slot')
+            guard.protect(() => setEditor('slot'))
           }}
         >
           + Thêm slot
         </button>
-        <button className="secondary" onClick={() => setEditor('batch')}>
+        <button
+          className="secondary"
+          onClick={() => guard.protect(() => setEditor('batch'))}
+        >
           Tạo nhanh nhiều slot
         </button>
-        <button className="secondary" onClick={() => setEditor('maintenance')}>
+        <button
+          className="secondary"
+          onClick={() => guard.protect(() => setEditor('maintenance'))}
+        >
           Thêm bảo trì
         </button>
         <button
           className="ghost"
           disabled={!hours.data}
-          onClick={() => setEditor('hours')}
+          onClick={() => guard.protect(() => setEditor('hours'))}
         >
           Giờ hoạt động
         </button>
-        <button className="ghost" onClick={refresh}>
+        <button className="ghost" onClick={() => guard.protect(refresh)}>
           Làm mới
         </button>
       </div>
@@ -802,7 +870,8 @@ function DailySchedule({ court, day }: { court: Court; day: string }) {
             {window
               ? `Giờ hoạt động ${minuteTime(window.opens_minute)}–${minuteTime(window.closes_minute)}`
               : 'Sân chưa có giờ hoạt động cho ngày này.'}{' '}
-            · Lịch của {court.name}. Chuyển ngày/sân sẽ bỏ nháp chưa công bố.
+            · Lịch của {court.name}. Nháp chưa lưu được giữ cho đến khi bạn xác
+            nhận bỏ thay đổi.
           </p>
           {!rows.length ? (
             <Empty title="Chưa công bố slot">
@@ -867,7 +936,7 @@ function DailySchedule({ court, day }: { court: Court; day: string }) {
                             className="ghost"
                             onClick={() => {
                               setEditingSlot(slot)
-                              setEditor('slot')
+                              guard.protect(() => setEditor('slot'))
                             }}
                           >
                             Sửa

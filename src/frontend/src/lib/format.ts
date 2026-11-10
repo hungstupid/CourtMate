@@ -6,10 +6,10 @@ export const money = (value: number) =>
     maximumFractionDigits: 0,
   }).format(value)
 export const dateLabel = (value: string) =>
-  new Intl.DateTimeFormat('en-GB', {
+  new Intl.DateTimeFormat('vi-VN', {
     timeZone: TIME_ZONE,
     day: 'numeric',
-    month: 'short',
+    month: '2-digit',
     year: 'numeric',
   }).format(new Date(value))
 export const timeLabel = (value: string) =>
