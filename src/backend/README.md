@@ -89,3 +89,5 @@ To apply Ruff formatting before review, run `uv run ruff format .`.
 | `uv.lock` | Resolved dependency versions |
 
 Run commands from this directory so `app.main:app` imports correctly. Use the existing [contribution rules](../../CONTRIBUTING.md) for further changes; this authorized implementation draft remains on `chore/project-bootstrap` and must not be merged automatically.
+
+November release verification: **230 pytest**, **12 Playwright**, frontend lint/typecheck/build, backend Ruff and additive migration/drift checks passed locally. Lighthouse accessibility 100 on the three documented public pages; local 30-VU k6 thresholds passed. Exact scope, pending manual checks and CI/deployment evidence are in [the release report](../../docs/development/frontend-release-report.md).

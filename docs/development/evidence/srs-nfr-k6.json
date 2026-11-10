@@ -1,0 +1,22 @@
+{
+  "environment": "macOS ARM64; Docker PostgreSQL 17; local Uvicorn/Firebase Auth Emulator; Docker k6 2.3.0; not a cloud benchmark",
+  "date": "2026-11-10",
+  "virtual_users": 30,
+  "warmup_seconds": 5,
+  "steady_seconds": 60,
+  "think_time_seconds": 1,
+  "seeded_data": {
+    "courts": 1,
+    "slots": 8,
+    "players": 30,
+    "owners": 1
+  },
+  "mix": "Four read iterations (search/detail/availability/preview) for each review/confirm/cancel iteration; overlapping requests deliberately conflict",
+  "raw_http_requests": 2387,
+  "steady_observations": 2200,
+  "read_p95_ms": 168.49012524999986,
+  "write_p95_ms": 174.21694549999995,
+  "unexpected_error_rate": 0,
+  "raw_http_req_failed_rate": 0.05823209049015501,
+  "interpretation": "The SRS error rate excludes expected HTTP 409 conflicts. Raw k6 http_req_failed includes expected conflicts and is not the SRS error rate. Warm-up has 30 interrupted iterations at its boundary, excluded from steady metrics. This small local dataset does not establish free-tier cloud performance."
+}

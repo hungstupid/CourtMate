@@ -1,3 +1,32 @@
+# Current application contracts — 10 November 2026
+
+This section supersedes the October draft descriptions below. Current SRS and executed evidence: [audit](srs-implementation-audit.md), [release report](frontend-release-report.md). All protected calls use a verified Firebase Bearer ID token; JSON mutations reject extra/protected fields.
+
+| API | Current behavior |
+|---|---|
+| `POST /api/register` `{role:"player"|"owner"}` | After successful Firebase email/password registration, assign exactly one initial backend role. Same-role retry is safe; existing-role changes conflict. Unregistered identities cannot use protected actions. |
+| `GET /api/me`; `GET/PATCH /api/profile` | Profile PATCH accepts only `display_name` (≤100), `contact_preferences` (≤500); role and registration email are read-only. |
+| `GET /api/courts?q=&sport=&area=&start=&end=` | AND filters; trimmed case-insensitive literal name/address/area substring; start/end optional independently, aware instants. Any supplied time bound requires a future AVAILABLE published slot fully inside it. Invalid ranges reject. |
+| `GET /api/courts/{id}`; `/availability?date=YYYY-MM-DD`; `/preview?start=&end=` | Full details/day states or nearest/matching AVAILABLE preview. No two-slot cap. Slot `price_vnd` is effective; `regular_price_vnd` and `offer` preserve pricing context. |
+| `POST /api/owner/courts/{id}/slots/batch` `{slots:[{start_at,end_at,price_vnd}]}` | One selected court/day; validate every draft row and all mutual/existing overlaps before publication. Any invalid row rolls back the whole request. Draft generation/edit/preview is client-local until this request. |
+| `POST /api/bookings/review`; `POST /api/bookings` | `{slot_ids}` → ordered per-slot/current offer quotes, combined interval/duration/total and `quote`. Confirm `{slot_ids,quote}` revalidates atomically; stale quote conflicts and requires explicit fresh review. |
+| `GET /api/bookings`; `GET /api/bookings/{id}`; `POST /api/bookings/{id}/cancel` | Ten newest whole-booking records. Cancellation uses backend HTTP receipt time for the six-hour boundary, rechecks ownership/status under locks, releases the whole selection and closes linked rooms. `can_cancel`, `can_create_room`, `room_id`, court name/capacity support live UI. |
+| `GET /api/owner/bookings[/{id}]` | Owner-scoped records and ordered slot snapshots; only Player registration email/display name are disclosed. Legacy email recovery reads trusted Firebase identity; provider outages show unavailable contact without fabricating data. |
+| `GET /api/rooms?location=`; `GET /api/rooms/{id}` | Public case-insensitive linked-court address/area filter and room details; effective lifecycle, member display names/organizer relation, accepted-total share estimate. No private contact/token/preferences/member IDs. |
+| `GET /api/rooms/{id}/membership` | Player-only projection adding current-user membership/organizer and roster `is_self`; never authorizes via client fields. |
+| `POST /api/bookings/{id}/room` `{capacity}`; `POST /api/rooms/{id}/join|leave|close` | Existing Player/capacity rules; organizer-only close is idempotent and irreversible, retains members and booking. Closure reason records organizer/cancellation/start. |
+| `GET/POST /api/owner/slots/{id}/offers` | Create `{mode:"manual"|"automatic",price_vnd,lead_hours}`. Positive integer offer below regular quote; one SCHEDULED/ACTIVE config per slot; manual ≤24h, automatic 0<h≤24 including fractions and configuration earlier than 24h. |
+| `POST /api/owner/offers/{id}/cancel|deactivate` | Explicit confirmed pending cancellation versus active deactivation; state is recomputed before mutation. A 409 state-change response retains current derived lifecycle; terminal states never revive. |
+| `GET /api/deals` | Public currently eligible effective slot offers; no mocked deals. |
+
+Existing Owner court GET/POST/PATCH, hours GET/PUT, slot GET/POST/PATCH and maintenance GET/POST/DELETE routes remain available. Every writer takes the existing parent Court lock; regular slot quotes and accepted booking snapshots remain separate. Automatic quotes evaluate current server time/availability on reads and confirmation, without requiring a cron job.
+
+---
+
+# Historical October API notes
+
+The following records describe the earlier draft and must not override the current contracts above.
+
 # Backend API draft for frontend integration
 
 This is an implementation draft for PA3–PA5 review, not a completed business UI

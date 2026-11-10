@@ -1,0 +1,68 @@
+[
+  {
+    "page": "home",
+    "viewport_width": 1280,
+    "score": 100,
+    "lighthouse": "13.6.0",
+    "browser": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36",
+    "fetch_time": "2026-11-10T14:45:22.751Z",
+    "settings": {
+      "onlyCategories": [
+        "accessibility"
+      ],
+      "formFactor": "desktop",
+      "screenEmulation": {
+        "mobile": false,
+        "width": 1280,
+        "height": 900,
+        "deviceScaleFactor": 1,
+        "disabled": false
+      }
+    },
+    "failed_audits": []
+  },
+  {
+    "page": "rooms",
+    "viewport_width": 375,
+    "score": 100,
+    "lighthouse": "13.6.0",
+    "browser": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36",
+    "fetch_time": "2026-11-10T14:46:57.644Z",
+    "settings": {
+      "onlyCategories": [
+        "accessibility"
+      ],
+      "formFactor": "mobile",
+      "screenEmulation": {
+        "mobile": true,
+        "width": 375,
+        "height": 900,
+        "deviceScaleFactor": 1,
+        "disabled": false
+      }
+    },
+    "failed_audits": []
+  },
+  {
+    "page": "slots",
+    "viewport_width": 768,
+    "score": 100,
+    "lighthouse": "13.6.0",
+    "browser": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36",
+    "fetch_time": "2026-11-10T14:47:09.831Z",
+    "settings": {
+      "onlyCategories": [
+        "accessibility"
+      ],
+      "formFactor": "desktop",
+      "screenEmulation": {
+        "mobile": false,
+        "width": 768,
+        "height": 900,
+        "deviceScaleFactor": 1,
+        "disabled": false
+      }
+    },
+    "failed_audits": []
+  }
+]

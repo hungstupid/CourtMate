@@ -1,199 +1,217 @@
 # SRS implementation audit
 
-Source: [current SRS](https://docs.google.com/document/d/1zL3Ra_0LceKOF_2pZa9iWpq7HIbRtALB/edit), modified **2026-11-10T11:58:03.963Z**, fetched directly through Drive on 10 November 2026. This is a DOCX-backed document, not the October implementation baseline. All 49 FRs, acceptance scenarios and BR-01–10 below are extracted from this source once. Submitted PA documents are unchanged.
+Source: [current SRS](https://docs.google.com/document/d/1zL3Ra_0LceKOF_2pZa9iWpq7HIbRtALB/edit), modified **2026-11-10T11:58:03.963Z**, read directly through Drive on 10 November 2026. The DOCX-backed source defines **49 FR, 106 AC, 10 BR, 5 NFR**. Source was extracted once and reused; no submitted PA or teammate document was edited.
 
-Figma: [current design](https://www.figma.com/design/2EFad23oucNwIjREtvVUPE/SE_FE_Design_Court-Mate?node-id=23-561). Session creation succeeded; design-context request was rejected by the Figma Starter MCP call limit; direct web access returned HTTP 403. **Visual fidelity is BLOCKED/unverified.** SRS screen specifications can guide functional implementation but cannot establish Figma fidelity.
+Figma: [current original file, page 23:561](https://www.figma.com/design/2EFad23oucNwIjREtvVUPE/SE_FE_Design_Court-Mate?node-id=23-561). Initial Starter MCP limit/HTTP 403 was resolved after the user enabled Education access. Current metadata and high-fidelity design context plus screenshots were then read successfully. No duplicate/file edit was performed. See [Figma mapping](figma-implementation.md).
 
-## Status interpretation
+Status: DONE = implemented with relevant executed evidence; PARTIAL = remaining behavior or exact scenario verification explicitly identified; MISSING = absent; MISMATCH = contrary to current source. Initial column preserves findings at `a1cf7b9`. DONE does not imply every possible browser/device combination or cloud write/load test was run.
 
-DONE requires implemented behavior and executed relevant evidence. PARTIAL means some layers/scenarios remain unverified. MISSING means no implementation. MISMATCH means existing behavior contradicts the latest source. This initial audit records the starting state at `a1cf7b9`; final evidence will be appended after execution. No historical check is relabeled as current PASS.
+**Current coverage:** 48 FR DONE, 1 FR PARTIAL (optional external map verification); 95 AC DONE, 11 AC PARTIAL; 10 BR implemented and regression-covered. No current MISSING/MISMATCH business feature identified. NFR-05 remains PARTIAL because a human screen-reader session and full manual contrast/focus review were not run.
 
-## Functional requirements — initial audit
+## Functional requirements
 
-| FR | Requirement | Initial status | Evidence / gap |
+| FR | Requirement | Initial | Current | Implementation and executed evidence |
+|---|---|---|---|---|
+| FR-001 | Register by email and select an initial role. | MISMATCH | DONE | `app/core/auth.py`, `app/api/identity.py`; `AuthPage.tsx`, `SessionProvider.tsx`. `test_srs_alignment::test_initial_roles_are_validated_once_and_profile_cannot_escalate`; `test_identity.py`, `test_auth_errors.py`; `bootstrap.spec.ts`, session outage E2E. |
+| FR-002 | Sign in by email and sign out. | PARTIAL | DONE | `app/core/auth.py`, `app/api/identity.py`; `AuthPage.tsx`, `SessionProvider.tsx`. `test_srs_alignment::test_initial_roles_are_validated_once_and_profile_cannot_escalate`; `test_identity.py`, `test_auth_errors.py`; `bootstrap.spec.ts`, session outage E2E. |
+| FR-003 | Assign user roles. | MISMATCH | DONE | `app/core/auth.py`, `app/api/identity.py`; `AuthPage.tsx`, `SessionProvider.tsx`. `test_srs_alignment::test_initial_roles_are_validated_once_and_profile_cannot_escalate`; `test_identity.py`, `test_auth_errors.py`; `bootstrap.spec.ts`, session outage E2E. |
+| FR-004 | Require authentication for protected actions. | PARTIAL | DONE | `app/core/auth.py`, `app/api/identity.py`; `AuthPage.tsx`, `SessionProvider.tsx`. `test_srs_alignment::test_initial_roles_are_validated_once_and_profile_cannot_escalate`; `test_identity.py`, `test_auth_errors.py`; `bootstrap.spec.ts`, session outage E2E. |
+| FR-005 | Check role and resource ownership. | PARTIAL | DONE | `app/core/auth.py`, `app/api/identity.py`; `AuthPage.tsx`, `SessionProvider.tsx`. `test_srs_alignment::test_initial_roles_are_validated_once_and_profile_cannot_escalate`; `test_identity.py`, `test_auth_errors.py`; `bootstrap.spec.ts`, session outage E2E. |
+| FR-006 | Display active court listings. | PARTIAL | DONE | `app/api/courts.py`, `services/courts.py`; `CourtsPage.tsx`, `SportSelect.tsx`. `test_srs_alignment::test_search_address_optional_bounds_preview_and_atomic_batch`; `business.spec.ts` discovery/preview and clearing-time regressions. |
+| FR-007 | Search courts by name. | PARTIAL | DONE | `app/api/courts.py`, `services/courts.py`; `CourtsPage.tsx`, `SportSelect.tsx`. `test_srs_alignment::test_search_address_optional_bounds_preview_and_atomic_batch`; `business.spec.ts` discovery/preview and clearing-time regressions. |
+| FR-008 | Filter courts by sport, address or area and optional time bounds. | MISMATCH | DONE | `app/api/courts.py`, `services/courts.py`; `CourtsPage.tsx`, `SportSelect.tsx`. `test_srs_alignment::test_search_address_optional_bounds_preview_and_atomic_batch`; `business.spec.ts` discovery/preview and clearing-time regressions. |
+| FR-009 | Handle empty search results. | PARTIAL | DONE | `app/api/courts.py`, `services/courts.py`; `CourtsPage.tsx`, `SportSelect.tsx`. `test_srs_alignment::test_search_address_optional_bounds_preview_and_atomic_batch`; `business.spec.ts` discovery/preview and clearing-time regressions. |
+| FR-010 | Display court details. | PARTIAL | DONE | `services/courts.py`; `CourtPage.tsx`. `test_courts.py`, `business.spec.ts` selection, responsive/Axe; external map route accuracy/denied-GPS interaction still needs manual verification. |
+| FR-011 | Display published slot lists and slot details | PARTIAL | DONE | `services/courts.py`; `CourtPage.tsx`. `test_courts.py`, `business.spec.ts` selection, responsive/Axe; external map route accuracy/denied-GPS interaction still needs manual verification. |
+| FR-012 | Select eligible consecutive court slots. | PARTIAL | DONE | `services/courts.py`; `CourtPage.tsx`. `test_courts.py`, `business.spec.ts` selection, responsive/Axe; external map route accuracy/denied-GPS interaction still needs manual verification. |
+| FR-013 | Show optional court map and directions. | MISSING | PARTIAL | `services/courts.py`; `CourtPage.tsx`. `test_courts.py`, `business.spec.ts` selection, responsive/Axe; external map route accuracy/denied-GPS interaction still needs manual verification. |
+| FR-014 | Review selected slots and total booking price. | PARTIAL | DONE | `services/bookings.py`; `CourtPage.tsx` review/confirm. `test_bookings.py`, `test_core_api.py`, `test_concurrency::test_ten_real_connections_confirm_only_one_whole_overlapping_booking`; real browser multi-slot flow. |
+| FR-015 | Validate booking eligibility and time rules. | PARTIAL | DONE | `services/bookings.py`; `CourtPage.tsx` review/confirm. `test_bookings.py`, `test_core_api.py`, `test_concurrency::test_ten_real_connections_confirm_only_one_whole_overlapping_booking`; real browser multi-slot flow. |
+| FR-016 | Prevent overlapping bookings. | PARTIAL | DONE | `services/bookings.py`; `CourtPage.tsx` review/confirm. `test_bookings.py`, `test_core_api.py`, `test_concurrency::test_ten_real_connections_confirm_only_one_whole_overlapping_booking`; real browser multi-slot flow. |
+| FR-017 | Create one confirmed booking for selected slots. | PARTIAL | DONE | `services/bookings.py`; `CourtPage.tsx` review/confirm. `test_bookings.py`, `test_core_api.py`, `test_concurrency::test_ten_real_connections_confirm_only_one_whole_overlapping_booking`; real browser multi-slot flow. |
+| FR-018 | Revalidate slots and prices at confirmation. | PARTIAL | DONE | `services/bookings.py`; `CourtPage.tsx` review/confirm. `test_bookings.py`, `test_core_api.py`, `test_concurrency::test_ten_real_connections_confirm_only_one_whole_overlapping_booking`; real browser multi-slot flow. |
+| FR-019 | View recent booking history. | PARTIAL | DONE | `services/bookings.py`, receipt middleware in `app/main.py`; `BookingsPage.tsx`. `test_bookings.py` ten-record history, exact-six-hour boundaries; `test_room_concurrency::test_exact_six_hour_receipt_remains_eligible_after_lock_wait`; browser whole cancel/release. |
+| FR-020 | Cancel an eligible whole booking. | PARTIAL | DONE | `services/bookings.py`, receipt middleware in `app/main.py`; `BookingsPage.tsx`. `test_bookings.py` ten-record history, exact-six-hour boundaries; `test_room_concurrency::test_exact_six_hour_receipt_remains_eligible_after_lock_wait`; browser whole cancel/release. |
+| FR-021 | Display cancellation eligibility. | PARTIAL | DONE | `services/bookings.py`, receipt middleware in `app/main.py`; `BookingsPage.tsx`. `test_bookings.py` ten-record history, exact-six-hour boundaries; `test_room_concurrency::test_exact_six_hour_receipt_remains_eligible_after_lock_wait`; browser whole cancel/release. |
+| FR-022 | Release slots after booking cancellation. | PARTIAL | DONE | `services/bookings.py`, receipt middleware in `app/main.py`; `BookingsPage.tsx`. `test_bookings.py` ten-record history, exact-six-hour boundaries; `test_room_concurrency::test_exact_six_hour_receipt_remains_eligible_after_lock_wait`; browser whole cancel/release. |
+| FR-023 | Create and edit owned court listings. | PARTIAL | DONE | `api/courts.py`, `services/courts.py`; `OwnerPage.tsx`, `SchedulePage.tsx`. `test_courts.py`, `test_srs_alignment.py`, `test_concurrency.py`; browser court/hours/batch edit-add-remove/publication/maintenance. |
+| FR-024 | Deactivate an owned court. | PARTIAL | DONE | `api/courts.py`, `services/courts.py`; `OwnerPage.tsx`, `SchedulePage.tsx`. `test_courts.py`, `test_srs_alignment.py`, `test_concurrency.py`; browser court/hours/batch edit-add-remove/publication/maintenance. |
+| FR-025 | Manage operating hours and published slots. | MISMATCH | DONE | `api/courts.py`, `services/courts.py`; `OwnerPage.tsx`, `SchedulePage.tsx`. `test_courts.py`, `test_srs_alignment.py`, `test_concurrency.py`; browser court/hours/batch edit-add-remove/publication/maintenance. |
+| FR-026 | Mark court maintenance intervals. | PARTIAL | DONE | `api/courts.py`, `services/courts.py`; `OwnerPage.tsx`, `SchedulePage.tsx`. `test_courts.py`, `test_srs_alignment.py`, `test_concurrency.py`; browser court/hours/batch edit-add-remove/publication/maintenance. |
+| FR-027 | Protect confirmed bookings from schedule edits. | PARTIAL | DONE | `api/courts.py`, `services/courts.py`; `OwnerPage.tsx`, `SchedulePage.tsx`. `test_courts.py`, `test_srs_alignment.py`, `test_concurrency.py`; browser court/hours/batch edit-add-remove/publication/maintenance. |
+| FR-028 | View bookings for owned courts. | PARTIAL | DONE | `services/bookings.py`, provider-backed legacy email recovery in `core/auth.py`; owner mode of `BookingsPage.tsx`. `test_bookings.py`, `test_core_api.py`; `test_srs_alignment::test_owner_legacy_registration_email_recovers_without_optional_profile`; browser Owner contact read. |
+| FR-029 | Display owned-court booking details. | MISMATCH | DONE | `services/bookings.py`, provider-backed legacy email recovery in `core/auth.py`; owner mode of `BookingsPage.tsx`. `test_bookings.py`, `test_core_api.py`; `test_srs_alignment::test_owner_legacy_registration_email_recovers_without_optional_profile`; browser Owner contact read. |
+| FR-030 | Restrict access to other owners’ bookings. | PARTIAL | DONE | `services/bookings.py`, provider-backed legacy email recovery in `core/auth.py`; owner mode of `BookingsPage.tsx`. `test_bookings.py`, `test_core_api.py`; `test_srs_alignment::test_owner_legacy_registration_email_recovers_without_optional_profile`; browser Owner contact read. |
+| FR-031 | Create one room per eligible booking. | PARTIAL | DONE | `services/rooms.py`, `api/rooms.py`, `0006_room_closure_reason`; `RoomsPage.tsx`, booking room creation. `test_rooms.py`, `test_room_links.py`, `test_room_concurrency.py`, `test_manual_room_closure_preserves_membership_and_booking`; real browser Join/Keep/Leave/Close/cancel. |
+| FR-032 | Validate Open Play Room capacity. | PARTIAL | DONE | `services/rooms.py`, `api/rooms.py`, `0006_room_closure_reason`; `RoomsPage.tsx`, booking room creation. `test_rooms.py`, `test_room_links.py`, `test_room_concurrency.py`, `test_manual_room_closure_preserves_membership_and_booking`; real browser Join/Keep/Leave/Close/cancel. |
+| FR-033 | Browse and search public rooms by court address or area. | MISMATCH | DONE | `services/rooms.py`, `api/rooms.py`, `0006_room_closure_reason`; `RoomsPage.tsx`, booking room creation. `test_rooms.py`, `test_room_links.py`, `test_room_concurrency.py`, `test_manual_room_closure_preserves_membership_and_booking`; real browser Join/Keep/Leave/Close/cancel. |
+| FR-034 | Join an eligible Open Play Room. | PARTIAL | DONE | `services/rooms.py`, `api/rooms.py`, `0006_room_closure_reason`; `RoomsPage.tsx`, booking room creation. `test_rooms.py`, `test_room_links.py`, `test_room_concurrency.py`, `test_manual_room_closure_preserves_membership_and_booking`; real browser Join/Keep/Leave/Close/cancel. |
+| FR-035 | Prevent room overcapacity and duplicate joins. | PARTIAL | DONE | `services/rooms.py`, `api/rooms.py`, `0006_room_closure_reason`; `RoomsPage.tsx`, booking room creation. `test_rooms.py`, `test_room_links.py`, `test_room_concurrency.py`, `test_manual_room_closure_preserves_membership_and_booking`; real browser Join/Keep/Leave/Close/cancel. |
+| FR-036 | Leave an eligible Open Play Room. | PARTIAL | DONE | `services/rooms.py`, `api/rooms.py`, `0006_room_closure_reason`; `RoomsPage.tsx`, booking room creation. `test_rooms.py`, `test_room_links.py`, `test_room_concurrency.py`, `test_manual_room_closure_preserves_membership_and_booking`; real browser Join/Keep/Leave/Close/cancel. |
+| FR-037 | Close rooms automatically or by organizer confirmation. | MISMATCH | DONE | `services/rooms.py`, `api/rooms.py`, `0006_room_closure_reason`; `RoomsPage.tsx`, booking room creation. `test_rooms.py`, `test_room_links.py`, `test_room_concurrency.py`, `test_manual_room_closure_preserves_membership_and_booking`; real browser Join/Keep/Leave/Close/cancel. |
+| FR-038 | Display per-person cost estimate. | PARTIAL | DONE | `services/rooms.py`, `api/rooms.py`, `0006_room_closure_reason`; `RoomsPage.tsx`, booking room creation. `test_rooms.py`, `test_room_links.py`, `test_room_concurrency.py`, `test_manual_room_closure_preserves_membership_and_booking`; real browser Join/Keep/Leave/Close/cancel. |
+| FR-039 | Display editable basic profile. | MISSING | DONE | `api/identity.py`, migration `0004_account_profile`; `ProfilePage.tsx`. `test_initial_roles_are_validated_once_and_profile_cannot_escalate`; browser save/reload profile; legacy provider lookup regression uses a provider test double. |
+| FR-040 | Validate and save profile changes. | MISSING | DONE | `api/identity.py`, migration `0004_account_profile`; `ProfilePage.tsx`. `test_initial_roles_are_validated_once_and_profile_cannot_escalate`; browser save/reload profile; legacy provider lookup regression uses a provider test double. |
+| FR-041 | Create manual slot-specific discounts. | MISSING | DONE | `services/offers.py`, `api/offers.py`, `0005_slot_offers`; offer-aware booking/availability; `OffersPage.tsx`. `test_offers.py`, `test_srs_alignment::test_offer_api_validation_ownership_and_state_confirmation`; browser schedule/Keep/cancel; PostgreSQL configuration/activation/booking races. |
+| FR-042 | Deactivate an active discount offer. | MISSING | DONE | `services/offers.py`, `api/offers.py`, `0005_slot_offers`; offer-aware booking/availability; `OffersPage.tsx`. `test_offers.py`, `test_srs_alignment::test_offer_api_validation_ownership_and_state_confirmation`; browser schedule/Keep/cancel; PostgreSQL configuration/activation/booking races. |
+| FR-043 | Re-evaluate eligible offers after cancellation. | MISSING | DONE | `services/offers.py`, `api/offers.py`, `0005_slot_offers`; offer-aware booking/availability; `OffersPage.tsx`. `test_offers.py`, `test_srs_alignment::test_offer_api_validation_ownership_and_state_confirmation`; browser schedule/Keep/cancel; PostgreSQL configuration/activation/booking races. |
+| FR-044 | Revalidate manual/automatic offers at confirmation. | MISSING | DONE | `services/offers.py`, `api/offers.py`, `0005_slot_offers`; offer-aware booking/availability; `OffersPage.tsx`. `test_offers.py`, `test_srs_alignment::test_offer_api_validation_ownership_and_state_confirmation`; browser schedule/Keep/cancel; PostgreSQL configuration/activation/booking races. |
+| FR-045 | Save the accepted discounted booking total. | MISSING | DONE | `services/offers.py`, `api/offers.py`, `0005_slot_offers`; offer-aware booking/availability; `OffersPage.tsx`. `test_offers.py`, `test_srs_alignment::test_offer_api_validation_ownership_and_state_confirmation`; browser schedule/Keep/cancel; PostgreSQL configuration/activation/booking races. |
+| FR-046 | Preview a result court’s matching or nearest slots. | PARTIAL | DONE | `app/api/courts.py`, `services/courts.py`; `CourtsPage.tsx`, `SportSelect.tsx`. `test_srs_alignment::test_search_address_optional_bounds_preview_and_atomic_batch`; `business.spec.ts` discovery/preview and clearing-time regressions. |
+| FR-047 | Configure a slot-specific automatic offer. | MISSING | DONE | `services/offers.py`, `api/offers.py`, `0005_slot_offers`; offer-aware booking/availability; `OffersPage.tsx`. `test_offers.py`, `test_srs_alignment::test_offer_api_validation_ownership_and_state_confirmation`; browser schedule/Keep/cancel; PostgreSQL configuration/activation/booking races. |
+| FR-048 | Apply automatic offers at the configured threshold. | MISSING | DONE | `services/offers.py`, `api/offers.py`, `0005_slot_offers`; offer-aware booking/availability; `OffersPage.tsx`. `test_offers.py`, `test_srs_alignment::test_offer_api_validation_ownership_and_state_confirmation`; browser schedule/Keep/cancel; PostgreSQL configuration/activation/booking races. |
+| FR-049 | Cancel a pending automatic offer schedule. | MISSING | DONE | `services/offers.py`, `api/offers.py`, `0005_slot_offers`; offer-aware booking/availability; `OffersPage.tsx`. `test_offers.py`, `test_srs_alignment::test_offer_api_validation_ownership_and_state_confirmation`; browser schedule/Keep/cancel; PostgreSQL configuration/activation/booking races. |
+
+Backend paths above are relative to `src/backend/`; frontend pages/components relative to `src/frontend/src/`; test modules relative to `src/backend/tests/` and browser specs to `src/frontend/e2e/`.
+
+## Acceptance scenarios
+
+| AC | Related FR | Current | Executed evidence / remaining verification |
 |---|---|---|---|
-| FR-001 | Register by email and select an initial role. | MISMATCH | `app/core/auth.py` auto-provisions Player; no validated initial Owner registration. |
-| FR-002 | Sign in by email and sign out. | PARTIAL | Frontend business screens absent (`src/frontend/src/app/App.tsx`); backend `app/services/{courts,bookings,rooms}.py` and existing core/concurrency tests cover portions. |
-| FR-003 | Assign user roles. | MISMATCH | `app/core/auth.py` auto-provisions Player; no validated initial Owner registration. |
-| FR-004 | Require authentication for protected actions. | PARTIAL | Frontend business screens absent (`src/frontend/src/app/App.tsx`); backend `app/services/{courts,bookings,rooms}.py` and existing core/concurrency tests cover portions. |
-| FR-005 | Check role and resource ownership. | PARTIAL | Frontend business screens absent (`src/frontend/src/app/App.tsx`); backend `app/services/{courts,bookings,rooms}.py` and existing core/concurrency tests cover portions. |
-| FR-006 | Display active court listings. | PARTIAL | Frontend business screens absent (`src/frontend/src/app/App.tsx`); backend `app/services/{courts,bookings,rooms}.py` and existing core/concurrency tests cover portions. |
-| FR-007 | Search courts by name. | PARTIAL | Frontend business screens absent (`src/frontend/src/app/App.tsx`); backend `app/services/{courts,bookings,rooms}.py` and existing core/concurrency tests cover portions. |
-| FR-008 | Filter courts by sport, address or area and optional time bounds. | MISMATCH | `app/api/courts.py`: exact area filter; no full-address substring/time bounds. |
-| FR-009 | Handle empty search results. | PARTIAL | Frontend business screens absent (`src/frontend/src/app/App.tsx`); backend `app/services/{courts,bookings,rooms}.py` and existing core/concurrency tests cover portions. |
-| FR-010 | Display court details. | PARTIAL | Frontend business screens absent (`src/frontend/src/app/App.tsx`); backend `app/services/{courts,bookings,rooms}.py` and existing core/concurrency tests cover portions. |
-| FR-011 | Display published slot lists and slot details | PARTIAL | Frontend business screens absent (`src/frontend/src/app/App.tsx`); backend `app/services/{courts,bookings,rooms}.py` and existing core/concurrency tests cover portions. |
-| FR-012 | Select eligible consecutive court slots. | PARTIAL | Frontend business screens absent (`src/frontend/src/app/App.tsx`); backend `app/services/{courts,bookings,rooms}.py` and existing core/concurrency tests cover portions. |
-| FR-013 | Show optional court map and directions. | MISSING | No current API/UI implementation; FR-013/F08/F09 are Should-have. |
-| FR-014 | Review selected slots and total booking price. | PARTIAL | Frontend business screens absent (`src/frontend/src/app/App.tsx`); backend `app/services/{courts,bookings,rooms}.py` and existing core/concurrency tests cover portions. |
-| FR-015 | Validate booking eligibility and time rules. | PARTIAL | Frontend business screens absent (`src/frontend/src/app/App.tsx`); backend `app/services/{courts,bookings,rooms}.py` and existing core/concurrency tests cover portions. |
-| FR-016 | Prevent overlapping bookings. | PARTIAL | Frontend business screens absent (`src/frontend/src/app/App.tsx`); backend `app/services/{courts,bookings,rooms}.py` and existing core/concurrency tests cover portions. |
-| FR-017 | Create one confirmed booking for selected slots. | PARTIAL | Frontend business screens absent (`src/frontend/src/app/App.tsx`); backend `app/services/{courts,bookings,rooms}.py` and existing core/concurrency tests cover portions. |
-| FR-018 | Revalidate slots and prices at confirmation. | PARTIAL | Frontend business screens absent (`src/frontend/src/app/App.tsx`); backend `app/services/{courts,bookings,rooms}.py` and existing core/concurrency tests cover portions. |
-| FR-019 | View recent booking history. | PARTIAL | Frontend business screens absent (`src/frontend/src/app/App.tsx`); backend `app/services/{courts,bookings,rooms}.py` and existing core/concurrency tests cover portions. |
-| FR-020 | Cancel an eligible whole booking. | PARTIAL | Frontend business screens absent (`src/frontend/src/app/App.tsx`); backend `app/services/{courts,bookings,rooms}.py` and existing core/concurrency tests cover portions. |
-| FR-021 | Display cancellation eligibility. | PARTIAL | Frontend business screens absent (`src/frontend/src/app/App.tsx`); backend `app/services/{courts,bookings,rooms}.py` and existing core/concurrency tests cover portions. |
-| FR-022 | Release slots after booking cancellation. | PARTIAL | Frontend business screens absent (`src/frontend/src/app/App.tsx`); backend `app/services/{courts,bookings,rooms}.py` and existing core/concurrency tests cover portions. |
-| FR-023 | Create and edit owned court listings. | PARTIAL | Frontend business screens absent (`src/frontend/src/app/App.tsx`); backend `app/services/{courts,bookings,rooms}.py` and existing core/concurrency tests cover portions. |
-| FR-024 | Deactivate an owned court. | PARTIAL | Frontend business screens absent (`src/frontend/src/app/App.tsx`); backend `app/services/{courts,bookings,rooms}.py` and existing core/concurrency tests cover portions. |
-| FR-025 | Manage operating hours and published slots. | MISMATCH | Single-slot publishing only; no atomic batch endpoint or draft UI. |
-| FR-026 | Mark court maintenance intervals. | PARTIAL | Frontend business screens absent (`src/frontend/src/app/App.tsx`); backend `app/services/{courts,bookings,rooms}.py` and existing core/concurrency tests cover portions. |
-| FR-027 | Protect confirmed bookings from schedule edits. | PARTIAL | Frontend business screens absent (`src/frontend/src/app/App.tsx`); backend `app/services/{courts,bookings,rooms}.py` and existing core/concurrency tests cover portions. |
-| FR-028 | View bookings for owned courts. | PARTIAL | Frontend business screens absent (`src/frontend/src/app/App.tsx`); backend `app/services/{courts,bookings,rooms}.py` and existing core/concurrency tests cover portions. |
-| FR-029 | Display owned-court booking details. | MISMATCH | Owner booking detail omits newly specified registration email/display name. |
-| FR-030 | Restrict access to other owners’ bookings. | PARTIAL | Frontend business screens absent (`src/frontend/src/app/App.tsx`); backend `app/services/{courts,bookings,rooms}.py` and existing core/concurrency tests cover portions. |
-| FR-031 | Create one room per eligible booking. | PARTIAL | Frontend business screens absent (`src/frontend/src/app/App.tsx`); backend `app/services/{courts,bookings,rooms}.py` and existing core/concurrency tests cover portions. |
-| FR-032 | Validate Open Play Room capacity. | PARTIAL | Frontend business screens absent (`src/frontend/src/app/App.tsx`); backend `app/services/{courts,bookings,rooms}.py` and existing core/concurrency tests cover portions. |
-| FR-033 | Browse and search public rooms by court address or area. | MISMATCH | `app/services/rooms.py`: no address filter or court display data. |
-| FR-034 | Join an eligible Open Play Room. | PARTIAL | Frontend business screens absent (`src/frontend/src/app/App.tsx`); backend `app/services/{courts,bookings,rooms}.py` and existing core/concurrency tests cover portions. |
-| FR-035 | Prevent room overcapacity and duplicate joins. | PARTIAL | Frontend business screens absent (`src/frontend/src/app/App.tsx`); backend `app/services/{courts,bookings,rooms}.py` and existing core/concurrency tests cover portions. |
-| FR-036 | Leave an eligible Open Play Room. | PARTIAL | Frontend business screens absent (`src/frontend/src/app/App.tsx`); backend `app/services/{courts,bookings,rooms}.py` and existing core/concurrency tests cover portions. |
-| FR-037 | Close rooms automatically or by organizer confirmation. | MISMATCH | Start/cancel closure exists; organizer manual-close endpoint absent. |
-| FR-038 | Display per-person cost estimate. | PARTIAL | Frontend business screens absent (`src/frontend/src/app/App.tsx`); backend `app/services/{courts,bookings,rooms}.py` and existing core/concurrency tests cover portions. |
-| FR-039 | Display editable basic profile. | MISSING | No current API/UI implementation; FR-013/F08/F09 are Should-have. |
-| FR-040 | Validate and save profile changes. | MISSING | No current API/UI implementation; FR-013/F08/F09 are Should-have. |
-| FR-041 | Create manual slot-specific discounts. | MISSING | No current API/UI implementation; FR-013/F08/F09 are Should-have. |
-| FR-042 | Deactivate an active discount offer. | MISSING | No current API/UI implementation; FR-013/F08/F09 are Should-have. |
-| FR-043 | Re-evaluate eligible offers after cancellation. | MISSING | No current API/UI implementation; FR-013/F08/F09 are Should-have. |
-| FR-044 | Revalidate manual/automatic offers at confirmation. | MISSING | No current API/UI implementation; FR-013/F08/F09 are Should-have. |
-| FR-045 | Save the accepted discounted booking total. | MISSING | No current API/UI implementation; FR-013/F08/F09 are Should-have. |
-| FR-046 | Preview a result court’s matching or nearest slots. | PARTIAL | Frontend business screens absent (`src/frontend/src/app/App.tsx`); backend `app/services/{courts,bookings,rooms}.py` and existing core/concurrency tests cover portions. |
-| FR-047 | Configure a slot-specific automatic offer. | MISSING | No current API/UI implementation; FR-013/F08/F09 are Should-have. |
-| FR-048 | Apply automatic offers at the configured threshold. | MISSING | No current API/UI implementation; FR-013/F08/F09 are Should-have. |
-| FR-049 | Cancel a pending automatic offer schedule. | MISSING | No current API/UI implementation; FR-013/F08/F09 are Should-have. |
+| AC-F01-01 | FR-001 | DONE | `test_srs_alignment::test_initial_roles_are_validated_once_and_profile_cannot_escalate`; `test_identity.py`, `test_auth_errors.py`; `bootstrap.spec.ts`, session outage E2E |
+| AC-F01-02 | FR-001 | PARTIAL | Duplicate Firebase email error UI is implemented; exact rejected-registration browser scenario not executed. |
+| AC-F01-03 | FR-002 | DONE | `test_srs_alignment::test_initial_roles_are_validated_once_and_profile_cannot_escalate`; `test_identity.py`, `test_auth_errors.py`; `bootstrap.spec.ts`, session outage E2E |
+| AC-F01-04 | FR-002, FR-004 | PARTIAL | Wrong-password UI recovery is implemented; exact real-provider failed-login browser scenario not executed. |
+| AC-F01-05 | FR-003 | DONE | `test_srs_alignment::test_initial_roles_are_validated_once_and_profile_cannot_escalate`; `test_identity.py`, `test_auth_errors.py`; `bootstrap.spec.ts`, session outage E2E |
+| AC-F01-06 | FR-004, FR-005 | DONE | `test_srs_alignment::test_initial_roles_are_validated_once_and_profile_cannot_escalate`; `test_identity.py`, `test_auth_errors.py`; `bootstrap.spec.ts`, session outage E2E |
+| AC-F01-07 | FR-005 | DONE | `test_srs_alignment::test_initial_roles_are_validated_once_and_profile_cannot_escalate`; `test_identity.py`, `test_auth_errors.py`; `bootstrap.spec.ts`, session outage E2E |
+| AC-F01-08 | FR-005 | DONE | `test_srs_alignment::test_initial_roles_are_validated_once_and_profile_cannot_escalate`; `test_identity.py`, `test_auth_errors.py`; `bootstrap.spec.ts`, session outage E2E |
+| AC-F01-09 | FR-002 | DONE | `test_srs_alignment::test_initial_roles_are_validated_once_and_profile_cannot_escalate`; `test_identity.py`, `test_auth_errors.py`; `bootstrap.spec.ts`, session outage E2E |
+| AC-F01-10 | FR-003, FR-004 | DONE | `test_srs_alignment::test_initial_roles_are_validated_once_and_profile_cannot_escalate`; `test_identity.py`, `test_auth_errors.py`; `bootstrap.spec.ts`, session outage E2E |
+| AC-F01-11 | FR-001, FR-003 | DONE | `test_srs_alignment::test_initial_roles_are_validated_once_and_profile_cannot_escalate`; `test_identity.py`, `test_auth_errors.py`; `bootstrap.spec.ts`, session outage E2E |
+| AC-F01-12 | FR-001, FR-003 | DONE | `test_srs_alignment::test_initial_roles_are_validated_once_and_profile_cannot_escalate`; `test_identity.py`, `test_auth_errors.py`; `bootstrap.spec.ts`, session outage E2E |
+| AC-F01-13 | FR-001, FR-003 | DONE | `test_srs_alignment::test_initial_roles_are_validated_once_and_profile_cannot_escalate`; `test_identity.py`, `test_auth_errors.py`; `bootstrap.spec.ts`, session outage E2E |
+| AC-F02-01 | FR-006 | DONE | `test_srs_alignment::test_search_address_optional_bounds_preview_and_atomic_batch`; `business.spec.ts` discovery/preview and clearing-time regressions |
+| AC-F02-02 | FR-007 | DONE | `test_srs_alignment::test_search_address_optional_bounds_preview_and_atomic_batch`; `business.spec.ts` discovery/preview and clearing-time regressions |
+| AC-F02-03 | FR-008 | DONE | `test_srs_alignment::test_search_address_optional_bounds_preview_and_atomic_batch`; `business.spec.ts` discovery/preview and clearing-time regressions |
+| AC-F02-04 | FR-009 | DONE | `test_srs_alignment::test_search_address_optional_bounds_preview_and_atomic_batch`; `business.spec.ts` discovery/preview and clearing-time regressions |
+| AC-F02-05 | FR-007, FR-008 | DONE | `test_srs_alignment::test_search_address_optional_bounds_preview_and_atomic_batch`; `business.spec.ts` discovery/preview and clearing-time regressions |
+| AC-F02-06 | FR-008 | DONE | `test_srs_alignment::test_search_address_optional_bounds_preview_and_atomic_batch`; `business.spec.ts` discovery/preview and clearing-time regressions |
+| AC-F02-07 | FR-008 | PARTIAL | Prefix dropdown implemented; automated keyboard/Escape checks passed, exact two Bóng-prefix options fixture not executed. |
+| AC-F02-08 | FR-008 | DONE | `test_srs_alignment::test_search_address_optional_bounds_preview_and_atomic_batch`; `business.spec.ts` discovery/preview and clearing-time regressions |
+| AC-F02-09 | FR-008 | DONE | `test_srs_alignment::test_search_address_optional_bounds_preview_and_atomic_batch`; `business.spec.ts` discovery/preview and clearing-time regressions |
+| AC-F02-10 | FR-008, FR-009 | DONE | `test_srs_alignment::test_search_address_optional_bounds_preview_and_atomic_batch`; `business.spec.ts` discovery/preview and clearing-time regressions |
+| AC-F02-11 | FR-046, FR-008 | DONE | `test_srs_alignment::test_search_address_optional_bounds_preview_and_atomic_batch`; `business.spec.ts` discovery/preview and clearing-time regressions |
+| AC-F02-12 | FR-046, FR-014 | DONE | `test_srs_alignment::test_search_address_optional_bounds_preview_and_atomic_batch`; `business.spec.ts` discovery/preview and clearing-time regressions |
+| AC-F03-01 | FR-010 | PARTIAL | Details/API and fallback assets checked; supplied third-party photo rendering has not been exercised with a real Owner photo URL. |
+| AC-F03-02 | FR-011 | DONE | `test_courts.py`, `business.spec.ts` selection, responsive/Axe; external map route accuracy/denied-GPS interaction still needs manual verification |
+| AC-F03-03 | FR-012 | DONE | `test_courts.py`, `business.spec.ts` selection, responsive/Axe; external map route accuracy/denied-GPS interaction still needs manual verification |
+| AC-F03-04 | FR-013 (Should) | PARTIAL | Map iframe/manual-origin links implemented. External geocoding/routing and an explicit denied-GPS browser scenario not executed. |
+| AC-F03-05 | FR-011, FR-012 | DONE | `test_courts.py`, `business.spec.ts` selection, responsive/Axe; external map route accuracy/denied-GPS interaction still needs manual verification |
+| AC-F04-01 | FR-014 | DONE | `test_bookings.py`, `test_core_api.py`, `test_concurrency::test_ten_real_connections_confirm_only_one_whole_overlapping_booking`; real browser multi-slot flow |
+| AC-F04-02 | FR-015 | DONE | `test_bookings.py`, `test_core_api.py`, `test_concurrency::test_ten_real_connections_confirm_only_one_whole_overlapping_booking`; real browser multi-slot flow |
+| AC-F04-03 | FR-016 | DONE | `test_bookings.py`, `test_core_api.py`, `test_concurrency::test_ten_real_connections_confirm_only_one_whole_overlapping_booking`; real browser multi-slot flow |
+| AC-F04-04 | FR-017 | DONE | `test_bookings.py`, `test_core_api.py`, `test_concurrency::test_ten_real_connections_confirm_only_one_whole_overlapping_booking`; real browser multi-slot flow |
+| AC-F04-05 | FR-018 | DONE | `test_bookings.py`, `test_core_api.py`, `test_concurrency::test_ten_real_connections_confirm_only_one_whole_overlapping_booking`; real browser multi-slot flow |
+| AC-F04-06 | FR-014, FR-018 | DONE | `test_bookings.py`, `test_core_api.py`, `test_concurrency::test_ten_real_connections_confirm_only_one_whole_overlapping_booking`; real browser multi-slot flow |
+| AC-F04-07 | FR-017, FR-018 | DONE | `test_bookings.py`, `test_core_api.py`, `test_concurrency::test_ten_real_connections_confirm_only_one_whole_overlapping_booking`; real browser multi-slot flow |
+| AC-F04-08 | FR-014, FR-017, FR-018 | DONE | `test_bookings.py`, `test_core_api.py`, `test_concurrency::test_ten_real_connections_confirm_only_one_whole_overlapping_booking`; real browser multi-slot flow |
+| AC-F04-09 | FR-015, FR-018 | DONE | `test_bookings.py`, `test_core_api.py`, `test_concurrency::test_ten_real_connections_confirm_only_one_whole_overlapping_booking`; real browser multi-slot flow |
+| AC-F04-10 | FR-016, FR-018 | DONE | `test_bookings.py`, `test_core_api.py`, `test_concurrency::test_ten_real_connections_confirm_only_one_whole_overlapping_booking`; real browser multi-slot flow |
+| AC-F05-01 | FR-019 | DONE | `test_bookings.py` ten-record history, exact-six-hour boundaries; `test_room_concurrency::test_exact_six_hour_receipt_remains_eligible_after_lock_wait`; browser whole cancel/release |
+| AC-F05-02 | FR-020 | DONE | `test_bookings.py` ten-record history, exact-six-hour boundaries; `test_room_concurrency::test_exact_six_hour_receipt_remains_eligible_after_lock_wait`; browser whole cancel/release |
+| AC-F05-03 | FR-020 / FR-021 | DONE | `test_bookings.py` ten-record history, exact-six-hour boundaries; `test_room_concurrency::test_exact_six_hour_receipt_remains_eligible_after_lock_wait`; browser whole cancel/release |
+| AC-F05-04 | FR-021 | DONE | `test_bookings.py` ten-record history, exact-six-hour boundaries; `test_room_concurrency::test_exact_six_hour_receipt_remains_eligible_after_lock_wait`; browser whole cancel/release |
+| AC-F05-05 | FR-022 | DONE | `test_bookings.py` ten-record history, exact-six-hour boundaries; `test_room_concurrency::test_exact_six_hour_receipt_remains_eligible_after_lock_wait`; browser whole cancel/release |
+| AC-F05-06 | FR-020, FR-021 | DONE | `test_bookings.py` ten-record history, exact-six-hour boundaries; `test_room_concurrency::test_exact_six_hour_receipt_remains_eligible_after_lock_wait`; browser whole cancel/release |
+| AC-F05-07 | FR-020, FR-022 | DONE | `test_bookings.py` ten-record history, exact-six-hour boundaries; `test_room_concurrency::test_exact_six_hour_receipt_remains_eligible_after_lock_wait`; browser whole cancel/release |
+| AC-F06-01 | FR-023 | DONE | `test_courts.py`, `test_srs_alignment.py`, `test_concurrency.py`; browser court/hours/batch edit-add-remove/publication/maintenance |
+| AC-F06-02 | FR-023, FR-024 | DONE | `test_courts.py`, `test_srs_alignment.py`, `test_concurrency.py`; browser court/hours/batch edit-add-remove/publication/maintenance |
+| AC-F06-03 | FR-024 | DONE | `test_courts.py`, `test_srs_alignment.py`, `test_concurrency.py`; browser court/hours/batch edit-add-remove/publication/maintenance |
+| AC-F06-04 | FR-025 | DONE | `test_courts.py`, `test_srs_alignment.py`, `test_concurrency.py`; browser court/hours/batch edit-add-remove/publication/maintenance |
+| AC-F06-05 | FR-026 | DONE | `test_courts.py`, `test_srs_alignment.py`, `test_concurrency.py`; browser court/hours/batch edit-add-remove/publication/maintenance |
+| AC-F06-06 | FR-027 | DONE | `test_courts.py`, `test_srs_alignment.py`, `test_concurrency.py`; browser court/hours/batch edit-add-remove/publication/maintenance |
+| AC-F06-07 | FR-023 | PARTIAL | Owned PATCH invariants covered in backend; full edit-information browser round-trip not separately executed. |
+| AC-F06-08 | FR-023 | DONE | `test_courts.py`, `test_srs_alignment.py`, `test_concurrency.py`; browser court/hours/batch edit-add-remove/publication/maintenance |
+| AC-F06-09 | FR-023, FR-032 | DONE | `test_courts.py`, `test_srs_alignment.py`, `test_concurrency.py`; browser court/hours/batch edit-add-remove/publication/maintenance |
+| AC-F06-10 | FR-025, FR-027 | DONE | `test_courts.py`, `test_srs_alignment.py`, `test_concurrency.py`; browser court/hours/batch edit-add-remove/publication/maintenance |
+| AC-F06-11 | FR-023, FR-025 | DONE | `test_courts.py`, `test_srs_alignment.py`, `test_concurrency.py`; browser court/hours/batch edit-add-remove/publication/maintenance |
+| AC-F06-12 | FR-025 | DONE | `test_courts.py`, `test_srs_alignment.py`, `test_concurrency.py`; browser court/hours/batch edit-add-remove/publication/maintenance |
+| AC-F06-13 | FR-025 | DONE | `test_courts.py`, `test_srs_alignment.py`, `test_concurrency.py`; browser court/hours/batch edit-add-remove/publication/maintenance |
+| AC-F06-14 | FR-025, FR-027 | DONE | `test_courts.py`, `test_srs_alignment.py`, `test_concurrency.py`; browser court/hours/batch edit-add-remove/publication/maintenance |
+| AC-F06-15 | FR-025, FR-027 | PARTIAL | Date/court scoping and responsive calendar covered; full two-owned-court switch/draft-discard browser matrix not separately executed. |
+| AC-F07-01 | FR-028 | DONE | `test_bookings.py`, `test_core_api.py`; `test_srs_alignment::test_owner_legacy_registration_email_recovers_without_optional_profile`; browser Owner contact read |
+| AC-F07-02 | FR-029 | DONE | `test_bookings.py`, `test_core_api.py`; `test_srs_alignment::test_owner_legacy_registration_email_recovers_without_optional_profile`; browser Owner contact read |
+| AC-F07-03 | FR-030 | DONE | `test_bookings.py`, `test_core_api.py`; `test_srs_alignment::test_owner_legacy_registration_email_recovers_without_optional_profile`; browser Owner contact read |
+| AC-F08-01 | FR-039 (Should) | DONE | `test_initial_roles_are_validated_once_and_profile_cannot_escalate`; browser save/reload profile; legacy provider lookup regression uses a provider test double |
+| AC-F08-02 | FR-040 (Should) | DONE | `test_initial_roles_are_validated_once_and_profile_cannot_escalate`; browser save/reload profile; legacy provider lookup regression uses a provider test double |
+| AC-F08-03 | FR-040 (Should) | DONE | `test_initial_roles_are_validated_once_and_profile_cannot_escalate`; browser save/reload profile; legacy provider lookup regression uses a provider test double |
+| AC-F09-01 | FR-041 (Should) | DONE | `test_offers.py`, `test_srs_alignment::test_offer_api_validation_ownership_and_state_confirmation`; browser schedule/Keep/cancel; PostgreSQL configuration/activation/booking races |
+| AC-F09-02 | FR-041 (Should) | DONE | `test_offers.py`, `test_srs_alignment::test_offer_api_validation_ownership_and_state_confirmation`; browser schedule/Keep/cancel; PostgreSQL configuration/activation/booking races |
+| AC-F09-03 | FR-042 (Should) | DONE | `test_offers.py`, `test_srs_alignment::test_offer_api_validation_ownership_and_state_confirmation`; browser schedule/Keep/cancel; PostgreSQL configuration/activation/booking races |
+| AC-F09-04 | FR-043 (Should) | PARTIAL | Combined discounted cancellation/restoration tested; exact automatic outside-lead-window cancellation matrix not separately executed. |
+| AC-F09-05 | FR-044 (Should) | DONE | `test_offers.py`, `test_srs_alignment::test_offer_api_validation_ownership_and_state_confirmation`; browser schedule/Keep/cancel; PostgreSQL configuration/activation/booking races |
+| AC-F09-06 | FR-045 (Should) | DONE | `test_offers.py`, `test_srs_alignment::test_offer_api_validation_ownership_and_state_confirmation`; browser schedule/Keep/cancel; PostgreSQL configuration/activation/booking races |
+| AC-F09-07 | FR-044, FR-045 | DONE | `test_offers.py`, `test_srs_alignment::test_offer_api_validation_ownership_and_state_confirmation`; browser schedule/Keep/cancel; PostgreSQL configuration/activation/booking races |
+| AC-F09-08 | FR-047 | DONE | `test_offers.py`, `test_srs_alignment::test_offer_api_validation_ownership_and_state_confirmation`; browser schedule/Keep/cancel; PostgreSQL configuration/activation/booking races |
+| AC-F09-09 | FR-047, FR-048 | DONE | `test_offers.py`, `test_srs_alignment::test_offer_api_validation_ownership_and_state_confirmation`; browser schedule/Keep/cancel; PostgreSQL configuration/activation/booking races |
+| AC-F09-10 | FR-048 | DONE | `test_offers.py`, `test_srs_alignment::test_offer_api_validation_ownership_and_state_confirmation`; browser schedule/Keep/cancel; PostgreSQL configuration/activation/booking races |
+| AC-F09-11 | FR-047, FR-048 | DONE | `test_offers.py`, `test_srs_alignment::test_offer_api_validation_ownership_and_state_confirmation`; browser schedule/Keep/cancel; PostgreSQL configuration/activation/booking races |
+| AC-F09-12 | FR-048 | PARTIAL | Booked/blocked/price recovery covered; explicit inactive-court F09 recovery variant not separately executed. |
+| AC-F09-13 | FR-049, FR-004, FR-005 | DONE | `test_offers.py`, `test_srs_alignment::test_offer_api_validation_ownership_and_state_confirmation`; browser schedule/Keep/cancel; PostgreSQL configuration/activation/booking races |
+| AC-F09-14 | FR-042, FR-048 | DONE | `test_offers.py`, `test_srs_alignment::test_offer_api_validation_ownership_and_state_confirmation`; browser schedule/Keep/cancel; PostgreSQL configuration/activation/booking races |
+| AC-F09-15 | FR-041, FR-047, FR-048 | DONE | `test_offers.py`, `test_srs_alignment::test_offer_api_validation_ownership_and_state_confirmation`; browser schedule/Keep/cancel; PostgreSQL configuration/activation/booking races |
+| AC-F09-16 | FR-044, FR-045 | DONE | `test_offers.py`, `test_srs_alignment::test_offer_api_validation_ownership_and_state_confirmation`; browser schedule/Keep/cancel; PostgreSQL configuration/activation/booking races |
+| AC-F09-17 | FR-048, FR-043 | DONE | `test_offers.py`, `test_srs_alignment::test_offer_api_validation_ownership_and_state_confirmation`; browser schedule/Keep/cancel; PostgreSQL configuration/activation/booking races |
+| AC-F10-01 | FR-031 | DONE | `test_rooms.py`, `test_room_links.py`, `test_room_concurrency.py`, `test_manual_room_closure_preserves_membership_and_booking`; real browser Join/Keep/Leave/Close/cancel |
+| AC-F10-02 | FR-031 | DONE | `test_rooms.py`, `test_room_links.py`, `test_room_concurrency.py`, `test_manual_room_closure_preserves_membership_and_booking`; real browser Join/Keep/Leave/Close/cancel |
+| AC-F10-03 | FR-032 | DONE | `test_rooms.py`, `test_room_links.py`, `test_room_concurrency.py`, `test_manual_room_closure_preserves_membership_and_booking`; real browser Join/Keep/Leave/Close/cancel |
+| AC-F10-04 | FR-033 | DONE | `test_rooms.py`, `test_room_links.py`, `test_room_concurrency.py`, `test_manual_room_closure_preserves_membership_and_booking`; real browser Join/Keep/Leave/Close/cancel |
+| AC-F10-05 | FR-034 | DONE | `test_rooms.py`, `test_room_links.py`, `test_room_concurrency.py`, `test_manual_room_closure_preserves_membership_and_booking`; real browser Join/Keep/Leave/Close/cancel |
+| AC-F10-06 | FR-034 | DONE | `test_rooms.py`, `test_room_links.py`, `test_room_concurrency.py`, `test_manual_room_closure_preserves_membership_and_booking`; real browser Join/Keep/Leave/Close/cancel |
+| AC-F10-07 | FR-035 | DONE | `test_rooms.py`, `test_room_links.py`, `test_room_concurrency.py`, `test_manual_room_closure_preserves_membership_and_booking`; real browser Join/Keep/Leave/Close/cancel |
+| AC-F10-08 | FR-036 | DONE | `test_rooms.py`, `test_room_links.py`, `test_room_concurrency.py`, `test_manual_room_closure_preserves_membership_and_booking`; real browser Join/Keep/Leave/Close/cancel |
+| AC-F10-09 | FR-037 | DONE | `test_rooms.py`, `test_room_links.py`, `test_room_concurrency.py`, `test_manual_room_closure_preserves_membership_and_booking`; real browser Join/Keep/Leave/Close/cancel |
+| AC-F10-10 | FR-038 | DONE | `test_rooms.py`, `test_room_links.py`, `test_room_concurrency.py`, `test_manual_room_closure_preserves_membership_and_booking`; real browser Join/Keep/Leave/Close/cancel |
+| AC-F10-11 | FR-031, FR-034, FR-037 | DONE | `test_rooms.py`, `test_room_links.py`, `test_room_concurrency.py`, `test_manual_room_closure_preserves_membership_and_booking`; real browser Join/Keep/Leave/Close/cancel |
+| AC-F10-12 | FR-038 | DONE | `test_rooms.py`, `test_room_links.py`, `test_room_concurrency.py`, `test_manual_room_closure_preserves_membership_and_booking`; real browser Join/Keep/Leave/Close/cancel |
+| AC-F10-13 | FR-033, FR-034, FR-036, FR-037 | DONE | `test_rooms.py`, `test_room_links.py`, `test_room_concurrency.py`, `test_manual_room_closure_preserves_membership_and_booking`; real browser Join/Keep/Leave/Close/cancel |
+| AC-F10-14 | FR-031, FR-032 | DONE | `test_rooms.py`, `test_room_links.py`, `test_room_concurrency.py`, `test_manual_room_closure_preserves_membership_and_booking`; real browser Join/Keep/Leave/Close/cancel |
+| AC-F10-15 | FR-033 | DONE | `test_rooms.py`, `test_room_links.py`, `test_room_concurrency.py`, `test_manual_room_closure_preserves_membership_and_booking`; real browser Join/Keep/Leave/Close/cancel |
+| AC-F10-16 | FR-033 | PARTIAL | Room return URL retains location in implementation; exact browser back-from-room scenario not separately executed. |
+| AC-F10-17 | FR-037 | DONE | `test_rooms.py`, `test_room_links.py`, `test_room_concurrency.py`, `test_manual_room_closure_preserves_membership_and_booking`; real browser Join/Keep/Leave/Close/cancel |
+| AC-F10-18 | FR-037 | DONE | `test_rooms.py`, `test_room_links.py`, `test_room_concurrency.py`, `test_manual_room_closure_preserves_membership_and_booking`; real browser Join/Keep/Leave/Close/cancel |
+| AC-F10-19 | FR-004, FR-005, FR-037 | DONE | `test_rooms.py`, `test_room_links.py`, `test_room_concurrency.py`, `test_manual_room_closure_preserves_membership_and_booking`; real browser Join/Keep/Leave/Close/cancel |
+| AC-F10-20 | FR-031, FR-037 | PARTIAL | Repeat close and one-room rule tested; Keep-open closure dialog itself not separately exercised (shared Keep/Leave control tested). |
+| AC-F10-21 | FR-034, FR-036, FR-037 | DONE | `test_rooms.py`, `test_room_links.py`, `test_room_concurrency.py`, `test_manual_room_closure_preserves_membership_and_booking`; real browser Join/Keep/Leave/Close/cancel |
 
-## Acceptance criteria — initial audit
+## Business rules
 
-Every criterion is retained individually; initial status is PARTIAL unless its feature is absent or contradicted. Named test evidence will be updated after implementation.
-
-| AC | Related FR | Initial status | Verification gap |
-|---|---|---|---|
-| AC-F01-01 | FR-001 | MISMATCH | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F01-02 | FR-001 | MISMATCH | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F01-03 | FR-002 | PARTIAL | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F01-04 | FR-002, FR-004 | PARTIAL | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F01-05 | FR-003 | MISMATCH | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F01-06 | FR-004, FR-005 | PARTIAL | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F01-07 | FR-005 | PARTIAL | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F01-08 | FR-005 | PARTIAL | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F01-09 | FR-002 | PARTIAL | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F01-10 | FR-003, FR-004 | MISMATCH | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F01-11 | FR-001, FR-003 | MISMATCH | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F01-12 | FR-001, FR-003 | MISMATCH | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F01-13 | FR-001, FR-003 | MISMATCH | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F02-01 | FR-006 | PARTIAL | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F02-02 | FR-007 | PARTIAL | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F02-03 | FR-008 | MISMATCH | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F02-04 | FR-009 | PARTIAL | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F02-05 | FR-007, FR-008 | MISMATCH | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F02-06 | FR-008 | MISMATCH | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F02-07 | FR-008 | MISMATCH | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F02-08 | FR-008 | MISMATCH | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F02-09 | FR-008 | MISMATCH | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F02-10 | FR-008, FR-009 | MISMATCH | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F02-11 | FR-046, FR-008 | MISMATCH | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F02-12 | FR-046, FR-014 | PARTIAL | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F03-01 | FR-010 | PARTIAL | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F03-02 | FR-011 | PARTIAL | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F03-03 | FR-012 | PARTIAL | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F03-04 | FR-013 (Should) | MISSING | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F03-05 | FR-011, FR-012 | PARTIAL | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F04-01 | FR-014 | PARTIAL | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F04-02 | FR-015 | PARTIAL | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F04-03 | FR-016 | PARTIAL | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F04-04 | FR-017 | PARTIAL | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F04-05 | FR-018 | PARTIAL | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F04-06 | FR-014, FR-018 | PARTIAL | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F04-07 | FR-017, FR-018 | PARTIAL | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F04-08 | FR-014, FR-017, FR-018 | PARTIAL | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F04-09 | FR-015, FR-018 | PARTIAL | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F04-10 | FR-016, FR-018 | PARTIAL | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F05-01 | FR-019 | PARTIAL | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F05-02 | FR-020 | PARTIAL | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F05-03 | FR-020 / FR-021 | PARTIAL | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F05-04 | FR-021 | PARTIAL | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F05-05 | FR-022 | PARTIAL | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F05-06 | FR-020, FR-021 | PARTIAL | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F05-07 | FR-020, FR-022 | PARTIAL | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F06-01 | FR-023 | PARTIAL | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F06-02 | FR-023, FR-024 | PARTIAL | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F06-03 | FR-024 | PARTIAL | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F06-04 | FR-025 | MISMATCH | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F06-05 | FR-026 | PARTIAL | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F06-06 | FR-027 | PARTIAL | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F06-07 | FR-023 | PARTIAL | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F06-08 | FR-023 | PARTIAL | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F06-09 | FR-023, FR-032 | PARTIAL | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F06-10 | FR-025, FR-027 | MISMATCH | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F06-11 | FR-023, FR-025 | MISMATCH | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F06-12 | FR-025 | MISMATCH | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F06-13 | FR-025 | MISMATCH | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F06-14 | FR-025, FR-027 | MISMATCH | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F06-15 | FR-025, FR-027 | MISMATCH | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F07-01 | FR-028 | PARTIAL | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F07-02 | FR-029 | MISMATCH | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F07-03 | FR-030 | PARTIAL | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F08-01 | FR-039 (Should) | MISSING | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F08-02 | FR-040 (Should) | MISSING | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F08-03 | FR-040 (Should) | MISSING | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F09-01 | FR-041 (Should) | MISSING | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F09-02 | FR-041 (Should) | MISSING | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F09-03 | FR-042 (Should) | MISSING | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F09-04 | FR-043 (Should) | MISSING | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F09-05 | FR-044 (Should) | MISSING | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F09-06 | FR-045 (Should) | MISSING | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F09-07 | FR-044, FR-045 | MISSING | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F09-08 | FR-047 | MISSING | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F09-09 | FR-047, FR-048 | MISSING | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F09-10 | FR-048 | MISSING | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F09-11 | FR-047, FR-048 | MISSING | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F09-12 | FR-048 | MISSING | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F09-13 | FR-049, FR-004, FR-005 | PARTIAL | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F09-14 | FR-042, FR-048 | MISSING | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F09-15 | FR-041, FR-047, FR-048 | MISSING | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F09-16 | FR-044, FR-045 | MISSING | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F09-17 | FR-048, FR-043 | MISSING | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F10-01 | FR-031 | PARTIAL | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F10-02 | FR-031 | PARTIAL | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F10-03 | FR-032 | PARTIAL | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F10-04 | FR-033 | MISMATCH | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F10-05 | FR-034 | PARTIAL | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F10-06 | FR-034 | PARTIAL | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F10-07 | FR-035 | PARTIAL | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F10-08 | FR-036 | PARTIAL | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F10-09 | FR-037 | MISMATCH | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F10-10 | FR-038 | PARTIAL | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F10-11 | FR-031, FR-034, FR-037 | MISMATCH | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F10-12 | FR-038 | PARTIAL | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F10-13 | FR-033, FR-034, FR-036, FR-037 | MISMATCH | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F10-14 | FR-031, FR-032 | PARTIAL | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F10-15 | FR-033 | MISMATCH | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F10-16 | FR-033 | MISMATCH | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F10-17 | FR-037 | MISMATCH | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F10-18 | FR-037 | MISMATCH | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F10-19 | FR-004, FR-005, FR-037 | MISMATCH | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F10-20 | FR-031, FR-037 | MISMATCH | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-| AC-F10-21 | FR-034, FR-036, FR-037 | MISMATCH | Current end-to-end UI/API evidence pending; compare exact source scenario. |
-
-## Business rules — initial audit
-
-| Rule | Initial status | Evidence / gap |
+| BR | Current | Evidence |
 |---|---|---|
-| BR-01 — Slot Scheduling Rules | PARTIAL | Existing services/tests cover booking/capacity subsets; current source regression and frontend verification pending. |
-| BR-02 — 6-Hour Booking Cancellation | PARTIAL | Existing services/tests cover booking/capacity subsets; current source regression and frontend verification pending. |
-| BR-03 — Protect Confirmed Bookings | PARTIAL | Existing services/tests cover booking/capacity subsets; current source regression and frontend verification pending. |
-| BR-04 — One Room per Booking | MISMATCH | Existing services/tests cover booking/capacity subsets; current source regression and frontend verification pending. |
-| BR-05 — Court and Room Capacity | PARTIAL | Existing services/tests cover booking/capacity subsets; current source regression and frontend verification pending. |
-| BR-06 — Open Play Room Lifecycle | MISMATCH | Existing services/tests cover booking/capacity subsets; current source regression and frontend verification pending. |
-| BR-07 — Manual and Scheduled Last-Minute Deals | MISSING | Existing services/tests cover booking/capacity subsets; current source regression and frontend verification pending. |
-| BR-08 — Per-Person Cost Estimate | PARTIAL | Existing services/tests cover booking/capacity subsets; current source regression and frontend verification pending. |
-| BR-09 — User Roles and Access | MISMATCH | Existing services/tests cover booking/capacity subsets; current source regression and frontend verification pending. |
-| BR-10 — Consecutive Multi-Slot Booking | PARTIAL | Existing services/tests cover booking/capacity subsets; current source regression and frontend verification pending. |
+| BR-01 — Slot Scheduling Rules | DONE | `api/courts.py`, `services/courts.py`; `OwnerPage.tsx`, `SchedulePage.tsx`; `test_courts.py`, `test_srs_alignment.py`, `test_concurrency.py`; browser court/hours/batch edit-add-remove/publication/maintenance |
+| BR-02 — 6-Hour Booking Cancellation | DONE | `services/bookings.py`, receipt middleware in `app/main.py`; `BookingsPage.tsx`; `test_bookings.py` ten-record history, exact-six-hour boundaries; `test_room_concurrency::test_exact_six_hour_receipt_remains_eligible_after_lock_wait`; browser whole cancel/release |
+| BR-03 — Protect Confirmed Bookings | DONE | `api/courts.py`, `services/courts.py`; `OwnerPage.tsx`, `SchedulePage.tsx`; `test_courts.py`, `test_srs_alignment.py`, `test_concurrency.py`; browser court/hours/batch edit-add-remove/publication/maintenance |
+| BR-04 — One Room per Booking | DONE | `services/rooms.py`, `api/rooms.py`, `0006_room_closure_reason`; `RoomsPage.tsx`, booking room creation; `test_rooms.py`, `test_room_links.py`, `test_room_concurrency.py`, `test_manual_room_closure_preserves_membership_and_booking`; real browser Join/Keep/Leave/Close/cancel |
+| BR-05 — Court and Room Capacity | DONE | `services/rooms.py`, `api/rooms.py`, `0006_room_closure_reason`; `RoomsPage.tsx`, booking room creation; `test_rooms.py`, `test_room_links.py`, `test_room_concurrency.py`, `test_manual_room_closure_preserves_membership_and_booking`; real browser Join/Keep/Leave/Close/cancel |
+| BR-06 — Open Play Room Lifecycle | DONE | `services/rooms.py`, `api/rooms.py`, `0006_room_closure_reason`; `RoomsPage.tsx`, booking room creation; `test_rooms.py`, `test_room_links.py`, `test_room_concurrency.py`, `test_manual_room_closure_preserves_membership_and_booking`; real browser Join/Keep/Leave/Close/cancel |
+| BR-07 — Manual and Scheduled Last-Minute Deals | DONE | `services/offers.py`, `api/offers.py`, `0005_slot_offers`; offer-aware booking/availability; `OffersPage.tsx`; `test_offers.py`, `test_srs_alignment::test_offer_api_validation_ownership_and_state_confirmation`; browser schedule/Keep/cancel; PostgreSQL configuration/activation/booking races |
+| BR-08 — Per-Person Cost Estimate | DONE | `services/rooms.py`, `api/rooms.py`, `0006_room_closure_reason`; `RoomsPage.tsx`, booking room creation; `test_rooms.py`, `test_room_links.py`, `test_room_concurrency.py`, `test_manual_room_closure_preserves_membership_and_booking`; real browser Join/Keep/Leave/Close/cancel |
+| BR-09 — User Roles and Access | DONE | `app/core/auth.py`, `app/api/identity.py`; `AuthPage.tsx`, `SessionProvider.tsx`; `test_srs_alignment::test_initial_roles_are_validated_once_and_profile_cannot_escalate`; `test_identity.py`, `test_auth_errors.py`; `bootstrap.spec.ts`, session outage E2E |
+| BR-10 — Consecutive Multi-Slot Booking | DONE | `services/bookings.py`; `CourtPage.tsx` review/confirm; `test_bookings.py`, `test_core_api.py`, `test_concurrency::test_ten_real_connections_confirm_only_one_whole_overlapping_booking`; real browser multi-slot flow |
 
-## Quality targets
+## Non-functional verification
 
-NFR-01: specified 30-user/60-second workload not yet run for this change. NFR-02/03: existing real PostgreSQL concurrency tests must be rerun and expanded for closure/offers. NFR-04: initial role registration and protected contact disclosure require regressions. NFR-05: 375/768/1280 responsive, keyboard/focus, contrast, Lighthouse >=80 and screen-reader checks pending. Axe alone cannot establish full compliance.
+| NFR | Status | Actual evidence and limits |
+|---|---|---|
+| NFR-01 | DONE for tested local workload | Docker k6 2.3.0; 30 VUs, 5-second warm-up, 60-second steady interval, one-second think time; 1 court/8 slots/30 Players/1 Owner; search/detail/availability/preview and review/confirm/cancel. [Measured summary](evidence/srs-nfr-k6.json). This does not establish production/free-tier performance or large-dataset capacity. |
+| NFR-02 | DONE | Real PostgreSQL independent connections and observed row-lock contention: 10 overlapping booking requests, schedule/price/maintenance races and F09 configuration/activation/cancellation/deactivation/booking races. |
+| NFR-03 | DONE | Capacity 16 versus 17, final-place and duplicate joins, Join/Leave versus Close, cancellation/start closure, retained membership and accepted booking. `test_room_concurrency.py`. |
+| NFR-04 | DONE | Real Firebase Auth Emulator API tests plus invalid/revoked/disabled/provider-error tests, both initial roles, protected role/profile, cross-Owner/Player reads/writes and manual-close ownership. |
+| NFR-05 | PARTIAL | Playwright 375/768/1280 widths, no document overflow, keyboard dropdown/Escape/focus return and Axe checks on real discovery, Owner calendar and booking review. Lighthouse 13.6.0 accessibility 100 for tested home(1280), rooms(375), slots(768), production build: [summary](evidence/srs-lighthouse.json). Human screen-reader session, full manual rendered contrast measurements, all protected-page Lighthouse runs and complete Figma pixel comparison remain unverified. |
 
-## Implementation / execution evidence
+## Executed checks
 
-Pending; no current checks have been marked PASS.
+- Backend `uv sync --locked`, `uv run ruff check .`, `uv run ruff format --check .`: PASS. Additive migration upgrade to head twice and `alembic check`: PASS, no drift. Full pytest after targeted fixture cleanup: **230 passed**. Empty/populated-identity migration tests preserve existing users.
+- Frontend `npm ci`, lint, typecheck and production build: PASS. No dependency/lockfile upgrade. npm audit reports 10 moderate pre-existing development-tool findings (ESLint/TypeScript-ESLint/minimatch); no high/critical finding. No audit fix/major downgrade was applied.
+- Browser suite: 12 tests, real Firebase Emulator → API → PostgreSQL for business flows; local failure-injection tests are separately named in `client.spec.ts`. Final results/CI/deployed SHAs are recorded in [release report](frontend-release-report.md).
+
+## Corrections and evidence boundaries
+
+- New accounts must complete explicit initial registration; `/api/me` no longer silently assigns Player. Existing valid roles are preserved. Legacy registration email is recovered only from Firebase; provider outages never fabricate a contact or hide otherwise accessible booking details.
+- BR-02 uses backend HTTP receipt time before authentication/lock waits. Business state still revalidates under Court → Booking → Room locks; cancellation/offer state changes use the actual transition time. Room Join/Leave and offer applicability continue to check current time after waiting.
+- New migrations only add profile/contact, slot-offer and room-closure-reason structures. No reset, downgrade, data replacement, new cloud resource, role reassignment or forced cancellation.
+- A full pytest invocation overlapped the disposable k6 dataset and failed 41 global-count assertions. This was test-fixture interference, not a product PASS. Only generated run-marker rows were cleaned, then the full suite was rerun sequentially. Earlier E2E failures identified label/help naming, dropdown hover contrast and Clear-time/remount input loss; regressions were added and rerun.
+- Public room roster exposes display name/organizer relationship only; member identifiers, emails, tokens and private preferences are excluded. `is_self` is returned only to the authenticated membership view.
+- Figma prototype fixture dates/prices/counts are not production defaults. UI consumes real records; source illustrations are visibly labeled as illustrations when a venue photo is absent. Review/confirmation dialogs and the weekly-hours editor adapt prototype frames to the live app; exact pixel equality of every prototype frame is not asserted.
+- Manual screen-reader, external map/route accuracy and the 11 exact AC variants marked PARTIAL remain explicit verification work. Protected cloud business writes and cloud load were not run.
