@@ -55,3 +55,13 @@ Authenticated accessibility review adds 26 Lighthouse 13.6.0 snapshots scoring *
 Mandatory manual verification remains: actual rendered map/geocoding and a correct route with permitted or typed origin (the inspected iframe was blank); screen-reader execution of core tasks at the three widths; exhaustive composited text-contrast/focus review. Full Figma pixel equality, untested devices/browsers and protected production business writes/load are not claimed. No production data mutation was performed.
 
 Review commits: `3d49b38` (contact/F09 regressions), `bcbae7a` (origin guard, wrapping and ten browser regressions). Local checks above completed; remote CI/deployment verification follows the authorized branch push and is recorded below.
+
+### Post-push verification — 11 November 2026 (UTC+7)
+
+- Reviewed source: [`c1e33e4b85bd63e7655a2552bb63d8d7ddf0b9b1`](https://github.com/hungstupid/CourtMate/commit/c1e33e4b85bd63e7655a2552bb63d8d7ddf0b9b1), pushed to the existing bootstrap branch with `3d49b38` and `bcbae7a`; no main merge or force-push.
+- [CourtMate quality 42861206327](https://github.com/hungstupid/CourtMate/actions/runs/42861206327): **SUCCESS**, both frontend-push and integration-push. Logs independently confirm **239 pytest / 22 Playwright PASS**, Chromium 156.0.8078.4 on Linux; locked installs, Ruff, migrations and frontend checks pass. Repository guide/secret-filename check also passed locally (20 guides).
+- Vercel `dpl_vUbv3Jtm6xLwBZA8SmpZwvvKQu4f`: **READY**, source SHA `c1e33e4`; production `/version.json` returned that exact full SHA after CI. Public home/login/register at 375/768/1280 had no page-level overflow or browser JS exception.
+- Render remains **LIVE at `2b95e0934eeaea68b6ce55678e23f4aedb02b371`**, deploy `dep-dbpj6c67bikc73dnbo8g`. Its configured branch is correct and auto-deploy is `checksPass`; however no new deploy/event was observed after this successful CI. **The contact PATCH fix is verified locally/CI but is not verified deployed on Render.** No manual deploy, service setting change, secret access or cloud business mutation was performed. Treat backend release synchronization as outstanding; do not claim the cloud backend runs this reviewed source.
+- Read-only cloud checks: `/health` and `/ready` 200; unauthenticated bookings/owner-courts 401; CORS preflight for the actual production frontend origin 200. No production sign-up, booking, cancellation, room participation or offer mutation/load was used to validate this review.
+
+This final evidence-only update does not alter the tested application. Subsequent documentation-only HEADs may have newer Vercel version markers; the verified application source and CI above remain explicit.

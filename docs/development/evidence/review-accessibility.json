@@ -24,496 +24,132 @@
     {
       "screen": "court-details-375",
       "url": "http://localhost:5173/courts/fe1fa90d-836b-4f63-a5fb-00916869deb8",
-      "score": 100,
-      "otherFindings": [
-        {
-          "id": "robots-txt",
-          "title": "robots.txt is not valid"
-        },
-        {
-          "id": "llms-txt",
-          "title": "llms.txt does not follow recommendations"
-        },
-        {
-          "id": "ard-schema",
-          "title": "ARD manifest is invalid"
-        }
-      ]
+      "score": 100
     },
     {
       "screen": "court-details-1280",
       "url": "http://localhost:5173/courts/fe1fa90d-836b-4f63-a5fb-00916869deb8",
-      "score": 100,
-      "otherFindings": [
-        {
-          "id": "robots-txt",
-          "title": "robots.txt is not valid"
-        },
-        {
-          "id": "llms-txt",
-          "title": "llms.txt does not follow recommendations"
-        },
-        {
-          "id": "ard-schema",
-          "title": "ARD manifest is invalid"
-        }
-      ]
+      "score": 100
     },
     {
       "screen": "owner-edit-375",
       "url": "http://localhost:5173/owner/courts/fe1fa90d-836b-4f63-a5fb-00916869deb8/edit",
-      "score": 100,
-      "otherFindings": [
-        {
-          "id": "robots-txt",
-          "title": "robots.txt is not valid"
-        },
-        {
-          "id": "llms-txt",
-          "title": "llms.txt does not follow recommendations"
-        },
-        {
-          "id": "ard-schema",
-          "title": "ARD manifest is invalid"
-        }
-      ]
+      "score": 100
     },
     {
       "screen": "owner-edit-768",
       "url": "http://localhost:5173/owner/courts/fe1fa90d-836b-4f63-a5fb-00916869deb8/edit",
-      "score": 100,
-      "otherFindings": [
-        {
-          "id": "robots-txt",
-          "title": "robots.txt is not valid"
-        },
-        {
-          "id": "llms-txt",
-          "title": "llms.txt does not follow recommendations"
-        },
-        {
-          "id": "ard-schema",
-          "title": "ARD manifest is invalid"
-        }
-      ]
+      "score": 100
     },
     {
       "screen": "owner-edit-1280",
       "url": "http://localhost:5173/owner/courts/fe1fa90d-836b-4f63-a5fb-00916869deb8/edit",
-      "score": 100,
-      "otherFindings": [
-        {
-          "id": "robots-txt",
-          "title": "robots.txt is not valid"
-        },
-        {
-          "id": "llms-txt",
-          "title": "llms.txt does not follow recommendations"
-        },
-        {
-          "id": "ard-schema",
-          "title": "ARD manifest is invalid"
-        }
-      ]
+      "score": 100
     },
     {
       "screen": "owner-calendar-375",
       "url": "http://localhost:5173/owner/schedule?court=fe1fa90d-836b-4f63-a5fb-00916869deb8&date=2026-11-11",
-      "score": 100,
-      "otherFindings": [
-        {
-          "id": "robots-txt",
-          "title": "robots.txt is not valid"
-        },
-        {
-          "id": "llms-txt",
-          "title": "llms.txt does not follow recommendations"
-        },
-        {
-          "id": "ard-schema",
-          "title": "ARD manifest is invalid"
-        }
-      ]
+      "score": 100
     },
     {
       "screen": "owner-calendar-768",
       "url": "http://localhost:5173/owner/schedule?court=fe1fa90d-836b-4f63-a5fb-00916869deb8&date=2026-11-11",
-      "score": 100,
-      "otherFindings": [
-        {
-          "id": "robots-txt",
-          "title": "robots.txt is not valid"
-        },
-        {
-          "id": "llms-txt",
-          "title": "llms.txt does not follow recommendations"
-        },
-        {
-          "id": "ard-schema",
-          "title": "ARD manifest is invalid"
-        }
-      ]
+      "score": 100
     },
     {
       "screen": "owner-calendar-1280",
       "url": "http://localhost:5173/owner/schedule?court=fe1fa90d-836b-4f63-a5fb-00916869deb8&date=2026-11-11",
-      "score": 100,
-      "otherFindings": [
-        {
-          "id": "robots-txt",
-          "title": "robots.txt is not valid"
-        },
-        {
-          "id": "llms-txt",
-          "title": "llms.txt does not follow recommendations"
-        },
-        {
-          "id": "ard-schema",
-          "title": "ARD manifest is invalid"
-        }
-      ]
+      "score": 100
     },
     {
       "screen": "f09-pending-375",
       "url": "http://localhost:5173/owner/offers?court=fe1fa90d-836b-4f63-a5fb-00916869deb8&date=2026-11-11&slot=a1d3aff0-bc3f-499a-b446-595f1dcc6259",
-      "score": 100,
-      "otherFindings": [
-        {
-          "id": "robots-txt",
-          "title": "robots.txt is not valid"
-        },
-        {
-          "id": "llms-txt",
-          "title": "llms.txt does not follow recommendations"
-        },
-        {
-          "id": "ard-schema",
-          "title": "ARD manifest is invalid"
-        }
-      ]
+      "score": 100
     },
     {
       "screen": "f09-pending-768",
       "url": "http://localhost:5173/owner/offers?court=fe1fa90d-836b-4f63-a5fb-00916869deb8&date=2026-11-11&slot=a1d3aff0-bc3f-499a-b446-595f1dcc6259",
-      "score": 100,
-      "otherFindings": [
-        {
-          "id": "robots-txt",
-          "title": "robots.txt is not valid"
-        },
-        {
-          "id": "llms-txt",
-          "title": "llms.txt does not follow recommendations"
-        },
-        {
-          "id": "ard-schema",
-          "title": "ARD manifest is invalid"
-        }
-      ]
+      "score": 100
     },
     {
       "screen": "f09-pending-1280",
       "url": "http://localhost:5173/owner/offers?court=fe1fa90d-836b-4f63-a5fb-00916869deb8&date=2026-11-11&slot=a1d3aff0-bc3f-499a-b446-595f1dcc6259",
-      "score": 100,
-      "otherFindings": [
-        {
-          "id": "robots-txt",
-          "title": "robots.txt is not valid"
-        },
-        {
-          "id": "llms-txt",
-          "title": "llms.txt does not follow recommendations"
-        },
-        {
-          "id": "ard-schema",
-          "title": "ARD manifest is invalid"
-        }
-      ]
+      "score": 100
     },
     {
       "screen": "player-slots-375",
       "url": "http://localhost:5173/courts/fe1fa90d-836b-4f63-a5fb-00916869deb8/slots?date=2026-11-11",
-      "score": 100,
-      "otherFindings": [
-        {
-          "id": "robots-txt",
-          "title": "robots.txt is not valid"
-        },
-        {
-          "id": "llms-txt",
-          "title": "llms.txt does not follow recommendations"
-        },
-        {
-          "id": "ard-schema",
-          "title": "ARD manifest is invalid"
-        }
-      ]
+      "score": 100
     },
     {
       "screen": "player-slots-768",
       "url": "http://localhost:5173/courts/fe1fa90d-836b-4f63-a5fb-00916869deb8/slots?date=2026-11-11",
-      "score": 100,
-      "otherFindings": [
-        {
-          "id": "robots-txt",
-          "title": "robots.txt is not valid"
-        },
-        {
-          "id": "llms-txt",
-          "title": "llms.txt does not follow recommendations"
-        },
-        {
-          "id": "ard-schema",
-          "title": "ARD manifest is invalid"
-        }
-      ]
+      "score": 100
     },
     {
       "screen": "player-slots-1280",
       "url": "http://localhost:5173/courts/fe1fa90d-836b-4f63-a5fb-00916869deb8/slots?date=2026-11-11",
-      "score": 100,
-      "otherFindings": [
-        {
-          "id": "robots-txt",
-          "title": "robots.txt is not valid"
-        },
-        {
-          "id": "llms-txt",
-          "title": "llms.txt does not follow recommendations"
-        },
-        {
-          "id": "ard-schema",
-          "title": "ARD manifest is invalid"
-        }
-      ]
+      "score": 100
     },
     {
       "screen": "player-review-375",
       "url": "http://localhost:5173/courts/fe1fa90d-836b-4f63-a5fb-00916869deb8/slots?date=2026-11-11",
-      "score": 100,
-      "otherFindings": [
-        {
-          "id": "robots-txt",
-          "title": "robots.txt is not valid"
-        },
-        {
-          "id": "llms-txt",
-          "title": "llms.txt does not follow recommendations"
-        },
-        {
-          "id": "ard-schema",
-          "title": "ARD manifest is invalid"
-        }
-      ]
+      "score": 100
     },
     {
       "screen": "player-review-768",
       "url": "http://localhost:5173/courts/fe1fa90d-836b-4f63-a5fb-00916869deb8/slots?date=2026-11-11",
-      "score": 100,
-      "otherFindings": [
-        {
-          "id": "robots-txt",
-          "title": "robots.txt is not valid"
-        },
-        {
-          "id": "llms-txt",
-          "title": "llms.txt does not follow recommendations"
-        },
-        {
-          "id": "ard-schema",
-          "title": "ARD manifest is invalid"
-        }
-      ]
+      "score": 100
     },
     {
       "screen": "player-review-1280",
       "url": "http://localhost:5173/courts/fe1fa90d-836b-4f63-a5fb-00916869deb8/slots?date=2026-11-11",
-      "score": 100,
-      "otherFindings": [
-        {
-          "id": "robots-txt",
-          "title": "robots.txt is not valid"
-        },
-        {
-          "id": "llms-txt",
-          "title": "llms.txt does not follow recommendations"
-        },
-        {
-          "id": "ard-schema",
-          "title": "ARD manifest is invalid"
-        }
-      ]
+      "score": 100
     },
     {
       "screen": "player-booking-375",
       "url": "http://localhost:5173/bookings/90109fea-98b4-4668-a785-33a4b8599595",
-      "score": 100,
-      "otherFindings": [
-        {
-          "id": "robots-txt",
-          "title": "robots.txt is not valid"
-        },
-        {
-          "id": "llms-txt",
-          "title": "llms.txt does not follow recommendations"
-        },
-        {
-          "id": "ard-schema",
-          "title": "ARD manifest is invalid"
-        }
-      ]
+      "score": 100
     },
     {
       "screen": "player-booking-768",
       "url": "http://localhost:5173/bookings/90109fea-98b4-4668-a785-33a4b8599595",
-      "score": 100,
-      "otherFindings": [
-        {
-          "id": "robots-txt",
-          "title": "robots.txt is not valid"
-        },
-        {
-          "id": "llms-txt",
-          "title": "llms.txt does not follow recommendations"
-        },
-        {
-          "id": "ard-schema",
-          "title": "ARD manifest is invalid"
-        }
-      ]
+      "score": 100
     },
     {
       "screen": "player-booking-1280",
       "url": "http://localhost:5173/bookings/90109fea-98b4-4668-a785-33a4b8599595",
-      "score": 100,
-      "otherFindings": [
-        {
-          "id": "robots-txt",
-          "title": "robots.txt is not valid"
-        },
-        {
-          "id": "llms-txt",
-          "title": "llms.txt does not follow recommendations"
-        },
-        {
-          "id": "ard-schema",
-          "title": "ARD manifest is invalid"
-        }
-      ]
+      "score": 100
     },
     {
       "screen": "organizer-room-375",
       "url": "http://localhost:5173/rooms/496fa11d-e253-429c-bd20-b00a4cd9cb91",
-      "score": 100,
-      "otherFindings": [
-        {
-          "id": "robots-txt",
-          "title": "robots.txt is not valid"
-        },
-        {
-          "id": "llms-txt",
-          "title": "llms.txt does not follow recommendations"
-        },
-        {
-          "id": "ard-schema",
-          "title": "ARD manifest is invalid"
-        }
-      ]
+      "score": 100
     },
     {
       "screen": "organizer-room-768",
       "url": "http://localhost:5173/rooms/496fa11d-e253-429c-bd20-b00a4cd9cb91",
-      "score": 100,
-      "otherFindings": [
-        {
-          "id": "robots-txt",
-          "title": "robots.txt is not valid"
-        },
-        {
-          "id": "llms-txt",
-          "title": "llms.txt does not follow recommendations"
-        },
-        {
-          "id": "ard-schema",
-          "title": "ARD manifest is invalid"
-        }
-      ]
+      "score": 100
     },
     {
       "screen": "organizer-room-1280",
       "url": "http://localhost:5173/rooms/496fa11d-e253-429c-bd20-b00a4cd9cb91",
-      "score": 100,
-      "otherFindings": [
-        {
-          "id": "robots-txt",
-          "title": "robots.txt is not valid"
-        },
-        {
-          "id": "llms-txt",
-          "title": "llms.txt does not follow recommendations"
-        },
-        {
-          "id": "ard-schema",
-          "title": "ARD manifest is invalid"
-        }
-      ]
+      "score": 100
     },
     {
       "screen": "room-close-dialog-375",
       "url": "http://localhost:5173/rooms/496fa11d-e253-429c-bd20-b00a4cd9cb91",
-      "score": 100,
-      "otherFindings": [
-        {
-          "id": "robots-txt",
-          "title": "robots.txt is not valid"
-        },
-        {
-          "id": "llms-txt",
-          "title": "llms.txt does not follow recommendations"
-        },
-        {
-          "id": "ard-schema",
-          "title": "ARD manifest is invalid"
-        }
-      ]
+      "score": 100
     },
     {
       "screen": "room-close-dialog-768",
       "url": "http://localhost:5173/rooms/496fa11d-e253-429c-bd20-b00a4cd9cb91",
-      "score": 100,
-      "otherFindings": [
-        {
-          "id": "robots-txt",
-          "title": "robots.txt is not valid"
-        },
-        {
-          "id": "llms-txt",
-          "title": "llms.txt does not follow recommendations"
-        },
-        {
-          "id": "ard-schema",
-          "title": "ARD manifest is invalid"
-        }
-      ]
+      "score": 100
     },
     {
       "screen": "room-close-dialog-1280",
       "url": "http://localhost:5173/rooms/496fa11d-e253-429c-bd20-b00a4cd9cb91",
-      "score": 100,
-      "otherFindings": [
-        {
-          "id": "robots-txt",
-          "title": "robots.txt is not valid"
-        },
-        {
-          "id": "llms-txt",
-          "title": "llms.txt does not follow recommendations"
-        },
-        {
-          "id": "ard-schema",
-          "title": "ARD manifest is invalid"
-        }
-      ]
+      "score": 100
     }
   ],
   "renderedContrastSamples": [
@@ -668,8 +304,22 @@
   "limits": [
     "Snapshot accessibility on the Vite dev server, not a production-build performance audit. Historical production-build public-page results remain separately recorded.",
     "21 sampled paragraph computed-color/nearest-opaque-background pairs in unobscured page states; minimum ratio 5.709:1. Dialog-backdrop states excluded from these samples. Not exhaustive manual composited-color/focus or screen-reader evidence.",
-    "robots-txt, llms-txt and ard-schema findings are unrelated to the accessibility category and are preserved as otherFindings.",
+    "The same robots-txt, llms-txt and ard-schema findings occurred on every snapshot. They are unrelated to the accessibility category and are retained once under otherFindingsRepeatedOnEachSnapshot.",
     "External map iframe was blank in the inspected screenshot. Address/manual-origin URL and denied permission guard are verified; external geocoding/route accuracy remains unverified.",
     "F09 manual long-name mobile overflow was found by a later regression test, fixed, and rechecked by Playwright; these snapshots cover pending F09 state."
+  ],
+  "otherFindingsRepeatedOnEachSnapshot": [
+    {
+      "id": "robots-txt",
+      "title": "robots.txt is not valid"
+    },
+    {
+      "id": "llms-txt",
+      "title": "llms.txt does not follow recommendations"
+    },
+    {
+      "id": "ard-schema",
+      "title": "ARD manifest is invalid"
+    }
   ]
 }
