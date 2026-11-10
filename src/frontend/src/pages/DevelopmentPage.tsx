@@ -3,7 +3,7 @@ import { IdentitySmoke } from '../components/IdentitySmoke'
 
 export function DevelopmentPage() {
   return (
-    <main>
+    <section>
       <header><span className="brand-mark" aria-hidden="true">C</span>CourtMate</header>
       <div className="intro">
         <p className="eyebrow">LOCAL DEVELOPMENT ENVIRONMENT</p>
@@ -13,6 +13,6 @@ export function DevelopmentPage() {
       <BackendStatus />
       <IdentitySmoke />
       <footer>T05 Nexora <span aria-hidden="true">·</span> HCMUS</footer>
-    </main>
+    </section>
   )
 }

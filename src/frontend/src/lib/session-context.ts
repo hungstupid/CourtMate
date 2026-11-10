@@ -3,7 +3,7 @@ import type { User } from '@firebase/auth'
 
 export type Identity = { id: string; firebase_uid: string; role: 'player' | 'owner' }
 export type Session = {
-  status: 'loading' | 'signed-out' | 'ready' | 'error'
+  status: 'loading' | 'signed-out' | 'ready' | 'error' | 'unregistered'
   user: User | null
   identity: Identity | null
   message: string

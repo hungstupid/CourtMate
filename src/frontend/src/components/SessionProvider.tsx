@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import type { ReactNode } from 'react'
 import { onIdTokenChanged, signOut } from '@firebase/auth'
 import { firebaseAuth } from '../lib/firebase'
-import { apiRequest } from '../lib/api'
+import { ApiError, apiRequest } from '../lib/api'
 import { SessionContext } from '../lib/session-context'
 import type { Identity, Session } from '../lib/session-context'
 
@@ -30,7 +30,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
         if (!controller.signal.aborted) setState({ user, identity, status: 'ready', message: '' })
       }).catch((error: unknown) => {
         if (!controller.signal.aborted && auth.currentUser?.uid === user.uid) {
-          setState({ user, identity: null, status: 'error', message: error instanceof Error ? error.message : 'Unable to connect.' })
+          setState({ user, identity: null, status: error instanceof ApiError && error.code === 'ACCOUNT_UNREGISTERED' ? 'unregistered' : 'error', message: error instanceof Error ? error.message : 'Unable to connect.' })
         }
       })
     }, () => setState({ ...initial, status: 'error', message: 'Unable to load your session. Please retry.' }))

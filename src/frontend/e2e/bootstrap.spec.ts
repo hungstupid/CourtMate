@@ -4,45 +4,63 @@ import AxeBuilder from '@axe-core/playwright'
 test('frontend connects to the real API', async ({ page }) => {
   const errors: string[] = []
   page.on('pageerror', (error) => errors.push(error.message))
-  await page.goto('/')
-  await expect(page.getByRole('status').filter({ hasText: /^Connected$/ })).toBeVisible({ timeout: 90000 })
+  await page.goto('/development')
+  await expect(
+    page.getByRole('status').filter({ hasText: /^Connected$/ })
+  ).toBeVisible({ timeout: 90000 })
   expect(errors).toEqual([])
 })
 
-test('Firebase account and backend Player role', async ({ page }) => {
-  await page.goto('/')
-  const email = process.env.E2E_EMAIL || `browser-${Date.now()}@courtmate.test`
+test('Firebase session persists and sign-out removes protected access', async ({
+  page,
+}) => {
+  await page.goto(process.env.E2E_EMAIL ? '/login' : '/register')
+  const marker = process.env.COURTMATE_E2E_MARKER || 'e2e-local'
+  const email = process.env.E2E_EMAIL || `${marker}-session@courtmate.test`
   const password = process.env.E2E_PASSWORD || 'Local-browser-only-123!'
-  if (process.env.E2E_BASE_URL && (!process.env.E2E_EMAIL || !process.env.E2E_PASSWORD)) {
-    throw new Error('Cloud E2E requires explicit test account credentials; no public account is created automatically.')
-  }
+  if (
+    process.env.E2E_BASE_URL &&
+    (!process.env.E2E_EMAIL || !process.env.E2E_PASSWORD)
+  )
+    throw new Error(
+      'Cloud auth checks require explicit existing test credentials.'
+    )
   await page.getByLabel('Email', { exact: true }).fill(email)
-  await page.getByLabel('Password', { exact: true }).fill(password)
-  await page.getByRole('button', { name: process.env.E2E_EMAIL ? 'Sign in' : 'Register as Player', exact: true }).click()
-  await expect(page.getByText('Signed in with Firebase.')).toBeVisible()
-  await page.getByRole('button', { name: 'Verify with backend' }).click()
-  await expect(page.getByRole('status').filter({ hasText: 'Backend verified' })).toContainText(process.env.E2E_ROLE || 'Player')
-  await page.getByRole('link', { name: 'Account', exact: true }).click()
-  await expect(page.getByRole('heading', { name: 'Account foundation' })).toBeVisible()
+  await page.getByLabel('Mật khẩu', { exact: true }).fill(password)
+  await page
+    .getByRole('button', {
+      name: process.env.E2E_EMAIL ? 'Đăng nhập' : 'Tạo tài khoản',
+      exact: true,
+    })
+    .click()
+  await expect(page).not.toHaveURL(/\/(login|register)$/)
+  await page.goto('/profile')
+  await expect(
+    page.getByRole('heading', { name: 'Thông tin cá nhân' })
+  ).toBeVisible()
   await page.reload()
-  await expect(page.getByRole('heading', { name: 'Account foundation' })).toBeVisible()
-  await page.getByRole('link', { name: 'Court Owner', exact: true }).click()
-  if (process.env.E2E_ROLE === 'Court Owner') {
-    await expect(page.getByRole('heading', { name: 'Court Owner foundation' })).toBeVisible()
-  } else {
-    await expect(page.getByRole('alert')).toHaveText('Court Owner access is required.')
-    await page.getByRole('link', { name: 'Account', exact: true }).click()
-  }
-  await page.getByRole('button', { name: 'Sign out' }).click()
-  await expect(page.getByRole('button', { name: 'Sign in', exact: true })).toBeVisible()
-  await page.reload()
-  await expect(page.getByRole('button', { name: 'Sign in', exact: true })).toBeVisible()
-  await expect(page.getByRole('heading', { name: /foundation/ })).toHaveCount(0)
+  await expect(page.getByLabel('Vai trò', { exact: true })).toHaveValue(
+    process.env.E2E_ROLE === 'Court Owner'
+      ? 'Chủ sân (Court Owner)'
+      : 'Người chơi (Player)'
+  )
+  await page.getByRole('button', { name: 'Đăng xuất', exact: true }).click()
+  await expect(page).toHaveURL(/\/login$/)
+  await page.goto('/bookings')
+  await expect(page).toHaveURL(/\/login$/)
 })
 
-test('development page accessibility @a11y', async ({ page }) => {
+test('court discovery accessibility @a11y', async ({ page }) => {
   await page.goto('/')
-  await expect(page.getByRole('status').filter({ hasText: /^Connected$/ })).toBeVisible({ timeout: 90000 })
-  const results = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa']).analyze()
+  await expect(
+    page.getByRole('heading', { name: 'Khám phá sân chơi' })
+  ).toBeVisible()
+  await expect(page.getByText('Đang tải sân…', { exact: true })).toHaveCount(
+    0,
+    { timeout: 90000 }
+  )
+  const results = await new AxeBuilder({ page })
+    .withTags(['wcag2a', 'wcag2aa', 'wcag21aa'])
+    .analyze()
   expect(results.violations).toEqual([])
 })

@@ -1,6 +1,10 @@
+import { randomUUID } from 'node:crypto'
 import { defineConfig } from '@playwright/test'
 
+process.env.COURTMATE_E2E_MARKER ||= `e2e-${randomUUID().replaceAll("-", "")}`
+
 export default defineConfig({
+  globalTeardown: process.env.E2E_BASE_URL ? undefined : "./e2e/cleanup.ts",
   testDir: './e2e',
   // API failure injection is a local regression suite, separate from real cloud acceptance.
   testIgnore: process.env.E2E_BASE_URL ? '**/client.spec.ts' : undefined,

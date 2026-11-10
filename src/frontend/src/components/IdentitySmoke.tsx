@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import type { FormEvent } from 'react'
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from '@firebase/auth'
+import { apiRequest } from '../lib/api'
 import { firebaseAuth } from '../lib/firebase'
 import { useSession } from '../lib/session-context'
 
@@ -21,6 +22,8 @@ export function IdentitySmoke() {
     try {
       if (submitter?.value === 'register') {
         await createUserWithEmailAndPassword(firebaseAuth, email, password)
+        await apiRequest("/api/register", { method: "POST", body: { role: "player" } })
+        refresh()
       } else {
         await signInWithEmailAndPassword(firebaseAuth, email, password)
       }

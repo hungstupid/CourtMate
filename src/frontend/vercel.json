@@ -4,12 +4,31 @@
   "buildCommand": "npm run build",
   "installCommand": "npm ci",
   "outputDirectory": "dist",
-  "git": { "deploymentEnabled": { "*": false, "chore/project-bootstrap": true } },
-  "rewrites": [{ "source": "/((?!assets/).*)", "destination": "/index.html" }],
+  "git": {
+    "deploymentEnabled": {
+      "*": false,
+      "chore/project-bootstrap": true
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/((?!assets/|images/|fonts/|version[.]json$).*)",
+      "destination": "/index.html"
+    }
+  ],
   "headers": [
-    { "source": "/(.*)", "headers": [
-      { "key": "X-Content-Type-Options", "value": "nosniff" },
-      { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" }
-    ] }
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        }
+      ]
+    }
   ]
 }
