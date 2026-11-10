@@ -9,6 +9,7 @@ from app.api.bookings import router as bookings_router
 from app.api.courts import router as courts_router
 from app.api.health import router as health_router
 from app.api.identity import router as identity_router
+from app.api.offers import router as offers_router
 from app.api.rooms import router as rooms_router
 from app.core.config import get_cors_origins
 from app.core.settings import get_settings
@@ -40,6 +41,7 @@ app.include_router(identity_router)
 app.include_router(courts_router)
 app.include_router(bookings_router)
 app.include_router(rooms_router)
+app.include_router(offers_router)
 
 
 @app.exception_handler(IntegrityError)

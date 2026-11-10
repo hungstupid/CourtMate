@@ -20,7 +20,7 @@ from app.core.auth import require_owner
 from app.db.models import Court, MaintenanceBlock, OperatingHours, Slot, User
 from app.db.session import get_session
 from app.services import courts
-from app.services.common import LOCAL_TZ, Clock, get_clock, lock_court, slot_state
+from app.services.common import LOCAL_TZ, Clock, get_clock, lock_court
 
 router = APIRouter(prefix="/api", tags=["courts and availability"])
 Database = Annotated[Session, Depends(get_session, scope="function")]
@@ -310,9 +310,7 @@ def owner_slots(
     if day is not None:
         query = query.where(Slot.playing_date == day)
     rows = session.scalars(query.order_by(Slot.playing_date, Slot.start_at, Slot.id))
-    return [
-        courts.dump_slot(slot, slot_state(session, court, slot, now)) for slot in rows
-    ]
+    return [courts.quoted_slot(session, court, slot, now) for slot in rows]
 
 
 @router.patch("/owner/slots/{slot_id}", response_model=SlotResponse)
@@ -395,12 +393,14 @@ def preview(
 ):
     if start is not None and end is not None and end <= start:
         raise HTTPException(422, "End must be later than start.")
-    court = courts.public_court(session, court_id)
+    court = lock_court(session, court_id)
+    if not court.active:
+        raise HTTPException(404, "Active court not found.")
     now = clock(session)
     return {
         "server_now": now,
         "slots": [
-            courts.dump_slot(slot, "AVAILABLE")
+            courts.quoted_slot(session, court, slot, now)
             for slot in courts.matching_slots(session, court, now, start, end)
         ],
     }

@@ -230,3 +230,59 @@ def test_manual_room_closure_preserves_membership_and_booking(
             )
             == 2
         )
+
+
+def test_offer_api_validation_ownership_and_state_confirmation(committed_api):
+    from app.main import app
+    from app.services.common import get_clock
+
+    client, actor = committed_api
+    owner, other_owner, player = [actor(role) for role in ["owner", "owner", "player"]]
+    court = create_court(client, owner)
+    slot = publish(client, owner, court).json()[0]
+    path = f"/api/owner/slots/{slot['id']}/offers"
+    body = {"mode": "automatic", "price_vnd": 90_000, "lead_hours": 3}
+    for headers in [{}, player, other_owner]:
+        assert client.post(path, headers=headers, json=body).status_code in [401, 403]
+    for value in [0, -1, 25, "not-a-number", True]:
+        assert (
+            client.post(
+                path, headers=owner, json={**body, "lead_hours": value}
+            ).status_code
+            == 422
+        )
+    for price in [0, 120_000, 90_000.5]:
+        assert client.post(
+            path, headers=owner, json={**body, "price_vnd": price}
+        ).status_code in [409, 422]
+    created = client.post(path, headers=owner, json=body)
+    assert created.status_code == 201 and created.json()["status"] == "SCHEDULED"
+    offer_id = created.json()["id"]
+    assert client.post(path, headers=owner, json=body).status_code == 409
+    assert (
+        client.post(
+            f"/api/owner/offers/{offer_id}/cancel", headers=other_owner
+        ).status_code
+        == 403
+    )
+    # Pending cancellation rechecks the threshold, and returns the current ACTIVE state.
+    app.dependency_overrides[get_clock] = lambda: (
+        lambda session: START - timedelta(hours=3)
+    )
+    changed = client.post(f"/api/owner/offers/{offer_id}/cancel", headers=owner)
+    assert changed.status_code == 409
+    assert changed.json()["detail"]["offer"]["status"] == "ACTIVE"
+    rows = client.get(path, headers=owner).json()
+    assert rows[0]["status"] == "ACTIVE" and rows[0]["eligible"]
+    public = client.get(f"/api/courts/{court}/preview").json()["slots"][0]
+    assert public["price_vnd"] == 90_000 and public["regular_price_vnd"] == 120_000
+    assert (
+        client.post(f"/api/owner/offers/{offer_id}/deactivate", headers=owner).json()[
+            "status"
+        ]
+        == "DEACTIVATED"
+    )
+    assert (
+        client.get(f"/api/courts/{court}/preview").json()["slots"][0]["price_vnd"]
+        == 120_000
+    )

@@ -84,7 +84,11 @@ def current_user(
     user = session.scalar(select(User).where(User.firebase_uid == uid))
     if user is None or user.role not in {"player", "owner"}:
         raise HTTPException(
-            403, "Complete initial account registration before continuing."
+            403,
+            {
+                "code": "ACCOUNT_UNREGISTERED",
+                "message": "Complete initial account registration before continuing.",
+            },
         )
     # Email belongs to Firebase; request bodies/profile edits cannot overwrite it.
     email = identity.get("email")

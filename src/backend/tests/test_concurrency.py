@@ -23,6 +23,7 @@ from app.db.models import (
     OperatingHours,
     Slot,
     SlotClaim,
+    SlotOffer,
     User,
 )
 from app.db.session import connection_options
@@ -141,6 +142,13 @@ def race_data(database_engine):
             session.execute(delete(Booking).where(Booking.court_id == court_id))
             session.execute(
                 delete(MaintenanceBlock).where(MaintenanceBlock.court_id == court_id)
+            )
+            session.execute(
+                delete(SlotOffer).where(
+                    SlotOffer.slot_id.in_(
+                        select(Slot.id).where(Slot.court_id == court_id)
+                    )
+                )
             )
             session.execute(delete(Slot).where(Slot.court_id == court_id))
             session.execute(

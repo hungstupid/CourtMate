@@ -10,6 +10,7 @@ from sqlalchemy import delete, select
 from sqlalchemy.orm import Session
 
 from app.db.models import Booking, BookingSlot, Court, Room, Slot, SlotClaim, User
+from app.services import offers
 from app.services.common import (
     Clock,
     database_now,
@@ -31,7 +32,7 @@ def _owner(user: User) -> None:
         fail("OWNER_REQUIRED", "Court Owner access is required.", 403)
 
 
-def _quote(player: User, court: Court, slots: list[Slot]) -> str:
+def _quote(player: User, court: Court, slots: list[Slot], prices: dict) -> str:
     value = {
         "player": str(player.id),
         "court": str(court.id),
@@ -42,7 +43,7 @@ def _quote(player: User, court: Court, slots: list[Slot]) -> str:
                 "version": slot.version,
                 "start": slot.start_at.astimezone(UTC).isoformat(),
                 "end": slot.end_at.astimezone(UTC).isoformat(),
-                "price_vnd": slot.price_vnd,
+                "price_vnd": prices[slot.id][0],
             }
             for slot in slots
         ],
@@ -122,8 +123,11 @@ def _locked_selection(
     return court, slots, now
 
 
-def _review(player: User, court: Court, slots: list[Slot]) -> dict:
-    total = sum(slot.price_vnd for slot in slots)
+def _review(
+    session: Session, player: User, court: Court, slots: list[Slot], now: datetime
+) -> dict:
+    prices = {slot.id: offers.quote(session, court, slot, now) for slot in slots}
+    total = sum(price for price, _ in prices.values())
     if total > 2**63 - 1:
         fail("QUOTE_TOTAL_TOO_LARGE", "The combined quote exceeds the VND limit.", 422)
     return {
@@ -134,7 +138,9 @@ def _review(player: User, court: Court, slots: list[Slot]) -> dict:
                 "id": slot.id,
                 "start_at": slot.start_at,
                 "end_at": slot.end_at,
-                "price_vnd": slot.price_vnd,
+                "price_vnd": prices[slot.id][0],
+                "regular_price_vnd": slot.price_vnd,
+                "offer": prices[slot.id][1],
                 "version": slot.version,
             }
             for slot in slots
@@ -145,15 +151,15 @@ def _review(player: User, court: Court, slots: list[Slot]) -> dict:
             (slots[-1].end_at - slots[0].start_at).total_seconds() / 60
         ),
         "total_price_vnd": total,
-        "quote": _quote(player, court, slots),
+        "quote": _quote(player, court, slots, prices),
     }
 
 
 def review_booking(
     session: Session, player: User, slot_ids: list[UUID], clock: Clock = database_now
 ) -> dict:
-    court, slots, _ = _locked_selection(session, player, slot_ids, clock)
-    return _review(player, court, slots)
+    court, slots, now = _locked_selection(session, player, slot_ids, clock)
+    return _review(session, player, court, slots, now)
 
 
 def _cancellation(booking: Booking, now: datetime) -> tuple[bool, str | None]:
@@ -212,7 +218,7 @@ def confirm_booking(
     clock: Clock = database_now,
 ) -> dict:
     court, slots, now = _locked_selection(session, player, slot_ids, clock)
-    review = _review(player, court, slots)
+    review = _review(session, player, court, slots, now)
     if not hmac.compare_digest(quote, review["quote"]):
         # Fresh quotes are returned only after the whole selection revalidates.
         from fastapi.encoders import jsonable_encoder
@@ -244,7 +250,7 @@ def confirm_booking(
                 position=position,
                 start_at=slot.start_at,
                 end_at=slot.end_at,
-                price_vnd=slot.price_vnd,
+                price_vnd=review["slots"][position]["price_vnd"],
                 slot_version=slot.version,
             )
         )
@@ -322,6 +328,10 @@ def cancel_booking(
     court.version += 1
     session.execute(delete(SlotClaim).where(SlotClaim.booking_id == booking.id))
     session.flush()
+    for slot_id in session.scalars(
+        select(BookingSlot.slot_id).where(BookingSlot.booking_id == booking.id)
+    ):
+        offers.current(session, court, session.get(Slot, slot_id), now)
     return _serialize(session, booking, now)
 
 

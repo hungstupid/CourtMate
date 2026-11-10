@@ -20,6 +20,7 @@ from app.db.models import (
     OperatingHours,
     Slot,
     SlotClaim,
+    SlotOffer,
     User,
 )
 from app.main import app
@@ -97,6 +98,13 @@ def committed_api(database_engine, monkeypatch):
                 session.execute(
                     delete(MaintenanceBlock).where(
                         MaintenanceBlock.court_id.in_(court_ids)
+                    )
+                )
+                session.execute(
+                    delete(SlotOffer).where(
+                        SlotOffer.slot_id.in_(
+                            select(Slot.id).where(Slot.court_id.in_(court_ids))
+                        )
                     )
                 )
                 session.execute(delete(Slot).where(Slot.court_id.in_(court_ids)))

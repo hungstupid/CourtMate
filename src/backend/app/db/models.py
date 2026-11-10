@@ -1,5 +1,6 @@
 import uuid
 from datetime import date, datetime
+from decimal import Decimal
 
 from sqlalchemy import (
     BigInteger,
@@ -11,9 +12,11 @@ from sqlalchemy import (
     ForeignKeyConstraint,
     Index,
     Integer,
+    Numeric,
     String,
     UniqueConstraint,
     func,
+    text,
 )
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
@@ -230,5 +233,33 @@ class RoomMember(Base):
         ForeignKey("users.id"), primary_key=True
     )
     joined_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.clock_timestamp()
+    )
+
+
+class SlotOffer(Base):
+    __tablename__ = "slot_offers"
+    __table_args__ = (
+        CheckConstraint("mode IN ('manual', 'automatic')", name="ck_offer_mode"),
+        CheckConstraint(
+            "status IN ('SCHEDULED', 'ACTIVE', 'CANCELLED', 'DEACTIVATED', 'EXPIRED')",
+            name="ck_offer_status",
+        ),
+        CheckConstraint("price_vnd > 0", name="ck_offer_price"),
+        CheckConstraint("lead_hours > 0 AND lead_hours <= 24", name="ck_offer_lead"),
+        Index(
+            "uq_offer_nonterminal_slot",
+            "slot_id",
+            unique=True,
+            postgresql_where=text("status IN ('SCHEDULED', 'ACTIVE')"),
+        ),
+    )
+    id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4)
+    slot_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("slots.id"))
+    mode: Mapped[str] = mapped_column(String(16))
+    price_vnd: Mapped[int] = mapped_column(BigInteger)
+    lead_hours: Mapped[Decimal] = mapped_column(Numeric())
+    status: Mapped[str] = mapped_column(String(16))
+    created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.clock_timestamp()
     )

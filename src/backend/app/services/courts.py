@@ -18,6 +18,7 @@ from app.db.models import (
     SlotClaim,
     User,
 )
+from app.services import offers
 from app.services.common import (
     LOCAL_TZ,
     Clock,
@@ -357,6 +358,7 @@ def update_slot(
         session, court.id, slot.start_at, slot.end_at
     ):
         fail("BOOKING_PROTECTED", "Slots in a confirmed booking cannot be edited.")
+    offers.current(session, court, slot, clock(session))
     candidate = Slot(
         id=slot.id,
         court_id=slot.court_id,
@@ -459,7 +461,9 @@ def dump_slot(slot: Slot, state: str | None = None) -> dict[str, Any]:
 def availability(
     session: Session, court_id: UUID, day: date, *, clock: Clock = database_now
 ) -> dict[str, Any]:
-    court = public_court(session, court_id)
+    court = lock_court(session, court_id)
+    if not court.active:
+        fail("NOT_FOUND", "Active court not found.", 404)
     now = clock(session)
     slots = session.scalars(
         select(Slot)
@@ -486,9 +490,7 @@ def availability(
         "playing_date": day,
         "timezone": str(LOCAL_TZ),
         "server_now": now,
-        "slots": [
-            dump_slot(slot, slot_state(session, court, slot, now)) for slot in slots
-        ],
+        "slots": [quoted_slot(session, court, slot, now) for slot in slots],
         "maintenance": [
             {"id": block.id, "start_at": block.start_at, "end_at": block.end_at}
             for block in blocks
@@ -566,3 +568,10 @@ def matching_slots(
         for slot in session.scalars(query.order_by(Slot.start_at, Slot.id))
         if slot_state(session, court, slot, now) == "AVAILABLE"
     ]
+
+
+def quoted_slot(session: Session, court: Court, slot: Slot, now: datetime) -> dict:
+    result = dump_slot(slot, slot_state(session, court, slot, now))
+    price, offer = offers.quote(session, court, slot, now)
+    result.update(regular_price_vnd=slot.price_vnd, price_vnd=price, offer=offer)
+    return result
