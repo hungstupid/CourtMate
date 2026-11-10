@@ -108,14 +108,20 @@ export function CourtPage() {
                 placeholder="Địa chỉ xuất phát"
               />
             </Field>
-            <a
-              className="button ghost full"
-              href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(c.address)}${origin.trim() ? `&origin=${encodeURIComponent(origin.trim())}` : ''}`}
-              target="_blank"
-              rel="noreferrer"
-            >
-              Mở chỉ đường ↗
-            </a>
+            {origin.trim() ? (
+              <a
+                className="button ghost full"
+                href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(c.address)}&origin=${encodeURIComponent(origin.trim())}`}
+                target="_blank"
+                rel="noreferrer"
+              >
+                Mở chỉ đường ↗
+              </a>
+            ) : (
+              <button className="ghost full" disabled>
+                Nhập điểm đi để chỉ đường
+              </button>
+            )}
             <a
               className="text-link"
               href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(c.address)}`}

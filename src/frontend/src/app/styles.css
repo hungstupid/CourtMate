@@ -410,6 +410,7 @@ input[type='radio'] {
 .notice h3 {
   font-size: 18px;
   line-height: 28px;
+  overflow-wrap: anywhere;
 }
 .success {
   color: var(--cm-ink);
