@@ -1,4 +1,6 @@
 import { expect, test } from '@playwright/test'
+import { tmpdir } from 'node:os'
+import { join } from 'node:path'
 import AxeBuilder from '@axe-core/playwright'
 import type { Page } from '@playwright/test'
 import type { Booking, Slot } from '../src/lib/types'
@@ -29,10 +31,13 @@ async function a11y(page: Page) {
       )
     ).toBe(true)
     await page.screenshot({
-      path: `/private/tmp/courtmate-ux-${test
-        .info()
-        .title.slice(0, 45)
-        .replace(/[^a-zA-Z0-9-]/g, '-')}-${width}.png`,
+      path: join(
+        tmpdir(),
+        `courtmate-ux-${test
+          .info()
+          .title.slice(0, 45)
+          .replace(/[^a-zA-Z0-9-]/g, '-')}-${width}.png`
+      ),
       fullPage: false,
     })
     expect(

@@ -152,7 +152,7 @@ test('AC-F02-07 Bóng prefix options and selection preserve every other search c
     for (const c of courts) await slot(owner.page, c.id, 8)
     await owner.page.goto('/')
     const filters = {
-      'Tên sân': `${marker} Sports`,
+      'Tên sân': `${marker} r${test.info().retry} Sports`,
       'Địa chỉ hoặc khu vực': marker,
       'Bắt đầu · tùy chọn': `${day}T08:00`,
       'Kết thúc · tùy chọn': `${day}T09:00`,

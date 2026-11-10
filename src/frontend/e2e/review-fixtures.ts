@@ -1,4 +1,5 @@
-import { expect } from '@playwright/test'
+import { expect, test } from '@playwright/test'
+import { randomUUID } from 'node:crypto'
 import type { Browser, Page } from '@playwright/test'
 import type { Booking, Court, Review, Slot } from '../src/lib/types'
 import { localDay } from '../src/lib/format'
@@ -12,7 +13,7 @@ export const photo = 'http://localhost:5173/e2e/fixtures/court-photo.jpg'
 export async function actor(browser: Browser, suffix: string, owner = false) {
   const context = await browser.newContext({ baseURL: 'http://localhost:5173' })
   const page = await context.newPage()
-  const email = `${marker}-${suffix}@courtmate.test`
+  const email = `${marker}-${suffix}-${randomUUID().slice(0, 8)}@courtmate.test`
   await page.goto('/register')
   // Refuse to create even an account when the developer server targets cloud.
   await page.evaluate(async () => {
@@ -62,7 +63,7 @@ export async function court(
   photos: string[] = []
 ) {
   const result = await api<Court>(page, '/api/owner/courts', 'POST', {
-    name: `${marker} ${suffix}`,
+    name: `${marker} r${test.info().retry} ${suffix}`,
     sport,
     address: `12 Đường số 8, ${marker}`,
     area: marker,
