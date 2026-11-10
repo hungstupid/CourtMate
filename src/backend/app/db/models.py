@@ -221,6 +221,7 @@ class Room(Base):
     organizer_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("users.id"))
     capacity: Mapped[int] = mapped_column(Integer)
     closed: Mapped[bool] = mapped_column(Boolean, default=False, server_default="false")
+    closed_reason: Mapped[str | None] = mapped_column(String(32))
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.clock_timestamp()
     )

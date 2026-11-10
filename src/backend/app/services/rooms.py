@@ -59,6 +59,10 @@ def _member_count(session: Session, room: Room) -> int:
 
 def _status(room: Room, booking: Booking, count: int, now: datetime) -> str:
     if room.closed or booking.status != "CONFIRMED" or now >= booking.start_at:
+        if not room.closed:
+            room.closed_reason = (
+                "BOOKING_CANCELLED" if booking.status != "CONFIRMED" else "PLAY_STARTED"
+            )
         room.closed = True
         return "CLOSED"
     return "FULL" if count >= room.capacity else "OPEN"
@@ -99,7 +103,12 @@ def _estimate(session: Session, booking: Booking, count: int) -> int | None:
 
 
 def _serialize(
-    session: Session, court: Court, booking: Booking, room: Room, now: datetime
+    session: Session,
+    court: Court,
+    booking: Booking,
+    room: Room,
+    now: datetime,
+    viewer_id: UUID | None = None,
 ) -> dict:
     count = _member_count(session, room)
     status = _status(room, booking, count, now)
@@ -120,6 +129,20 @@ def _serialize(
         "member_count": count,
         "remaining_places": max(0, room.capacity - count),
         "status": status,
+        "closed_reason": room.closed_reason,
+        "members": [
+            {
+                "display_name": member.display_name or None,
+                "is_organizer": member.id == room.organizer_id,
+                **({"is_self": member.id == viewer_id} if viewer_id else {}),
+            }
+            for member in session.scalars(
+                select(User)
+                .join(RoomMember, RoomMember.player_id == User.id)
+                .where(RoomMember.room_id == room.id)
+                .order_by(RoomMember.joined_at, User.id)
+            )
+        ],
         "estimated_share_vnd": estimate,
         "estimate_status": "available" if estimate is not None else "unavailable",
         "created_at": room.created_at,
@@ -236,7 +259,10 @@ def my_room_membership(
     session: Session, player: User, room_id: UUID, clock: Clock = database_now
 ) -> dict:
     _player(player)
-    result = room_detail(session, room_id, clock)
+    court, booking, room = _locked_room(session, room_id)
+    result = _serialize(
+        session, court, booking, room, clock(session), viewer_id=player.id
+    )
     result["is_member"] = session.get(RoomMember, (room_id, player.id)) is not None
     result["is_organizer"] = result["organizer_id"] == player.id
     return result
@@ -252,6 +278,8 @@ def close_room(
     now = clock(session)
     # Effective time/cancellation closure is sticky; repeated closure is idempotent.
     _status(room, booking, _member_count(session, room), now)
+    if not room.closed:
+        room.closed_reason = "ORGANIZER_CLOSED"
     room.closed = True
     session.flush()
     return _serialize(session, court, booking, room, now)

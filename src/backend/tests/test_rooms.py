@@ -268,9 +268,11 @@ def test_public_listing_detail_and_closed_history_do_not_disclose_private_member
     results = rooms.list_rooms(d.session, fixed_clock)
     assert len(results) == 1 and results[0]["id"] == room["id"]
     assert results[0]["status"] == "CLOSED"
-    assert (
-        not {"members", "player_id", "email", "phone", "firebase_uid"}
-        & results[0].keys()
+    assert not {"player_id", "email", "phone", "firebase_uid"} & results[0].keys()
+
+    assert all(
+        set(member) == {"display_name", "is_organizer"}
+        for member in results[0]["members"]
     )
 
 

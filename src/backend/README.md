@@ -1,3 +1,5 @@
+> **Current implementation (10 November 2026):** both initial registration roles, protected profile/contact, atomic court scheduling/batch publication, booking/cancellation at server receipt time, Open Play with organizer closure and manual/automatic slot offers. Current additive migration head is `0006_room_closure_reason`. See [current contracts](../../docs/development/backend-api.md), [SRS audit](../../docs/development/srs-implementation-audit.md) and [release report](../../docs/development/frontend-release-report.md). Earlier draft-scope statements below describe the October foundation, not the current application.
+
 # Backend
 
 Holds CourtMate's **server-side implementation**: API endpoints, business rules, authentication/authorization, data access, database migrations and backend tests. The foundation uses FastAPI, uv, Python 3.12, PostgreSQL and Firebase Authentication. The current backend contains a reviewed-by-tests implementation draft for court scheduling, atomic booking/cancellation and Open Play; formal PA3/PA4 team review remains pending.

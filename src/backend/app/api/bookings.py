@@ -1,7 +1,7 @@
 from typing import Annotated
 from uuid import UUID
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Request
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 from sqlalchemy.orm import Session
 
@@ -9,7 +9,7 @@ from app.core.auth import require_owner, require_player
 from app.db.models import User
 from app.db.session import get_session
 from app.services import bookings
-from app.services.common import Clock, get_clock
+from app.services.common import Clock, database_now, get_clock
 
 router = APIRouter(prefix="/api", tags=["bookings"])
 
@@ -60,8 +60,17 @@ def detail(booking_id: UUID, session: Database, player: Player, clock: ServerClo
 
 
 @router.post("/bookings/{booking_id}/cancel")
-def cancel(booking_id: UUID, session: Database, player: Player, clock: ServerClock):
-    return bookings.cancel_booking(session, player, booking_id, clock)
+def cancel(
+    booking_id: UUID,
+    request: Request,
+    session: Database,
+    player: Player,
+    clock: ServerClock,
+):
+    received_at = request.state.received_at if clock is database_now else clock(session)
+    return bookings.cancel_booking(
+        session, player, booking_id, clock, receipt_at=received_at
+    )
 
 
 @router.get("/owner/bookings")

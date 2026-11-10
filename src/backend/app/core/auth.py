@@ -113,3 +113,17 @@ def require_resource_ownership(user: User, owner_id: UUID) -> None:
     """Use with require_owner on future Owner-managed resource mutations."""
     if user.role != "owner" or user.id != owner_id:
         raise HTTPException(403, "This resource belongs to another Court Owner.")
+
+
+def registration_email(user: User) -> str | None:
+    """Backfill legacy accounts only from the trusted identity provider."""
+    if user.registration_email is None:
+        try:
+            record = auth.get_user(user.firebase_uid, app=firebase_app())
+            if isinstance(record.email, str) and len(record.email) <= 320:
+                user.registration_email = record.email
+        except Exception:
+            # An external outage must not hide the Owner's otherwise valid booking.
+            # No contact is fabricated and no provider response/credential is exposed.
+            pass
+    return user.registration_email

@@ -1,4 +1,5 @@
 from contextlib import asynccontextmanager
+from datetime import UTC, datetime
 
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
@@ -42,6 +43,12 @@ app.include_router(courts_router)
 app.include_router(bookings_router)
 app.include_router(rooms_router)
 app.include_router(offers_router)
+
+
+@app.middleware("http")
+async def capture_request_receipt(request: Request, call_next):
+    request.state.received_at = datetime.now(UTC)
+    return await call_next(request)
 
 
 @app.exception_handler(IntegrityError)

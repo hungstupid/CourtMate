@@ -9,6 +9,7 @@ from uuid import UUID
 from sqlalchemy import delete, select
 from sqlalchemy.orm import Session
 
+from app.core.auth import registration_email
 from app.db.models import Booking, BookingSlot, Court, Room, Slot, SlotClaim, User
 from app.services import offers
 from app.services.common import (
@@ -205,6 +206,10 @@ def _serialize(session: Session, booking: Booking, now: datetime) -> dict:
             }
             for snapshot in snapshots
         ],
+        "can_create_room": booking.status == "CONFIRMED"
+        and booking.start_at > now
+        and session.scalar(select(Room.id).where(Room.booking_id == booking.id))
+        is None,
         "can_cancel": can_cancel,
         "cancellation_reason": reason,
     }
@@ -287,9 +292,15 @@ def player_booking(
 
 
 def cancel_booking(
-    session: Session, player: User, booking_id: UUID, clock: Clock = database_now
+    session: Session,
+    player: User,
+    booking_id: UUID,
+    clock: Clock = database_now,
+    *,
+    receipt_at: datetime | None = None,
 ) -> dict:
     _player(player)
+    received_at = receipt_at if receipt_at is not None else clock(session)
     court_id = session.scalar(select(Booking.court_id).where(Booking.id == booking_id))
     if court_id is None:
         fail("BOOKING_NOT_FOUND", "Booking not found.", 404)
@@ -305,7 +316,7 @@ def cancel_booking(
     if booking.player_id != player.id:
         fail("NOT_BOOKING_OWNER", "This booking belongs to another Player.", 403)
     # Every room mutation follows Court -> Booking -> Room. Lock the linked room
-    # before reading time so cancellation eligibility is checked after all waits.
+    # before mutation. BR-02 eligibility uses receipt time, not time lost waiting.
     room = session.scalar(
         select(Room)
         .where(Room.booking_id == booking.id)
@@ -313,7 +324,7 @@ def cancel_booking(
         .execution_options(populate_existing=True)
     )
     now = clock(session)
-    eligible, reason = _cancellation(booking, now)
+    eligible, reason = _cancellation(booking, received_at)
     if not eligible:
         code = (
             "BOOKING_ALREADY_CANCELLED"
@@ -322,6 +333,8 @@ def cancel_booking(
         )
         fail(code, reason)
     if room is not None:
+        if not room.closed:
+            room.closed_reason = "BOOKING_CANCELLED"
         room.closed = True
     booking.status = "CANCELLED"
     booking.cancelled_at = now
@@ -339,7 +352,7 @@ def _owner_view(session: Session, booking: Booking, now: datetime) -> dict:
     result = _serialize(session, booking, now)
     player = session.get(User, booking.player_id)
     result["player_contact"] = {
-        "registration_email": player.registration_email,
+        "registration_email": registration_email(player),
         "display_name": player.display_name or None,
     }
     for key in ("player_id", "can_cancel", "cancellation_reason"):

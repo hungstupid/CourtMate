@@ -3,7 +3,7 @@
 import time
 import uuid
 from concurrent.futures import ThreadPoolExecutor
-from datetime import UTC
+from datetime import UTC, timedelta
 from threading import Event
 
 import pytest
@@ -447,3 +447,31 @@ def test_join_or_leave_racing_manual_close_retains_a_closed_snapshot(
             rooms.room_detail(session, room_id, clock=races.fixed_clock)["member_count"]
             == before
         )
+
+
+def test_exact_six_hour_receipt_remains_eligible_after_lock_wait(
+    race_data, monkeypatch
+):
+    booking_id = confirmed_booking(race_data)
+    with Session(race_data["engine"]) as session:
+        receipt = session.get(Booking, booking_id).start_at - timedelta(hours=6)
+    acquired = Event()
+    original = bookings.lock_court
+
+    def observed_lock(*args, **kwargs):
+        court = original(*args, **kwargs)
+        acquired.set()
+        return court
+
+    monkeypatch.setattr(bookings, "lock_court", observed_lock)
+
+    def clock(session):
+        return receipt + timedelta(seconds=1) if acquired.is_set() else receipt
+
+    def cancel(session):
+        return bookings.cancel_booking(
+            session, session.get(User, race_data["players"][0]), booking_id, clock=clock
+        )
+
+    results = races.contended(race_data, [cancel])
+    assert results[0]["ok"] and results[0]["result"]["status"] == "CANCELLED"

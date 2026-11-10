@@ -273,7 +273,9 @@ def test_middle_slot_conflict_rejects_whole_selection_and_keeps_winner(booking_d
         (timedelta(), False),
     ],
 )
-def test_cancellation_boundary_uses_clock_after_lock(booking_data, offset, allowed):
+def test_cancellation_boundary_uses_backend_receipt_clock(
+    booking_data, offset, allowed
+):
     d = booking_data
     slot = publish(d)
     booking = confirm(d, [slot])

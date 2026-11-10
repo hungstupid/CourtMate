@@ -1,5 +1,5 @@
 from datetime import date, datetime, time, timedelta
-from typing import Annotated, Any
+from typing import Annotated, Any, Literal
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException, Query, Response
@@ -58,7 +58,7 @@ class CourtCreate(Input):
     address: Address
     area: Area
     description: Description
-    contact: Contact
+    contact: Contact | Literal[""] = ""
     photo_urls: list[str] = Field(default_factory=list, max_length=20)
     base_price_vnd: Money
     max_players: Capacity
@@ -428,3 +428,23 @@ def batch(
             clock=clock,
         )
     ]
+
+
+@router.get("/deals")
+def current_deals(session: Database, clock: ServerClock):
+    from app.db.models import SlotOffer
+
+    ids = session.execute(
+        select(Slot.court_id, Slot.id)
+        .join(SlotOffer, SlotOffer.slot_id == Slot.id)
+        .where(SlotOffer.status.in_(["SCHEDULED", "ACTIVE"]))
+        .order_by(Slot.court_id, Slot.start_at, Slot.id)
+    ).all()
+    results = []
+    for court_id, slot_id in ids:
+        court = lock_court(session, court_id)
+        slot = session.get(Slot, slot_id, populate_existing=True)
+        row = courts.quoted_slot(session, court, slot, clock(session))
+        if row["offer"] and row["offer"]["eligible"]:
+            results.append({"court": courts.dump_court(court), "slot": row})
+    return results

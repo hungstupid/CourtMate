@@ -286,3 +286,38 @@ def test_offer_api_validation_ownership_and_state_confirmation(committed_api):
         client.get(f"/api/courts/{court}/preview").json()["slots"][0]["price_vnd"]
         == 120_000
     )
+
+
+def test_owner_legacy_registration_email_recovers_without_optional_profile(
+    committed_api, database_engine, monkeypatch
+):
+    from types import SimpleNamespace
+
+    from app.core import auth
+    from app.db.models import User
+
+    client, actor = committed_api
+    owner, player = actor("owner"), actor("player")
+    court = create_court(client, owner)
+    slot = publish(client, owner, court).json()[0]
+    selected = {"slot_ids": [slot["id"]]}
+    review = client.post("/api/bookings/review", headers=player, json=selected).json()
+    booking = client.post(
+        "/api/bookings", headers=player, json={**selected, "quote": review["quote"]}
+    ).json()
+    with Session(database_engine) as session, session.begin():
+        session.get(User, uuid.UUID(booking["player_id"])).registration_email = None
+    monkeypatch.setattr(
+        auth.auth,
+        "get_user",
+        lambda *a, **kw: SimpleNamespace(email="legacy-player@courtmate.test"),
+    )
+    result = client.get(f"/api/owner/bookings/{booking['id']}", headers=owner)
+    assert result.status_code == 200
+    assert result.json()["player_contact"] == {
+        "registration_email": "legacy-player@courtmate.test",
+        "display_name": None,
+    }
+    assert (
+        "contact_preferences" not in result.text and "firebase_uid" not in result.text
+    )
