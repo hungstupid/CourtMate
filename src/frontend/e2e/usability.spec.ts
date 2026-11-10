@@ -981,3 +981,61 @@ test('UC-11/12/13 guest room browsing, create Cancel and join Keep leave source 
     await guest.close()
   }
 })
+
+test('UC-09 finishing a modal save clears a browser Back blocker without a stale discard prompt', async ({
+  browser,
+}) => {
+  const owner = await actor(browser, 'ux-modal-saving', true)
+  try {
+    const c = await court(owner.page, 'Modal save')
+    await owner.page.goto('/owner')
+    await owner.page
+      .getByRole('link', { name: 'Lịch sân', exact: true })
+      .click()
+    await owner.page
+      .getByRole('button', { name: 'Giờ hoạt động', exact: true })
+      .click()
+    await owner.page.getByLabel('Mở cửa Thứ Hai', { exact: true }).fill('06:30')
+    let release: () => void = () => {}
+    const gate = new Promise<void>((resolve) => {
+      release = resolve
+    })
+    await owner.page.route(
+      `**/api/owner/courts/${c.id}/hours`,
+      async (route) => {
+        if (route.request().method() === 'PUT') await gate
+        await route.continue()
+      }
+    )
+    await owner.page
+      .getByRole('button', { name: 'Lưu giờ hoạt động', exact: true })
+      .click()
+    await owner.page.evaluate(() => history.back())
+    await expect(
+      owner.page.getByRole('dialog', {
+        name: 'Bỏ thay đổi chưa lưu?',
+        exact: true,
+      })
+    ).toBeVisible()
+    release()
+    await expect(
+      owner.page.getByRole('dialog', {
+        name: 'Giờ hoạt động của sân',
+        exact: true,
+      })
+    ).toHaveCount(0)
+    await expect(
+      owner.page.getByRole('dialog', {
+        name: 'Bỏ thay đổi chưa lưu?',
+        exact: true,
+      })
+    ).toHaveCount(0)
+    const hours = await api<{ weekday: number; opens_minute: number }[]>(
+      owner.page,
+      `/api/owner/courts/${c.id}/hours`
+    )
+    expect(hours.find((h) => h.weekday === 0)?.opens_minute).toBe(390)
+  } finally {
+    await owner.context.close()
+  }
+})

@@ -32,6 +32,12 @@ export function DraftProvider({ children }: { children: ReactNode }) {
       `${currentLocation.pathname}${currentLocation.search}` !==
         `${nextLocation.pathname}${nextLocation.search}`
   )
+  // Save handlers may have started before a later Back/navigation attempt.
+  // Complete against the current blocker, rather than that handler's snapshot.
+  const latestBlocker = useRef(blocker)
+  useEffect(() => {
+    latestBlocker.current = blocker
+  }, [blocker])
   useEffect(() => {
     const leave = (event: BeforeUnloadEvent) => {
       if (protectedState()) {
@@ -54,10 +60,11 @@ export function DraftProvider({ children }: { children: ReactNode }) {
       update(id, { dirty: false, busy: false })
       if (!protectedState()) {
         setPending(null)
-        if (blocker.state === 'blocked') blocker.reset()
+        const current = latestBlocker.current
+        if (current.state === 'blocked') current.reset()
       }
     },
-    [update, protectedState, blocker]
+    [update, protectedState]
   )
   const context = useMemo(
     () => ({ update, protect, complete }),

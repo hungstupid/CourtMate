@@ -10,7 +10,7 @@ All **179 unique referenced frame IDs exist** in the same file/page. Metadata fo
 
 [Machine-readable snapshots, transition checks and limits](evidence/pa2-prototype-integrity.json). The submitted PDF SHA-256 is recorded there; the PDF was read in place and not added or modified.
 
-This is **structural prototype verification**, not a claim that Figma playback was clicked through or every variable condition was evaluated. Section 8.4 itself distinguishes predefined prototype fixtures from arbitrary input, Firebase and database execution. Browser execution below targets the actual React app with Firebase Auth Emulator and guarded local PostgreSQL. Runtime interaction in the Figma player remains unverified; existence/reachability is never presented as runtime PASS.
+This is **structural prototype verification**, not a claim that Figma playback was clicked through or every variable condition was evaluated. Section 8.4 itself distinguishes predefined prototype fixtures from arbitrary input, Firebase and database execution. Browser execution below targets the actual React app with Firebase Auth Emulator and guarded local PostgreSQL. An anonymous headless-browser request to the original file’s prototype URL returned HTTP 404 with an empty body; no playback interaction was completed. Runtime interaction in the Figma player remains unverified; existence/reachability is never presented as runtime PASS.
 
 ## UC-by-UC implementation comparison
 
@@ -47,7 +47,7 @@ This is **structural prototype verification**, not a claim that Figma playback w
 
 ## Verification and limits
 
-Local locked npm/uv installs, lint/typecheck/build, Ruff, migration upgrade twice and drift check pass; **239 backend regressions** pass. Browser release result and post-push CI/deployed SHAs are recorded in the release report. Axe/geometry/keyboard/dialog checks run at 375/768/1280; new screenshots were inspected, including repricing, Owner forms, booking details, batch/maintenance and Open Play. Existing tests remain, with expectations changed only for intentional Vietnamese labels and explicit draft-discard confirmation.
+Local locked npm/uv installs, lint/typecheck/build, Ruff, migration upgrade twice and drift check pass; **239 backend regressions** pass. A late regression reproduced a stale discard prompt when Browser Back occurred during a modal save; the guard now completes against the latest router blocker, with a dedicated real-API regression. Browser release result and post-push CI/deployed SHAs are recorded in the release report. Axe/geometry/keyboard/dialog checks run at 375/768/1280; new screenshots were inspected, including repricing, Owner forms, booking details, batch/maintenance and Open Play. Existing tests remain, with expectations changed only for intentional Vietnamese labels and explicit draft-discard confirmation.
 
 Fault injection is explicitly named and only proves client error/recovery UI; successful business flows use real local SDK/API/PostgreSQL. Only run-marker fixture data is cleaned. No production database was reset or used for write tests.
 
