@@ -494,3 +494,75 @@ def availability(
             for block in blocks
         ],
     }
+
+
+def publish_batch(
+    session: Session,
+    owner: User,
+    court_id: UUID,
+    rows: list[dict[str, Any]],
+    *,
+    clock: Clock = database_now,
+) -> list[Slot]:
+    _owner(owner)
+    court = lock_court(session, court_id, owner=owner)
+    now = clock(session)
+    candidates = []
+    for index, values in enumerate(rows):
+        _validate_fields(values, SLOT_FIELDS)
+        if (
+            values.get("published", True) is not True
+            or values.get("blocked", False) is not False
+        ):
+            fail("INVALID_DRAFT", "Publish available draft rows only.", 422)
+        candidate = Slot(
+            court_id=court.id,
+            version=1,
+            **{**values, "published": True, "blocked": False},
+        )
+        with session.no_autoflush:
+            _validate_slot(session, court, candidate, now)
+        if candidates and candidate.playing_date != candidates[0].playing_date:
+            fail(
+                "BATCH_DATE",
+                "Every draft row must use the selected playing date.",
+                422,
+                row=index + 1,
+            )
+        if any(
+            candidate.start_at < previous.end_at
+            and candidate.end_at > previous.start_at
+            for previous in candidates
+        ):
+            fail(
+                "BATCH_OVERLAP",
+                "Draft rows overlap; nothing has been published.",
+                409,
+                row=index + 1,
+            )
+        candidates.append(candidate)
+    session.add_all(candidates)
+    court.version += 1
+    session.flush()
+    return candidates
+
+
+def matching_slots(
+    session: Session,
+    court: Court,
+    now: datetime,
+    start: datetime | None = None,
+    end: datetime | None = None,
+) -> list[Slot]:
+    query = select(Slot).where(
+        Slot.court_id == court.id, Slot.published.is_(True), Slot.start_at > now
+    )
+    if start is not None:
+        query = query.where(Slot.start_at >= start)
+    if end is not None:
+        query = query.where(Slot.end_at <= end)
+    return [
+        slot
+        for slot in session.scalars(query.order_by(Slot.start_at, Slot.id))
+        if slot_state(session, court, slot, now) == "AVAILABLE"
+    ]

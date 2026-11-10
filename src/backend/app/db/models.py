@@ -34,6 +34,13 @@ class User(Base):
     role: Mapped[str] = mapped_column(
         String(16), default="player", server_default="player"
     )
+    registration_email: Mapped[str | None] = mapped_column(String(320))
+    display_name: Mapped[str] = mapped_column(
+        String(100), default="", server_default=""
+    )
+    contact_preferences: Mapped[str] = mapped_column(
+        String(500), default="", server_default=""
+    )
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now()
     )

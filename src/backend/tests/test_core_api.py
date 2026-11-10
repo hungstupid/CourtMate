@@ -49,8 +49,8 @@ def committed_api(database_engine, monkeypatch):
             assert response.status_code == 200
             token = response.json()["idToken"]
             headers = {"Authorization": f"Bearer {token}"}
-            result = client.get("/api/me", headers=headers)
-            assert result.status_code == 200
+            result = client.post("/api/register", headers=headers, json={"role": role})
+            assert result.status_code == 201
             identity = uuid.UUID(result.json()["id"])
             user_ids.append(identity)
             tokens.append(token)
@@ -214,7 +214,12 @@ def test_real_http_owner_to_player_booking_cancel_and_rebook(
     )
     details = client.get(f"/api/owner/bookings/{booking['id']}", headers=owner)
     assert details.status_code == 200
-    assert "firebase_uid" not in details.text and "email" not in details.text
+    assert (
+        "firebase_uid" not in details.text and "contact_preferences" not in details.text
+    )
+    assert details.json()["player_contact"]["registration_email"].endswith(
+        "@courtmate.test"
+    )
     for method, path, json_body in [
         ("patch", f"/api/owner/slots/{slots[0]}", {"price_vnd": 5}),
         (

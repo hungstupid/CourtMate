@@ -178,6 +178,9 @@ def _serialize(session: Session, booking: Booking, now: datetime) -> dict:
     return {
         "id": booking.id,
         "court_id": booking.court_id,
+        "court_name": session.get(Court, booking.court_id).name,
+        "court_max_players": session.get(Court, booking.court_id).max_players,
+        "room_id": session.scalar(select(Room.id).where(Room.booking_id == booking.id)),
         "player_id": booking.player_id,
         "start_at": booking.start_at,
         "end_at": booking.end_at,
@@ -324,7 +327,11 @@ def cancel_booking(
 
 def _owner_view(session: Session, booking: Booking, now: datetime) -> dict:
     result = _serialize(session, booking, now)
-    # SRS FR-029 does not approve a concrete Player contact/privacy field set.
+    player = session.get(User, booking.player_id)
+    result["player_contact"] = {
+        "registration_email": player.registration_email,
+        "display_name": player.display_name or None,
+    }
     for key in ("player_id", "can_cancel", "cancellation_reason"):
         result.pop(key)
     return result

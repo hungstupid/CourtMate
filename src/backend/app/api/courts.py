@@ -2,7 +2,7 @@ from datetime import date, datetime, time, timedelta
 from typing import Annotated, Any
 from uuid import UUID
 
-from fastapi import APIRouter, Depends, Query, Response
+from fastapi import APIRouter, Depends, HTTPException, Query, Response
 from pydantic import (
     AwareDatetime,
     BaseModel,
@@ -13,7 +13,7 @@ from pydantic import (
     StringConstraints,
     model_validator,
 )
-from sqlalchemy import select
+from sqlalchemy import or_, select
 from sqlalchemy.orm import Session
 
 from app.core.auth import require_owner
@@ -161,10 +161,16 @@ def hours_response(rows: list[OperatingHours]) -> list[dict[str, int]]:
 @router.get("/courts", response_model=list[CourtResponse])
 def list_courts(
     session: Database,
+    clock: ServerClock,
     q: Annotated[str | None, Query(max_length=150)] = None,
     sport: Annotated[str | None, Query(max_length=80)] = None,
-    area: Annotated[str | None, Query(max_length=120)] = None,
+    area: Annotated[str | None, Query(max_length=300)] = None,
+    start: AwareDatetime | None = None,
+    end: AwareDatetime | None = None,
 ):
+    if start is not None and end is not None and end <= start:
+        raise HTTPException(422, "End must be later than start.")
+    now = clock(session)
     query = select(Court).where(Court.active.is_(True))
     if q and q.strip():
         # Treat wildcard characters as literal court-name input.
@@ -172,10 +178,17 @@ def list_courts(
     if sport:
         query = query.where(Court.sport == sport)
     if area:
-        query = query.where(Court.area == area)
+        query = query.where(
+            or_(
+                Court.area.icontains(area.strip(), autoescape=True),
+                Court.address.icontains(area.strip(), autoescape=True),
+            )
+        )
     return [
         courts.dump_court(court)
         for court in session.scalars(query.order_by(Court.name, Court.id))
+        if (start is None and end is None)
+        or courts.matching_slots(session, court, now, start, end)
     ]
 
 
@@ -370,3 +383,48 @@ def maintenance_remove(
 ):
     courts.remove_maintenance(session, owner, block_id, clock=clock)
     return Response(status_code=204)
+
+
+@router.get("/courts/{court_id}/preview")
+def preview(
+    court_id: UUID,
+    session: Database,
+    clock: ServerClock,
+    start: AwareDatetime | None = None,
+    end: AwareDatetime | None = None,
+):
+    if start is not None and end is not None and end <= start:
+        raise HTTPException(422, "End must be later than start.")
+    court = courts.public_court(session, court_id)
+    now = clock(session)
+    return {
+        "server_now": now,
+        "slots": [
+            courts.dump_slot(slot, "AVAILABLE")
+            for slot in courts.matching_slots(session, court, now, start, end)
+        ],
+    }
+
+
+class SlotBatch(Input):
+    slots: list[SlotCreate] = Field(min_length=1)
+
+
+@router.post("/owner/courts/{court_id}/slots/batch", status_code=201)
+def batch(
+    court_id: UUID,
+    payload: SlotBatch,
+    session: Database,
+    owner: Owner,
+    clock: ServerClock,
+):
+    return [
+        courts.dump_slot(slot)
+        for slot in courts.publish_batch(
+            session,
+            owner,
+            court_id,
+            [row.model_dump() for row in payload.slots],
+            clock=clock,
+        )
+    ]

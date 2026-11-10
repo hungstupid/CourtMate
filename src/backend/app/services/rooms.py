@@ -3,7 +3,7 @@
 from datetime import datetime
 from uuid import UUID
 
-from sqlalchemy import func, select
+from sqlalchemy import func, or_, select
 from sqlalchemy.orm import Session
 
 from app.db.models import Booking, BookingSlot, Court, Room, RoomMember, User
@@ -110,6 +110,10 @@ def _serialize(
         "booking_id": booking.id,
         "organizer_id": room.organizer_id,
         "court_id": court.id,
+        "court_name": court.name,
+        "sport": court.sport,
+        "address": court.address,
+        "area": court.area,
         "start_at": booking.start_at,
         "end_at": booking.end_at,
         "capacity": room.capacity,
@@ -167,12 +171,21 @@ def room_detail(session: Session, room_id: UUID, clock: Clock = database_now) ->
     return _serialize(session, court, booking, room, clock(session))
 
 
-def list_rooms(session: Session, clock: Clock = database_now) -> list[dict]:
+def list_rooms(
+    session: Session, clock: Clock = database_now, location: str = ""
+) -> list[dict]:
     # Deterministic parent-first order also avoids opposite lock order between lists.
     room_ids = list(
         session.scalars(
             select(Room.id)
             .join(Booking, Booking.id == Room.booking_id)
+            .join(Court, Court.id == Booking.court_id)
+            .where(
+                or_(
+                    Court.address.icontains(location.strip(), autoescape=True),
+                    Court.area.icontains(location.strip(), autoescape=True),
+                )
+            )
             .order_by(Booking.court_id, Booking.id, Room.id)
         )
     )
@@ -215,5 +228,30 @@ def leave_room(
     if membership is None:
         fail("NOT_A_MEMBER", "This Player is not enrolled in the room.")
     session.delete(membership)
+    session.flush()
+    return _serialize(session, court, booking, room, now)
+
+
+def my_room_membership(
+    session: Session, player: User, room_id: UUID, clock: Clock = database_now
+) -> dict:
+    _player(player)
+    result = room_detail(session, room_id, clock)
+    result["is_member"] = session.get(RoomMember, (room_id, player.id)) is not None
+    result["is_organizer"] = result["organizer_id"] == player.id
+    return result
+
+
+def close_room(
+    session: Session, player: User, room_id: UUID, clock: Clock = database_now
+) -> dict:
+    _player(player)
+    court, booking, room = _locked_room(session, room_id)
+    if room.organizer_id != player.id:
+        fail("NOT_ORGANIZER", "Only this room's organizer may close it.", 403)
+    now = clock(session)
+    # Effective time/cancellation closure is sticky; repeated closure is idempotent.
+    _status(room, booking, _member_count(session, room), now)
+    room.closed = True
     session.flush()
     return _serialize(session, court, booking, room, now)

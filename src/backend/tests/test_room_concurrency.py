@@ -399,3 +399,51 @@ def test_capacity_edit_contends_with_room_creation_or_join(race_data, existing_r
             )
         if linked is not None:
             assert linked.capacity <= 2 * court.max_players
+
+
+@pytest.mark.parametrize("leave_first", [False, True])
+def test_join_or_leave_racing_manual_close_retains_a_closed_snapshot(
+    race_data, leave_first
+):
+    booking_id = confirmed_booking(race_data)
+    room_id = created_room(race_data, booking_id, capacity=4)
+    member = race_data["players"][1]
+    if leave_first:
+        with Session(race_data["engine"]) as session, session.begin():
+            rooms.join_room(
+                session, session.get(User, member), room_id, clock=races.fixed_clock
+            )
+
+    def close(session):
+        return rooms.close_room(
+            session,
+            session.get(User, race_data["players"][0]),
+            room_id,
+            clock=races.fixed_clock,
+        )
+
+    def change(session):
+        operation = rooms.leave_room if leave_first else rooms.join_room
+        return operation(
+            session, session.get(User, member), room_id, clock=races.fixed_clock
+        )
+
+    results = races.contended(race_data, [close, change])
+    assert results[0]["ok"]
+    with Session(race_data["engine"]) as session, session.begin():
+        state = rooms.room_detail(session, room_id, clock=races.fixed_clock)
+        assert state["status"] == "CLOSED"
+        assert session.get(Booking, booking_id).status == "CONFIRMED"
+        before = state["member_count"]
+        assert before in [1, 2]
+        with pytest.raises(HTTPException):
+            rooms.join_room(
+                session,
+                session.get(User, race_data["players"][2]),
+                room_id,
+                clock=races.fixed_clock,
+            )
+        assert (
+            rooms.room_detail(session, room_id, clock=races.fixed_clock)["member_count"]
+            == before
+        )

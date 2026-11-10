@@ -1,7 +1,7 @@
 from typing import Annotated
 from uuid import UUID
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Query
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, ConfigDict, Field, StrictInt
 from sqlalchemy.orm import Session
@@ -51,8 +51,12 @@ def create(
 
 
 @router.get("/rooms")
-def listing(session: Database, clock: ServerClock):
-    return rooms.list_rooms(session, clock)
+def listing(
+    session: Database,
+    clock: ServerClock,
+    location: Annotated[str, Query(max_length=300)] = "",
+):
+    return rooms.list_rooms(session, clock, location)
 
 
 @router.get("/rooms/{room_id}")
@@ -74,3 +78,13 @@ def leave(room_id: UUID, session: Database, player: Player, clock: ServerClock):
         return rooms.leave_room(session, player, room_id, clock)
     except HTTPException as error:
         return _closed_response(error)
+
+
+@router.get("/rooms/{room_id}/membership")
+def membership(room_id: UUID, session: Database, player: Player, clock: ServerClock):
+    return rooms.my_room_membership(session, player, room_id, clock)
+
+
+@router.post("/rooms/{room_id}/close")
+def close(room_id: UUID, session: Database, player: Player, clock: ServerClock):
+    return rooms.close_room(session, player, room_id, clock)

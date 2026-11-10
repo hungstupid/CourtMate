@@ -10,7 +10,6 @@ from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from firebase_admin import auth, credentials
 from google.auth.credentials import AnonymousCredentials
 from sqlalchemy import select
-from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.orm import Session
 
 from app.core.settings import get_settings
@@ -82,16 +81,15 @@ def current_user(
     uid = identity.get("uid")
     if not isinstance(uid, str) or not uid or len(uid) > 128:
         raise HTTPException(401, "Invalid Firebase identity.")
-    # Ignore all role fields/claims sent by clients. New verified UIDs are Players.
-    session.execute(
-        insert(User)
-        .values(firebase_uid=uid, role="player")
-        .on_conflict_do_nothing(index_elements=[User.firebase_uid])
-    )
-    session.flush()
     user = session.scalar(select(User).where(User.firebase_uid == uid))
     if user is None or user.role not in {"player", "owner"}:
-        raise HTTPException(403, "No valid server-controlled role.")
+        raise HTTPException(
+            403, "Complete initial account registration before continuing."
+        )
+    # Email belongs to Firebase; request bodies/profile edits cannot overwrite it.
+    email = identity.get("email")
+    if isinstance(email, str) and len(email) <= 320:
+        user.registration_email = email
     return user
 
 

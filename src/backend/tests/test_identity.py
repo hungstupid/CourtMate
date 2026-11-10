@@ -51,6 +51,13 @@ def test_real_emulator_token_player_owner_and_role_control(
 ) -> None:
     token, uid = emulator_token()
     headers = {"Authorization": f"Bearer {token}"}
+    assert api_client.get("/api/me", headers=headers).status_code == 403
+    assert (
+        api_client.post(
+            "/api/register", headers=headers, json={"role": "player"}
+        ).status_code
+        == 201
+    )
     response = api_client.get("/api/me?role=owner", headers=headers)
     assert response.status_code == 200
     assert response.json()["firebase_uid"] == uid
