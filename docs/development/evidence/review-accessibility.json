@@ -1,0 +1,675 @@
+{
+  "date": "2026-11-10T16:58:28.850Z",
+  "build": "Vite development server, reviewed working tree based on 4e8bf68; real local API/PostgreSQL/Firebase Auth Emulator",
+  "browser": "Chrome/157.0.8103.40",
+  "lighthouse": "13.6.0",
+  "mode": "Lighthouse user-flow snapshot; accessibility only; no performance claim",
+  "externalPhoto": {
+    "src": "https://images.unsplash.com/photo-1554068865-24cecd4e34b8?w=640&q=70&fit=crop",
+    "width": 640,
+    "height": 427,
+    "loaded": true
+  },
+  "settings": {
+    "screenEmulation": "disabled; real Chrome viewport set to each recorded width x 900",
+    "onlyCategories": [
+      "accessibility"
+    ],
+    "formFactor": "desktop",
+    "disableStorageReset": true,
+    "deviceScaleFactor": 1,
+    "authentication": "real demo Firebase Auth Emulator SDK session in temporary Chrome profile; profile deleted after run"
+  },
+  "snapshots": [
+    {
+      "screen": "court-details-375",
+      "url": "http://localhost:5173/courts/fe1fa90d-836b-4f63-a5fb-00916869deb8",
+      "score": 100,
+      "otherFindings": [
+        {
+          "id": "robots-txt",
+          "title": "robots.txt is not valid"
+        },
+        {
+          "id": "llms-txt",
+          "title": "llms.txt does not follow recommendations"
+        },
+        {
+          "id": "ard-schema",
+          "title": "ARD manifest is invalid"
+        }
+      ]
+    },
+    {
+      "screen": "court-details-1280",
+      "url": "http://localhost:5173/courts/fe1fa90d-836b-4f63-a5fb-00916869deb8",
+      "score": 100,
+      "otherFindings": [
+        {
+          "id": "robots-txt",
+          "title": "robots.txt is not valid"
+        },
+        {
+          "id": "llms-txt",
+          "title": "llms.txt does not follow recommendations"
+        },
+        {
+          "id": "ard-schema",
+          "title": "ARD manifest is invalid"
+        }
+      ]
+    },
+    {
+      "screen": "owner-edit-375",
+      "url": "http://localhost:5173/owner/courts/fe1fa90d-836b-4f63-a5fb-00916869deb8/edit",
+      "score": 100,
+      "otherFindings": [
+        {
+          "id": "robots-txt",
+          "title": "robots.txt is not valid"
+        },
+        {
+          "id": "llms-txt",
+          "title": "llms.txt does not follow recommendations"
+        },
+        {
+          "id": "ard-schema",
+          "title": "ARD manifest is invalid"
+        }
+      ]
+    },
+    {
+      "screen": "owner-edit-768",
+      "url": "http://localhost:5173/owner/courts/fe1fa90d-836b-4f63-a5fb-00916869deb8/edit",
+      "score": 100,
+      "otherFindings": [
+        {
+          "id": "robots-txt",
+          "title": "robots.txt is not valid"
+        },
+        {
+          "id": "llms-txt",
+          "title": "llms.txt does not follow recommendations"
+        },
+        {
+          "id": "ard-schema",
+          "title": "ARD manifest is invalid"
+        }
+      ]
+    },
+    {
+      "screen": "owner-edit-1280",
+      "url": "http://localhost:5173/owner/courts/fe1fa90d-836b-4f63-a5fb-00916869deb8/edit",
+      "score": 100,
+      "otherFindings": [
+        {
+          "id": "robots-txt",
+          "title": "robots.txt is not valid"
+        },
+        {
+          "id": "llms-txt",
+          "title": "llms.txt does not follow recommendations"
+        },
+        {
+          "id": "ard-schema",
+          "title": "ARD manifest is invalid"
+        }
+      ]
+    },
+    {
+      "screen": "owner-calendar-375",
+      "url": "http://localhost:5173/owner/schedule?court=fe1fa90d-836b-4f63-a5fb-00916869deb8&date=2026-11-11",
+      "score": 100,
+      "otherFindings": [
+        {
+          "id": "robots-txt",
+          "title": "robots.txt is not valid"
+        },
+        {
+          "id": "llms-txt",
+          "title": "llms.txt does not follow recommendations"
+        },
+        {
+          "id": "ard-schema",
+          "title": "ARD manifest is invalid"
+        }
+      ]
+    },
+    {
+      "screen": "owner-calendar-768",
+      "url": "http://localhost:5173/owner/schedule?court=fe1fa90d-836b-4f63-a5fb-00916869deb8&date=2026-11-11",
+      "score": 100,
+      "otherFindings": [
+        {
+          "id": "robots-txt",
+          "title": "robots.txt is not valid"
+        },
+        {
+          "id": "llms-txt",
+          "title": "llms.txt does not follow recommendations"
+        },
+        {
+          "id": "ard-schema",
+          "title": "ARD manifest is invalid"
+        }
+      ]
+    },
+    {
+      "screen": "owner-calendar-1280",
+      "url": "http://localhost:5173/owner/schedule?court=fe1fa90d-836b-4f63-a5fb-00916869deb8&date=2026-11-11",
+      "score": 100,
+      "otherFindings": [
+        {
+          "id": "robots-txt",
+          "title": "robots.txt is not valid"
+        },
+        {
+          "id": "llms-txt",
+          "title": "llms.txt does not follow recommendations"
+        },
+        {
+          "id": "ard-schema",
+          "title": "ARD manifest is invalid"
+        }
+      ]
+    },
+    {
+      "screen": "f09-pending-375",
+      "url": "http://localhost:5173/owner/offers?court=fe1fa90d-836b-4f63-a5fb-00916869deb8&date=2026-11-11&slot=a1d3aff0-bc3f-499a-b446-595f1dcc6259",
+      "score": 100,
+      "otherFindings": [
+        {
+          "id": "robots-txt",
+          "title": "robots.txt is not valid"
+        },
+        {
+          "id": "llms-txt",
+          "title": "llms.txt does not follow recommendations"
+        },
+        {
+          "id": "ard-schema",
+          "title": "ARD manifest is invalid"
+        }
+      ]
+    },
+    {
+      "screen": "f09-pending-768",
+      "url": "http://localhost:5173/owner/offers?court=fe1fa90d-836b-4f63-a5fb-00916869deb8&date=2026-11-11&slot=a1d3aff0-bc3f-499a-b446-595f1dcc6259",
+      "score": 100,
+      "otherFindings": [
+        {
+          "id": "robots-txt",
+          "title": "robots.txt is not valid"
+        },
+        {
+          "id": "llms-txt",
+          "title": "llms.txt does not follow recommendations"
+        },
+        {
+          "id": "ard-schema",
+          "title": "ARD manifest is invalid"
+        }
+      ]
+    },
+    {
+      "screen": "f09-pending-1280",
+      "url": "http://localhost:5173/owner/offers?court=fe1fa90d-836b-4f63-a5fb-00916869deb8&date=2026-11-11&slot=a1d3aff0-bc3f-499a-b446-595f1dcc6259",
+      "score": 100,
+      "otherFindings": [
+        {
+          "id": "robots-txt",
+          "title": "robots.txt is not valid"
+        },
+        {
+          "id": "llms-txt",
+          "title": "llms.txt does not follow recommendations"
+        },
+        {
+          "id": "ard-schema",
+          "title": "ARD manifest is invalid"
+        }
+      ]
+    },
+    {
+      "screen": "player-slots-375",
+      "url": "http://localhost:5173/courts/fe1fa90d-836b-4f63-a5fb-00916869deb8/slots?date=2026-11-11",
+      "score": 100,
+      "otherFindings": [
+        {
+          "id": "robots-txt",
+          "title": "robots.txt is not valid"
+        },
+        {
+          "id": "llms-txt",
+          "title": "llms.txt does not follow recommendations"
+        },
+        {
+          "id": "ard-schema",
+          "title": "ARD manifest is invalid"
+        }
+      ]
+    },
+    {
+      "screen": "player-slots-768",
+      "url": "http://localhost:5173/courts/fe1fa90d-836b-4f63-a5fb-00916869deb8/slots?date=2026-11-11",
+      "score": 100,
+      "otherFindings": [
+        {
+          "id": "robots-txt",
+          "title": "robots.txt is not valid"
+        },
+        {
+          "id": "llms-txt",
+          "title": "llms.txt does not follow recommendations"
+        },
+        {
+          "id": "ard-schema",
+          "title": "ARD manifest is invalid"
+        }
+      ]
+    },
+    {
+      "screen": "player-slots-1280",
+      "url": "http://localhost:5173/courts/fe1fa90d-836b-4f63-a5fb-00916869deb8/slots?date=2026-11-11",
+      "score": 100,
+      "otherFindings": [
+        {
+          "id": "robots-txt",
+          "title": "robots.txt is not valid"
+        },
+        {
+          "id": "llms-txt",
+          "title": "llms.txt does not follow recommendations"
+        },
+        {
+          "id": "ard-schema",
+          "title": "ARD manifest is invalid"
+        }
+      ]
+    },
+    {
+      "screen": "player-review-375",
+      "url": "http://localhost:5173/courts/fe1fa90d-836b-4f63-a5fb-00916869deb8/slots?date=2026-11-11",
+      "score": 100,
+      "otherFindings": [
+        {
+          "id": "robots-txt",
+          "title": "robots.txt is not valid"
+        },
+        {
+          "id": "llms-txt",
+          "title": "llms.txt does not follow recommendations"
+        },
+        {
+          "id": "ard-schema",
+          "title": "ARD manifest is invalid"
+        }
+      ]
+    },
+    {
+      "screen": "player-review-768",
+      "url": "http://localhost:5173/courts/fe1fa90d-836b-4f63-a5fb-00916869deb8/slots?date=2026-11-11",
+      "score": 100,
+      "otherFindings": [
+        {
+          "id": "robots-txt",
+          "title": "robots.txt is not valid"
+        },
+        {
+          "id": "llms-txt",
+          "title": "llms.txt does not follow recommendations"
+        },
+        {
+          "id": "ard-schema",
+          "title": "ARD manifest is invalid"
+        }
+      ]
+    },
+    {
+      "screen": "player-review-1280",
+      "url": "http://localhost:5173/courts/fe1fa90d-836b-4f63-a5fb-00916869deb8/slots?date=2026-11-11",
+      "score": 100,
+      "otherFindings": [
+        {
+          "id": "robots-txt",
+          "title": "robots.txt is not valid"
+        },
+        {
+          "id": "llms-txt",
+          "title": "llms.txt does not follow recommendations"
+        },
+        {
+          "id": "ard-schema",
+          "title": "ARD manifest is invalid"
+        }
+      ]
+    },
+    {
+      "screen": "player-booking-375",
+      "url": "http://localhost:5173/bookings/90109fea-98b4-4668-a785-33a4b8599595",
+      "score": 100,
+      "otherFindings": [
+        {
+          "id": "robots-txt",
+          "title": "robots.txt is not valid"
+        },
+        {
+          "id": "llms-txt",
+          "title": "llms.txt does not follow recommendations"
+        },
+        {
+          "id": "ard-schema",
+          "title": "ARD manifest is invalid"
+        }
+      ]
+    },
+    {
+      "screen": "player-booking-768",
+      "url": "http://localhost:5173/bookings/90109fea-98b4-4668-a785-33a4b8599595",
+      "score": 100,
+      "otherFindings": [
+        {
+          "id": "robots-txt",
+          "title": "robots.txt is not valid"
+        },
+        {
+          "id": "llms-txt",
+          "title": "llms.txt does not follow recommendations"
+        },
+        {
+          "id": "ard-schema",
+          "title": "ARD manifest is invalid"
+        }
+      ]
+    },
+    {
+      "screen": "player-booking-1280",
+      "url": "http://localhost:5173/bookings/90109fea-98b4-4668-a785-33a4b8599595",
+      "score": 100,
+      "otherFindings": [
+        {
+          "id": "robots-txt",
+          "title": "robots.txt is not valid"
+        },
+        {
+          "id": "llms-txt",
+          "title": "llms.txt does not follow recommendations"
+        },
+        {
+          "id": "ard-schema",
+          "title": "ARD manifest is invalid"
+        }
+      ]
+    },
+    {
+      "screen": "organizer-room-375",
+      "url": "http://localhost:5173/rooms/496fa11d-e253-429c-bd20-b00a4cd9cb91",
+      "score": 100,
+      "otherFindings": [
+        {
+          "id": "robots-txt",
+          "title": "robots.txt is not valid"
+        },
+        {
+          "id": "llms-txt",
+          "title": "llms.txt does not follow recommendations"
+        },
+        {
+          "id": "ard-schema",
+          "title": "ARD manifest is invalid"
+        }
+      ]
+    },
+    {
+      "screen": "organizer-room-768",
+      "url": "http://localhost:5173/rooms/496fa11d-e253-429c-bd20-b00a4cd9cb91",
+      "score": 100,
+      "otherFindings": [
+        {
+          "id": "robots-txt",
+          "title": "robots.txt is not valid"
+        },
+        {
+          "id": "llms-txt",
+          "title": "llms.txt does not follow recommendations"
+        },
+        {
+          "id": "ard-schema",
+          "title": "ARD manifest is invalid"
+        }
+      ]
+    },
+    {
+      "screen": "organizer-room-1280",
+      "url": "http://localhost:5173/rooms/496fa11d-e253-429c-bd20-b00a4cd9cb91",
+      "score": 100,
+      "otherFindings": [
+        {
+          "id": "robots-txt",
+          "title": "robots.txt is not valid"
+        },
+        {
+          "id": "llms-txt",
+          "title": "llms.txt does not follow recommendations"
+        },
+        {
+          "id": "ard-schema",
+          "title": "ARD manifest is invalid"
+        }
+      ]
+    },
+    {
+      "screen": "room-close-dialog-375",
+      "url": "http://localhost:5173/rooms/496fa11d-e253-429c-bd20-b00a4cd9cb91",
+      "score": 100,
+      "otherFindings": [
+        {
+          "id": "robots-txt",
+          "title": "robots.txt is not valid"
+        },
+        {
+          "id": "llms-txt",
+          "title": "llms.txt does not follow recommendations"
+        },
+        {
+          "id": "ard-schema",
+          "title": "ARD manifest is invalid"
+        }
+      ]
+    },
+    {
+      "screen": "room-close-dialog-768",
+      "url": "http://localhost:5173/rooms/496fa11d-e253-429c-bd20-b00a4cd9cb91",
+      "score": 100,
+      "otherFindings": [
+        {
+          "id": "robots-txt",
+          "title": "robots.txt is not valid"
+        },
+        {
+          "id": "llms-txt",
+          "title": "llms.txt does not follow recommendations"
+        },
+        {
+          "id": "ard-schema",
+          "title": "ARD manifest is invalid"
+        }
+      ]
+    },
+    {
+      "screen": "room-close-dialog-1280",
+      "url": "http://localhost:5173/rooms/496fa11d-e253-429c-bd20-b00a4cd9cb91",
+      "score": 100,
+      "otherFindings": [
+        {
+          "id": "robots-txt",
+          "title": "robots.txt is not valid"
+        },
+        {
+          "id": "llms-txt",
+          "title": "llms.txt does not follow recommendations"
+        },
+        {
+          "id": "ard-schema",
+          "title": "ARD manifest is invalid"
+        }
+      ]
+    }
+  ],
+  "renderedContrastSamples": [
+    {
+      "screen": "court-details",
+      "foreground": "rgb(82, 102, 91)",
+      "background": "rgb(245, 247, 242)",
+      "fontSize": "16px",
+      "ratio": 5.709
+    },
+    {
+      "screen": "court-details",
+      "foreground": "rgb(22, 45, 37)",
+      "background": "rgb(245, 247, 242)",
+      "fontSize": "16px",
+      "ratio": 13.556
+    },
+    {
+      "screen": "court-details",
+      "foreground": "rgb(82, 102, 91)",
+      "background": "rgb(255, 255, 255)",
+      "fontSize": "16px",
+      "ratio": 6.158
+    },
+    {
+      "screen": "court-details",
+      "foreground": "rgb(24, 94, 171)",
+      "background": "rgb(234, 241, 250)",
+      "fontSize": "14px",
+      "ratio": 5.719
+    },
+    {
+      "screen": "court-details",
+      "foreground": "rgb(82, 102, 91)",
+      "background": "rgb(255, 255, 255)",
+      "fontSize": "16px",
+      "ratio": 6.158
+    },
+    {
+      "screen": "owner-edit",
+      "foreground": "rgb(82, 102, 91)",
+      "background": "rgb(245, 247, 242)",
+      "fontSize": "16px",
+      "ratio": 5.709
+    },
+    {
+      "screen": "owner-calendar",
+      "foreground": "rgb(82, 102, 91)",
+      "background": "rgb(245, 247, 242)",
+      "fontSize": "16px",
+      "ratio": 5.709
+    },
+    {
+      "screen": "owner-calendar",
+      "foreground": "rgb(82, 102, 91)",
+      "background": "rgb(245, 247, 242)",
+      "fontSize": "16px",
+      "ratio": 5.709
+    },
+    {
+      "screen": "f09-pending",
+      "foreground": "rgb(82, 102, 91)",
+      "background": "rgb(245, 247, 242)",
+      "fontSize": "16px",
+      "ratio": 5.709
+    },
+    {
+      "screen": "f09-pending",
+      "foreground": "rgb(24, 94, 171)",
+      "background": "rgb(234, 241, 250)",
+      "fontSize": "16px",
+      "ratio": 5.719
+    },
+    {
+      "screen": "f09-pending",
+      "foreground": "rgb(22, 45, 37)",
+      "background": "rgb(255, 255, 255)",
+      "fontSize": "16px",
+      "ratio": 14.622
+    },
+    {
+      "screen": "f09-pending",
+      "foreground": "rgb(82, 102, 91)",
+      "background": "rgb(255, 255, 255)",
+      "fontSize": "16px",
+      "ratio": 6.158
+    },
+    {
+      "screen": "player-slots",
+      "foreground": "rgb(82, 102, 91)",
+      "background": "rgb(245, 247, 242)",
+      "fontSize": "16px",
+      "ratio": 5.709
+    },
+    {
+      "screen": "player-slots",
+      "foreground": "rgb(22, 45, 37)",
+      "background": "rgb(234, 243, 231)",
+      "fontSize": "16px",
+      "ratio": 12.862
+    },
+    {
+      "screen": "player-slots",
+      "foreground": "rgb(82, 102, 91)",
+      "background": "rgb(255, 255, 255)",
+      "fontSize": "14px",
+      "ratio": 6.158
+    },
+    {
+      "screen": "player-booking",
+      "foreground": "rgb(82, 102, 91)",
+      "background": "rgb(245, 247, 242)",
+      "fontSize": "16px",
+      "ratio": 5.709
+    },
+    {
+      "screen": "player-booking",
+      "foreground": "rgb(82, 102, 91)",
+      "background": "rgb(255, 255, 255)",
+      "fontSize": "16px",
+      "ratio": 6.158
+    },
+    {
+      "screen": "organizer-room",
+      "foreground": "rgb(82, 102, 91)",
+      "background": "rgb(245, 247, 242)",
+      "fontSize": "16px",
+      "ratio": 5.709
+    },
+    {
+      "screen": "organizer-room",
+      "foreground": "rgb(22, 45, 37)",
+      "background": "rgb(245, 247, 242)",
+      "fontSize": "16px",
+      "ratio": 13.556
+    },
+    {
+      "screen": "organizer-room",
+      "foreground": "rgb(82, 102, 91)",
+      "background": "rgb(245, 247, 242)",
+      "fontSize": "16px",
+      "ratio": 5.709
+    },
+    {
+      "screen": "organizer-room",
+      "foreground": "rgb(22, 45, 37)",
+      "background": "rgb(234, 243, 231)",
+      "fontSize": "16px",
+      "ratio": 12.862
+    }
+  ],
+  "limits": [
+    "Snapshot accessibility on the Vite dev server, not a production-build performance audit. Historical production-build public-page results remain separately recorded.",
+    "21 sampled paragraph computed-color/nearest-opaque-background pairs in unobscured page states; minimum ratio 5.709:1. Dialog-backdrop states excluded from these samples. Not exhaustive manual composited-color/focus or screen-reader evidence.",
+    "robots-txt, llms-txt and ard-schema findings are unrelated to the accessibility category and are preserved as otherFindings.",
+    "External map iframe was blank in the inspected screenshot. Address/manual-origin URL and denied permission guard are verified; external geocoding/route accuracy remains unverified.",
+    "F09 manual long-name mobile overflow was found by a later regression test, fixed, and rechecked by Playwright; these snapshots cover pending F09 state."
+  ]
+}
