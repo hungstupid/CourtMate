@@ -114,3 +114,10 @@ Earlier new-test failures were not product PASS: the expanded Axe check exposed 
 - Cloud readiness/configuration evidence passes in the read-only scope above. Production Firebase sign-up/authenticated Owner/Player writes and PostgreSQL write/reload journeys remain **BLOCKED**, not remote PASS. Local equivalents pass with real PostgreSQL/Firebase Emulator and persisted reloads. Human VoiceOver/NVDA, exhaustive manual focus/contrast, real-device/cross-browser and authenticated Figma prototype playback remain pending.
 
 This is a time-stamped application-source snapshot. A subsequent evidence-only commit can update the frontend version/deployment metadata without changing these verified application assets or the backend code. No main merge or force-push.
+
+
+## Screen-by-screen usability continuation — 11 November 2026
+
+[Detailed review](screen-usability-review.md) covers all product pages/functions, with 28 real screen states × 375/768/1280 and 10 targeted regressions. Six evidenced issues corrected: unsent edits during pending saves, stale profile success, room-capacity reset on failure, recovery after a committed room response is lost, dialog-padding dismissal, midnight/multi-day time display. Existing routes/API/BR/PA2/Figma remain unchanged.
+
+Local result: **239 pytest / 53 Playwright PASS**, including live Maps; lint/typecheck/build/Ruff and isolated migration/drift checks PASS. Regular CI skips that one external Maps test and includes the other 52. [Machine evidence](evidence/screen-usability.json) records all 84 Axe/geometry measurements. Functional coverage remains 49 FR / 106 AC in the documented scope; NFR-05/human review and cloud write limits remain as before. No dependency or backend logic change. Post-push CI/deployment outcome is reported separately; no new remote PASS is inferred from the local run.

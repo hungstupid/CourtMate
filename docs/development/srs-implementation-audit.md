@@ -252,3 +252,8 @@ The release adds real repeated quote-change/reacceptance and competing-slot reco
 [Machine-readable current evidence and explicit remaining manual/cloud limits](evidence/final-acceptance.json). Historical test counts/failures/deployments above remain historical.
 
 - Final remote evidence: [CI 42943912403](https://github.com/hungstupid/CourtMate/actions/runs/42943912403) SUCCESS, Vercel READY and automatic Render LIVE at application source `5e53926`. Production public/login Axe/geometry PASS at all three widths; no public court link existed for a cloud map-recovery journey. Cloud business writes remain BLOCKED. The [release snapshot](frontend-release-report.md#final-acceptance-deployment-snapshot--11-november-2026-0214-utc) and machine-readable evidence record exact deployment IDs/times and distinguish this from local 42-test coverage.
+
+
+## Screen usability continuation — 11 November 2026
+
+[Per-screen audit](screen-usability-review.md) and [measurement matrix](evidence/screen-usability.json) cover 28 real product screen states at 375/768/1280 plus 10 targeted regression cases. Pending-save inputs, room failure/committed-response recovery, modal padding, stale profile success and midnight/multi-day labels were corrected without changing FR/BR/API semantics. **239 pytest / 53 Playwright PASS** locally, including live external Maps. All prior regressions retained. Coverage remains 49/49 FR, 106/106 AC in the stated scope; NFR-05 remains PARTIAL. No human screen-reader/usability-study/prototype playback or production write PASS is claimed.

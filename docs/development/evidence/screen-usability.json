@@ -1,0 +1,681 @@
+{
+  "date": "2026-11-11",
+  "baselineGit": "41b6ccf2afc5878d0dc8a6e024705b322b87e50d",
+  "scope": "Source review of all product pages and current 17-UC mapping; real local SDK/API/PostgreSQL, screen matrix and targeted regression; no production writes or Figma edits.",
+  "frontendChecks": {
+    "lint": "PASS",
+    "typecheck": "PASS",
+    "build": "PASS",
+    "dependenciesChanged": false
+  },
+  "backendChecks": {
+    "pytestPassed": 239,
+    "lockedSync": "PASS",
+    "ruffCheck": "PASS",
+    "ruffFormatCheck": "PASS",
+    "isolatedMigrationUpgradeTwiceAndDrift": "PASS"
+  },
+  "playwright": {
+    "passed": 53,
+    "command": "COURTMATE_VERIFY_MAPS=1 BROWSER_CHANNEL=chrome npm run test:e2e",
+    "includesLiveMaps": true,
+    "regularCiExpectedPassed": 52,
+    "regularCiExpectedExternalSkipped": 1
+  },
+  "screenMatrix": {
+    "views": 28,
+    "widths": [
+      375,
+      768,
+      1280
+    ],
+    "measurements": 84,
+    "axeViolations": 0,
+    "horizontalOverflow": false,
+    "visibleButtonsBelow24CssPixels": 0,
+    "boundary": "Visible button dimensions only, not all links/labels or a 44px target-size certification; no human screen-reader claim.",
+    "observations": [
+      {
+        "name": "Owner courts empty",
+        "width": 375,
+        "noOverflow": true,
+        "axeViolations": 0,
+        "smallButtons": []
+      },
+      {
+        "name": "Owner courts empty",
+        "width": 768,
+        "noOverflow": true,
+        "axeViolations": 0,
+        "smallButtons": []
+      },
+      {
+        "name": "Owner courts empty",
+        "width": 1280,
+        "noOverflow": true,
+        "axeViolations": 0,
+        "smallButtons": []
+      },
+      {
+        "name": "Owner calendar empty",
+        "width": 375,
+        "noOverflow": true,
+        "axeViolations": 0,
+        "smallButtons": []
+      },
+      {
+        "name": "Owner calendar empty",
+        "width": 768,
+        "noOverflow": true,
+        "axeViolations": 0,
+        "smallButtons": []
+      },
+      {
+        "name": "Owner calendar empty",
+        "width": 1280,
+        "noOverflow": true,
+        "axeViolations": 0,
+        "smallButtons": []
+      },
+      {
+        "name": "Owner bookings empty",
+        "width": 375,
+        "noOverflow": true,
+        "axeViolations": 0,
+        "smallButtons": []
+      },
+      {
+        "name": "Owner bookings empty",
+        "width": 768,
+        "noOverflow": true,
+        "axeViolations": 0,
+        "smallButtons": []
+      },
+      {
+        "name": "Owner bookings empty",
+        "width": 1280,
+        "noOverflow": true,
+        "axeViolations": 0,
+        "smallButtons": []
+      },
+      {
+        "name": "Owner offers empty",
+        "width": 375,
+        "noOverflow": true,
+        "axeViolations": 0,
+        "smallButtons": []
+      },
+      {
+        "name": "Owner offers empty",
+        "width": 768,
+        "noOverflow": true,
+        "axeViolations": 0,
+        "smallButtons": []
+      },
+      {
+        "name": "Owner offers empty",
+        "width": 1280,
+        "noOverflow": true,
+        "axeViolations": 0,
+        "smallButtons": []
+      },
+      {
+        "name": "Player history empty",
+        "width": 375,
+        "noOverflow": true,
+        "axeViolations": 0,
+        "smallButtons": []
+      },
+      {
+        "name": "Player history empty",
+        "width": 768,
+        "noOverflow": true,
+        "axeViolations": 0,
+        "smallButtons": []
+      },
+      {
+        "name": "Player history empty",
+        "width": 1280,
+        "noOverflow": true,
+        "axeViolations": 0,
+        "smallButtons": []
+      },
+      {
+        "name": "Login",
+        "width": 375,
+        "noOverflow": true,
+        "axeViolations": 0,
+        "smallButtons": []
+      },
+      {
+        "name": "Login",
+        "width": 768,
+        "noOverflow": true,
+        "axeViolations": 0,
+        "smallButtons": []
+      },
+      {
+        "name": "Login",
+        "width": 1280,
+        "noOverflow": true,
+        "axeViolations": 0,
+        "smallButtons": []
+      },
+      {
+        "name": "Registration",
+        "width": 375,
+        "noOverflow": true,
+        "axeViolations": 0,
+        "smallButtons": []
+      },
+      {
+        "name": "Registration",
+        "width": 768,
+        "noOverflow": true,
+        "axeViolations": 0,
+        "smallButtons": []
+      },
+      {
+        "name": "Registration",
+        "width": 1280,
+        "noOverflow": true,
+        "axeViolations": 0,
+        "smallButtons": []
+      },
+      {
+        "name": "Court search empty",
+        "width": 375,
+        "noOverflow": true,
+        "axeViolations": 0,
+        "smallButtons": []
+      },
+      {
+        "name": "Court search empty",
+        "width": 768,
+        "noOverflow": true,
+        "axeViolations": 0,
+        "smallButtons": []
+      },
+      {
+        "name": "Court search empty",
+        "width": 1280,
+        "noOverflow": true,
+        "axeViolations": 0,
+        "smallButtons": []
+      },
+      {
+        "name": "Room search empty",
+        "width": 375,
+        "noOverflow": true,
+        "axeViolations": 0,
+        "smallButtons": []
+      },
+      {
+        "name": "Room search empty",
+        "width": 768,
+        "noOverflow": true,
+        "axeViolations": 0,
+        "smallButtons": []
+      },
+      {
+        "name": "Room search empty",
+        "width": 1280,
+        "noOverflow": true,
+        "axeViolations": 0,
+        "smallButtons": []
+      },
+      {
+        "name": "Court discovery populated",
+        "width": 375,
+        "noOverflow": true,
+        "axeViolations": 0,
+        "smallButtons": []
+      },
+      {
+        "name": "Court discovery populated",
+        "width": 768,
+        "noOverflow": true,
+        "axeViolations": 0,
+        "smallButtons": []
+      },
+      {
+        "name": "Court discovery populated",
+        "width": 1280,
+        "noOverflow": true,
+        "axeViolations": 0,
+        "smallButtons": []
+      },
+      {
+        "name": "Court detail",
+        "width": 375,
+        "noOverflow": true,
+        "axeViolations": 0,
+        "smallButtons": []
+      },
+      {
+        "name": "Court detail",
+        "width": 768,
+        "noOverflow": true,
+        "axeViolations": 0,
+        "smallButtons": []
+      },
+      {
+        "name": "Court detail",
+        "width": 1280,
+        "noOverflow": true,
+        "axeViolations": 0,
+        "smallButtons": []
+      },
+      {
+        "name": "Player availability",
+        "width": 375,
+        "noOverflow": true,
+        "axeViolations": 0,
+        "smallButtons": []
+      },
+      {
+        "name": "Player availability",
+        "width": 768,
+        "noOverflow": true,
+        "axeViolations": 0,
+        "smallButtons": []
+      },
+      {
+        "name": "Player availability",
+        "width": 1280,
+        "noOverflow": true,
+        "axeViolations": 0,
+        "smallButtons": []
+      },
+      {
+        "name": "Deals populated",
+        "width": 375,
+        "noOverflow": true,
+        "axeViolations": 0,
+        "smallButtons": []
+      },
+      {
+        "name": "Deals populated",
+        "width": 768,
+        "noOverflow": true,
+        "axeViolations": 0,
+        "smallButtons": []
+      },
+      {
+        "name": "Deals populated",
+        "width": 1280,
+        "noOverflow": true,
+        "axeViolations": 0,
+        "smallButtons": []
+      },
+      {
+        "name": "Rooms populated",
+        "width": 375,
+        "noOverflow": true,
+        "axeViolations": 0,
+        "smallButtons": []
+      },
+      {
+        "name": "Rooms populated",
+        "width": 768,
+        "noOverflow": true,
+        "axeViolations": 0,
+        "smallButtons": []
+      },
+      {
+        "name": "Rooms populated",
+        "width": 1280,
+        "noOverflow": true,
+        "axeViolations": 0,
+        "smallButtons": []
+      },
+      {
+        "name": "Guest room detail",
+        "width": 375,
+        "noOverflow": true,
+        "axeViolations": 0,
+        "smallButtons": []
+      },
+      {
+        "name": "Guest room detail",
+        "width": 768,
+        "noOverflow": true,
+        "axeViolations": 0,
+        "smallButtons": []
+      },
+      {
+        "name": "Guest room detail",
+        "width": 1280,
+        "noOverflow": true,
+        "axeViolations": 0,
+        "smallButtons": []
+      },
+      {
+        "name": "Organizer room detail",
+        "width": 375,
+        "noOverflow": true,
+        "axeViolations": 0,
+        "smallButtons": []
+      },
+      {
+        "name": "Organizer room detail",
+        "width": 768,
+        "noOverflow": true,
+        "axeViolations": 0,
+        "smallButtons": []
+      },
+      {
+        "name": "Organizer room detail",
+        "width": 1280,
+        "noOverflow": true,
+        "axeViolations": 0,
+        "smallButtons": []
+      },
+      {
+        "name": "Player booking history",
+        "width": 375,
+        "noOverflow": true,
+        "axeViolations": 0,
+        "smallButtons": []
+      },
+      {
+        "name": "Player booking history",
+        "width": 768,
+        "noOverflow": true,
+        "axeViolations": 0,
+        "smallButtons": []
+      },
+      {
+        "name": "Player booking history",
+        "width": 1280,
+        "noOverflow": true,
+        "axeViolations": 0,
+        "smallButtons": []
+      },
+      {
+        "name": "Player booking detail",
+        "width": 375,
+        "noOverflow": true,
+        "axeViolations": 0,
+        "smallButtons": []
+      },
+      {
+        "name": "Player booking detail",
+        "width": 768,
+        "noOverflow": true,
+        "axeViolations": 0,
+        "smallButtons": []
+      },
+      {
+        "name": "Player booking detail",
+        "width": 1280,
+        "noOverflow": true,
+        "axeViolations": 0,
+        "smallButtons": []
+      },
+      {
+        "name": "Player profile",
+        "width": 375,
+        "noOverflow": true,
+        "axeViolations": 0,
+        "smallButtons": []
+      },
+      {
+        "name": "Player profile",
+        "width": 768,
+        "noOverflow": true,
+        "axeViolations": 0,
+        "smallButtons": []
+      },
+      {
+        "name": "Player profile",
+        "width": 1280,
+        "noOverflow": true,
+        "axeViolations": 0,
+        "smallButtons": []
+      },
+      {
+        "name": "Owner courts populated",
+        "width": 375,
+        "noOverflow": true,
+        "axeViolations": 0,
+        "smallButtons": []
+      },
+      {
+        "name": "Owner courts populated",
+        "width": 768,
+        "noOverflow": true,
+        "axeViolations": 0,
+        "smallButtons": []
+      },
+      {
+        "name": "Owner courts populated",
+        "width": 1280,
+        "noOverflow": true,
+        "axeViolations": 0,
+        "smallButtons": []
+      },
+      {
+        "name": "Owner new court",
+        "width": 375,
+        "noOverflow": true,
+        "axeViolations": 0,
+        "smallButtons": []
+      },
+      {
+        "name": "Owner new court",
+        "width": 768,
+        "noOverflow": true,
+        "axeViolations": 0,
+        "smallButtons": []
+      },
+      {
+        "name": "Owner new court",
+        "width": 1280,
+        "noOverflow": true,
+        "axeViolations": 0,
+        "smallButtons": []
+      },
+      {
+        "name": "Owner edit court",
+        "width": 375,
+        "noOverflow": true,
+        "axeViolations": 0,
+        "smallButtons": []
+      },
+      {
+        "name": "Owner edit court",
+        "width": 768,
+        "noOverflow": true,
+        "axeViolations": 0,
+        "smallButtons": []
+      },
+      {
+        "name": "Owner edit court",
+        "width": 1280,
+        "noOverflow": true,
+        "axeViolations": 0,
+        "smallButtons": []
+      },
+      {
+        "name": "Owner calendar populated",
+        "width": 375,
+        "noOverflow": true,
+        "axeViolations": 0,
+        "smallButtons": []
+      },
+      {
+        "name": "Owner calendar populated",
+        "width": 768,
+        "noOverflow": true,
+        "axeViolations": 0,
+        "smallButtons": []
+      },
+      {
+        "name": "Owner calendar populated",
+        "width": 1280,
+        "noOverflow": true,
+        "axeViolations": 0,
+        "smallButtons": []
+      },
+      {
+        "name": "Owner booking list",
+        "width": 375,
+        "noOverflow": true,
+        "axeViolations": 0,
+        "smallButtons": []
+      },
+      {
+        "name": "Owner booking list",
+        "width": 768,
+        "noOverflow": true,
+        "axeViolations": 0,
+        "smallButtons": []
+      },
+      {
+        "name": "Owner booking list",
+        "width": 1280,
+        "noOverflow": true,
+        "axeViolations": 0,
+        "smallButtons": []
+      },
+      {
+        "name": "Owner booking detail",
+        "width": 375,
+        "noOverflow": true,
+        "axeViolations": 0,
+        "smallButtons": []
+      },
+      {
+        "name": "Owner booking detail",
+        "width": 768,
+        "noOverflow": true,
+        "axeViolations": 0,
+        "smallButtons": []
+      },
+      {
+        "name": "Owner booking detail",
+        "width": 1280,
+        "noOverflow": true,
+        "axeViolations": 0,
+        "smallButtons": []
+      },
+      {
+        "name": "Owner offer configuration",
+        "width": 375,
+        "noOverflow": true,
+        "axeViolations": 0,
+        "smallButtons": []
+      },
+      {
+        "name": "Owner offer configuration",
+        "width": 768,
+        "noOverflow": true,
+        "axeViolations": 0,
+        "smallButtons": []
+      },
+      {
+        "name": "Owner offer configuration",
+        "width": 1280,
+        "noOverflow": true,
+        "axeViolations": 0,
+        "smallButtons": []
+      },
+      {
+        "name": "Owner scheduled offer",
+        "width": 375,
+        "noOverflow": true,
+        "axeViolations": 0,
+        "smallButtons": []
+      },
+      {
+        "name": "Owner scheduled offer",
+        "width": 768,
+        "noOverflow": true,
+        "axeViolations": 0,
+        "smallButtons": []
+      },
+      {
+        "name": "Owner scheduled offer",
+        "width": 1280,
+        "noOverflow": true,
+        "axeViolations": 0,
+        "smallButtons": []
+      },
+      {
+        "name": "Owner profile",
+        "width": 375,
+        "noOverflow": true,
+        "axeViolations": 0,
+        "smallButtons": []
+      },
+      {
+        "name": "Owner profile",
+        "width": 768,
+        "noOverflow": true,
+        "axeViolations": 0,
+        "smallButtons": []
+      },
+      {
+        "name": "Owner profile",
+        "width": 1280,
+        "noOverflow": true,
+        "axeViolations": 0,
+        "smallButtons": []
+      }
+    ]
+  },
+  "defects": [
+    {
+      "id": "UX-01",
+      "priority": "P1",
+      "issue": "Fields editable after request snapshot; later success marks unsent values clean or leaves the page.",
+      "fix": "Freeze editable inputs during writes in Auth/Profile/Court/Hours/Slot/room-capacity forms; aria-busy and visual feedback. Profile reproducer confirmed actual UI/committed-data mismatch before correction."
+    },
+    {
+      "id": "UX-02",
+      "priority": "P2",
+      "issue": "Saved-profile message remains after another unsaved edit.",
+      "fix": "Clear success feedback on the next field change; retain draft guard."
+    },
+    {
+      "id": "UX-03",
+      "priority": "P2",
+      "issue": "Create-room failure/readback remount resets capacity 12 to default 4.",
+      "fix": "Keep capacity in page state; retry preserves it and real room persists capacity 12 after reload."
+    },
+    {
+      "id": "UX-04",
+      "priority": "P1",
+      "issue": "Network response lost after room commit still offers another create attempt.",
+      "fix": "Authoritative booking readback with room_id shows a link to the existing room; no fake success and no duplicate submission. Test forwards the real POST, then drops only the browser response; exactly one room is read back."
+    },
+    {
+      "id": "UX-05",
+      "priority": "P2",
+      "issue": "Clicks inside the native dialog padding dismiss it as though they hit the backdrop.",
+      "fix": "Dismiss only coordinates outside dialog bounds. Inside padding, actual outside click, Escape and focus return are tested."
+    },
+    {
+      "id": "UX-06",
+      "priority": "P2",
+      "issue": "23:00–00:00 looks reversed; multi-day maintenance omits its end date.",
+      "fix": "Show 24:00 for the exact end of the same playing day; show explicit end date for longer ranges. Actual calendar/availability/review/accepted booking and maintenance preview/save/reload tested."
+    }
+  ],
+  "notClaimed": [
+    "Human usability study with representative Players/Owners",
+    "Human VoiceOver/NVDA tasks",
+    "Exhaustive cross-browser/real-device or text-zoom review",
+    "Figma prototype playback",
+    "Production authenticated write acceptance"
+  ],
+  "optionalImprovements": [
+    "User-test password visibility control before adding UI",
+    "User-test progressive disclosure for the long mobile court form; preserve required fields/drafts and PA2 behavior"
+  ],
+  "verificationNotes": [
+    "An initial local run used a stale API port and did not establish product failures. The test Vite server was relaunched with explicit demo emulator/local API configuration.",
+    "Two harness issues were corrected: await completed sign-out/session restoration, and read saved slots through the existing collection endpoint. Court search matrix uses the existing q query parameter. These are not counted as product defects."
+  ]
+}

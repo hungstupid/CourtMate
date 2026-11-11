@@ -208,12 +208,14 @@ function CourtForm({ court }: { court?: Court }) {
             : ''
         setFieldErrors((old) => (old[name] ? { ...old, [name]: '' } : old))
       }}
+      aria-busy={busy}
       className="panel court-form"
       onSubmit={(e) => void submit(e)}
     >
       <div className="form-grid">
         <Field label="Tên sân" error={fieldErrors.name}>
           <input
+            disabled={busy}
             name="name"
             required
             maxLength={150}
@@ -222,6 +224,7 @@ function CourtForm({ court }: { court?: Court }) {
         </Field>
         <Field label="Môn thể thao" error={fieldErrors.sport}>
           <input
+            disabled={busy}
             name="sport"
             required
             maxLength={80}
@@ -239,6 +242,7 @@ function CourtForm({ court }: { court?: Court }) {
         </Field>
         <Field label="Địa chỉ đầy đủ" error={fieldErrors.address}>
           <input
+            disabled={busy}
             name="address"
             required
             maxLength={300}
@@ -247,6 +251,7 @@ function CourtForm({ court }: { court?: Court }) {
         </Field>
         <Field label="Khu vực" error={fieldErrors.area}>
           <input
+            disabled={busy}
             name="area"
             required
             maxLength={120}
@@ -259,6 +264,7 @@ function CourtForm({ court }: { court?: Court }) {
           hint="Giá slot do bạn công bố riêng khi thiết lập lịch."
         >
           <input
+            disabled={busy}
             name="base_price_vnd"
             type="number"
             min={1}
@@ -274,6 +280,7 @@ function CourtForm({ court }: { court?: Court }) {
           hint="Số nguyên từ 2 đến 30; phòng Open Play tối đa gấp đôi."
         >
           <input
+            disabled={busy}
             name="max_players"
             type="number"
             min={2}
@@ -286,6 +293,7 @@ function CourtForm({ court }: { court?: Court }) {
       </div>
       <Field label="Mô tả sân" error={fieldErrors.description}>
         <textarea
+          disabled={busy}
           name="description"
           required
           maxLength={4000}
@@ -294,7 +302,12 @@ function CourtForm({ court }: { court?: Court }) {
         />
       </Field>
       <Field label="Liên hệ sân" error={fieldErrors.contact}>
-        <input name="contact" maxLength={200} defaultValue={court?.contact} />
+        <input
+          disabled={busy}
+          name="contact"
+          maxLength={200}
+          defaultValue={court?.contact}
+        />
       </Field>
       <Field
         label="URL ảnh (mỗi dòng một URL)"
@@ -302,6 +315,7 @@ function CourtForm({ court }: { court?: Court }) {
         hint="Tối đa 20 URL HTTP/HTTPS. Chỉ dùng ảnh bạn có quyền công bố."
       >
         <textarea
+          disabled={busy}
           name="photo_urls"
           rows={3}
           value={photoText}
@@ -324,6 +338,7 @@ function CourtForm({ court }: { court?: Court }) {
       </section>
       <label className="checkbox">
         <input
+          disabled={busy}
           type="checkbox"
           name="active"
           defaultChecked={court?.active ?? true}

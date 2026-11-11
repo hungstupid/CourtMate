@@ -20,7 +20,18 @@ export const timeLabel = (value: string) =>
     hourCycle: 'h23',
   }).format(new Date(value))
 export const interval = (start: string, end: string) =>
-  `${dateLabel(start)} · ${timeLabel(start)}–${timeLabel(end)}`
+  `${dateLabel(start)} · ${timeRange(start, end)}`
+export function timeRange(start: string, end: string) {
+  const startDay = localDay(new Date(start))
+  const endDay = localDay(new Date(end))
+  const endLabel =
+    startDay === endDay
+      ? timeLabel(end)
+      : localDay(new Date(new Date(end).getTime() - 1)) === startDay
+        ? '24:00'
+        : `${dateLabel(end)} · ${timeLabel(end)}`
+  return `${timeLabel(start)}–${endLabel}`
+}
 export function localDay(value = new Date()) {
   return new Intl.DateTimeFormat('en-CA', {
     timeZone: TIME_ZONE,

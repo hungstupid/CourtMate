@@ -160,6 +160,7 @@ export function BookingPage({ owner = false }: { owner?: boolean }) {
   const location = useLocation()
   const navigate = useNavigate()
   const [dialog, setDialog] = useState<'cancel' | 'room' | null>(null)
+  const [capacity, setCapacity] = useState<string | null>(null)
   const [error, setError] = useState('')
   const [busy, setBusy] = useState(false)
   async function cancel() {
@@ -328,7 +329,9 @@ export function BookingPage({ owner = false }: { owner?: boolean }) {
       )}
       {dialog === 'room' && (
         <Modal
-          title="Tạo phòng từ booking"
+          title={
+            booking.room_id ? 'Phòng Open Play đã có' : 'Tạo phòng từ booking'
+          }
           onClose={() => {
             if (!busy) setDialog(null)
           }}
@@ -336,40 +339,57 @@ export function BookingPage({ owner = false }: { owner?: boolean }) {
           <p>
             {booking.court_name} · {interval(booking.start_at, booking.end_at)}
           </p>
-          <form onSubmit={(e) => void createRoom(e)}>
-            <Field
-              label="Sức chứa phòng"
-              hint={`Từ 2 đến ${2 * booking.court_max_players} người, gồm bạn là người tổ chức. Sân chơi đồng thời tối đa ${booking.court_max_players} người.`}
-            >
-              <input
-                name="capacity"
-                type="number"
-                min={2}
-                max={2 * booking.court_max_players}
-                step={1}
-                required
-                defaultValue={Math.min(4, 2 * booking.court_max_players)}
-              />
-            </Field>
-            <p className="muted">
-              Mỗi booking chỉ tạo một phòng. Chi phí theo người chỉ là ước tính,
-              không thu tiền.
-            </p>
-            {error && <ErrorNotice message={error} />}
-            <div className="actions">
-              <button
-                type="button"
-                className="ghost"
-                disabled={busy}
-                onClick={() => setDialog(null)}
-              >
-                Hủy, chưa tạo
-              </button>
-              <button disabled={busy}>
-                {busy ? 'Đang tạo…' : 'Tạo phòng'}
-              </button>
+          {booking.room_id ? (
+            <div className="notice success" role="status">
+              <p>
+                Phòng đã được lưu cho booking này. Mở phòng để kiểm tra thông
+                tin.
+              </p>
+              <Link className="button" to={`/rooms/${booking.room_id}`}>
+                Mở phòng Open Play
+              </Link>
             </div>
-          </form>
+          ) : (
+            <form aria-busy={busy} onSubmit={(e) => void createRoom(e)}>
+              <Field
+                label="Sức chứa phòng"
+                hint={`Từ 2 đến ${2 * booking.court_max_players} người, gồm bạn là người tổ chức. Sân chơi đồng thời tối đa ${booking.court_max_players} người.`}
+              >
+                <input
+                  name="capacity"
+                  disabled={busy}
+                  type="number"
+                  min={2}
+                  max={2 * booking.court_max_players}
+                  step={1}
+                  required
+                  value={
+                    capacity ??
+                    String(Math.min(4, 2 * booking.court_max_players))
+                  }
+                  onChange={(event) => setCapacity(event.target.value)}
+                />
+              </Field>
+              <p className="muted">
+                Mỗi booking chỉ tạo một phòng. Chi phí theo người chỉ là ước
+                tính, không thu tiền.
+              </p>
+              {error && <ErrorNotice message={error} />}
+              <div className="actions">
+                <button
+                  type="button"
+                  className="ghost"
+                  disabled={busy}
+                  onClick={() => setDialog(null)}
+                >
+                  Hủy, chưa tạo
+                </button>
+                <button disabled={busy}>
+                  {busy ? 'Đang tạo…' : 'Tạo phòng'}
+                </button>
+              </div>
+            </form>
+          )}
         </Modal>
       )}
     </>

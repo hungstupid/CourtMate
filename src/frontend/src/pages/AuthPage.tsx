@@ -137,11 +137,12 @@ export function AuthPage({ register = false }: { register?: boolean }) {
           ) : session.status === 'loading' ? (
             <Loading>Đang tải phiên đăng nhập…</Loading>
           ) : (
-            <form onSubmit={(e) => void submit(e)}>
+            <form aria-busy={busy} onSubmit={(e) => void submit(e)}>
               {!completing && (
                 <>
                   <Field label="Email">
                     <input
+                      disabled={busy}
                       name="email"
                       type="email"
                       autoComplete="username"
@@ -158,6 +159,7 @@ export function AuthPage({ register = false }: { register?: boolean }) {
                     }
                   >
                     <input
+                      disabled={busy}
                       name="password"
                       type="password"
                       autoComplete={
@@ -180,6 +182,7 @@ export function AuthPage({ register = false }: { register?: boolean }) {
                   <legend>Vai trò tài khoản</legend>
                   <label>
                     <input
+                      disabled={busy}
                       type="radio"
                       name="role"
                       value="player"
@@ -193,6 +196,7 @@ export function AuthPage({ register = false }: { register?: boolean }) {
                   </label>
                   <label>
                     <input
+                      disabled={busy}
                       type="radio"
                       name="role"
                       value="owner"

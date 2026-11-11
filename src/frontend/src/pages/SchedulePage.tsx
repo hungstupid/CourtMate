@@ -19,7 +19,7 @@ import {
   localInput,
   minuteTime,
   money,
-  timeLabel,
+  timeRange,
   toInstant,
 } from '../lib/format'
 import { useResource } from '../lib/use-resource'
@@ -119,13 +119,18 @@ function HoursEditor({
         Giờ Việt Nam · HH:mm; có thể đóng lúc 24:00. Không thay đổi giờ làm mất
         hiệu lực booking đã xác nhận.
       </p>
-      <form onChangeCapture={guard.markDirty} onSubmit={(e) => void submit(e)}>
+      <form
+        aria-busy={busy}
+        onChangeCapture={guard.markDirty}
+        onSubmit={(e) => void submit(e)}
+      >
         {weekdays.map((name, weekday) => {
           const row = initial.find((value) => value.weekday === weekday)
           return (
             <div className="hours-row" key={name}>
               <label className="checkbox">
                 <input
+                  disabled={busy}
                   type="checkbox"
                   name={`day-${weekday}`}
                   checked={enabled.includes(weekday)}
@@ -142,7 +147,7 @@ function HoursEditor({
               <Field label={`Mở cửa ${name}`}>
                 <input
                   name={`open-${weekday}`}
-                  disabled={!enabled.includes(weekday)}
+                  disabled={busy || !enabled.includes(weekday)}
                   pattern="(?:[01][0-9]|2[0-3]):[0-5][0-9]"
                   defaultValue={minuteTime(row?.opens_minute ?? 360)}
                   required
@@ -151,7 +156,7 @@ function HoursEditor({
               <Field label={`Đóng cửa ${name}`}>
                 <input
                   name={`close-${weekday}`}
-                  disabled={!enabled.includes(weekday)}
+                  disabled={busy || !enabled.includes(weekday)}
                   pattern="(?:(?:[01][0-9]|2[0-3]):[0-5][0-9]|24:00)"
                   defaultValue={minuteTime(row?.closes_minute ?? 1320)}
                   required
@@ -240,10 +245,15 @@ function SlotEditor({
       <p>
         {court.name} · {day}
       </p>
-      <form onChangeCapture={guard.markDirty} onSubmit={(e) => void submit(e)}>
+      <form
+        aria-busy={busy}
+        onChangeCapture={guard.markDirty}
+        onSubmit={(e) => void submit(e)}
+      >
         <div className="form-grid">
           <Field label="Bắt đầu">
             <input
+              disabled={busy}
               name="start"
               type="datetime-local"
               step={1800}
@@ -253,6 +263,7 @@ function SlotEditor({
           </Field>
           <Field label="Kết thúc">
             <input
+              disabled={busy}
               name="end"
               type="datetime-local"
               step={1800}
@@ -266,6 +277,7 @@ function SlotEditor({
           hint="Số nguyên dương; slot dài 60–240 phút, theo lưới 30 phút."
         >
           <input
+            disabled={busy}
             name="price"
             type="number"
             min={1}
@@ -279,6 +291,7 @@ function SlotEditor({
         </Field>
         <label className="checkbox">
           <input
+            disabled={busy}
             name="published"
             type="checkbox"
             defaultChecked={slot?.published ?? true}
@@ -287,6 +300,7 @@ function SlotEditor({
         </label>
         <label className="checkbox">
           <input
+            disabled={busy}
             name="blocked"
             type="checkbox"
             defaultChecked={slot?.blocked ?? false}
@@ -899,7 +913,7 @@ function DailySchedule({ court, day }: { court: Court; day: string }) {
                     key={`${row.kind}-${row.id}`}
                   >
                     <strong>
-                      {timeLabel(row.start_at)}–{timeLabel(row.end_at)}
+                      {timeRange(row.start_at, row.end_at)}
                     </strong>
                     <Badge
                       status={

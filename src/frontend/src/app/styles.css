@@ -419,6 +419,11 @@ input[type='radio'] {
 .field [aria-invalid='true'] {
   border-color: var(--cm-danger);
 }
+form[aria-busy='true'] :is(input, textarea):disabled {
+  background: var(--cm-soft);
+  color: var(--cm-muted);
+  cursor: wait;
+}
 .generic-court {
   display: flex;
   min-height: 150px;

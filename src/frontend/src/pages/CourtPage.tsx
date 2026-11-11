@@ -21,7 +21,7 @@ import {
 import { ApiError, apiRequest } from '../lib/api'
 import { useResource } from '../lib/use-resource'
 import { useSession } from '../lib/session-context'
-import { interval, localDay, money, timeLabel } from '../lib/format'
+import { interval, localDay, money, timeRange } from '../lib/format'
 import type { Availability, Booking, Court, Review, Slot } from '../lib/types'
 
 export function CourtPage() {
@@ -312,7 +312,7 @@ export function SlotsPage() {
             >
               <span>
                 <strong>
-                  {timeLabel(slot.start_at)}–{timeLabel(slot.end_at)}
+                  {timeRange(slot.start_at, slot.end_at)}
                 </strong>
                 <Badge status={slot.status} />
               </span>
@@ -412,7 +412,7 @@ export function SlotsPage() {
             {review.slots.map((slot) => (
               <div key={slot.id}>
                 <span>
-                  {timeLabel(slot.start_at)}–{timeLabel(slot.end_at)}
+                  {timeRange(slot.start_at, slot.end_at)}
                 </span>
                 <strong>{money(slot.price_vnd)}</strong>
               </div>

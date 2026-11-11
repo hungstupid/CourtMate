@@ -37,12 +37,17 @@ function ProfileForm({ profile }: { profile: Profile }) {
   }
   return (
     <form
-      onChangeCapture={guard.markDirty}
+      aria-busy={busy}
+      onChangeCapture={() => {
+        guard.markDirty()
+        setMessage('')
+      }}
       className="panel profile-form"
       onSubmit={(e) => void submit(e)}
     >
       <Field label="Tên hiển thị">
         <input
+          disabled={busy}
           name="display_name"
           maxLength={100}
           defaultValue={profile.display_name}
@@ -50,6 +55,7 @@ function ProfileForm({ profile }: { profile: Profile }) {
       </Field>
       <Field label="Tùy chọn liên hệ">
         <input
+          disabled={busy}
           name="contact_preferences"
           maxLength={500}
           defaultValue={profile.contact_preferences}
