@@ -49,6 +49,15 @@ async function createCourt(page: Page, name: string) {
   }
   await page.getByRole('button', { name: 'Lưu giờ hoạt động' }).click()
   await expect(page.getByRole('dialog')).toHaveCount(0)
+  await page.reload()
+  await page.getByRole('button', { name: 'Giờ hoạt động', exact: true }).click()
+  await expect(page.getByLabel('Mở cửa Thứ Hai', { exact: true })).toHaveValue(
+    '00:00'
+  )
+  await expect(
+    page.getByLabel('Đóng cửa Chủ Nhật', { exact: true })
+  ).toHaveValue('24:00')
+  await page.keyboard.press('Escape')
   return courtId
 }
 async function publish(page: Page) {
@@ -70,6 +79,8 @@ async function publish(page: Page) {
   await expect(
     page.getByRole('heading', { name: 'Xem trước khi công bố' })
   ).toHaveCount(0)
+  await expect(page.locator('.calendar-row.slot')).toHaveCount(8)
+  await page.reload()
   await expect(page.locator('.calendar-row.slot')).toHaveCount(8)
 }
 
@@ -172,6 +183,11 @@ test('real Owner → discovery → multi-slot booking → Open Play → close �
     ).toBeVisible()
     const bookingUrl = player.page.url()
     const bookingId = bookingUrl.split('/').at(-1)!
+    await player.page.reload()
+    await expect(player.page.locator('.badge-confirmed')).toContainText(
+      'Đã xác nhận'
+    )
+    await expect(player.page.locator('.total')).toContainText('240.000')
     await player.page
       .getByRole('button', { name: 'Tạo phòng Open Play', exact: true })
       .click()
@@ -181,6 +197,10 @@ test('real Owner → discovery → multi-slot booking → Open Play → close �
       .click()
     await expect(player.page).toHaveURL(/\/rooms\/[a-f0-9-]+$/)
     const roomUrl = player.page.url()
+    await player.page.reload()
+    await expect(
+      player.page.getByText('1 / 16 thành viên', { exact: true })
+    ).toBeVisible()
     await member.page.goto(roomUrl)
     const join = async () => {
       await member.page
@@ -189,6 +209,10 @@ test('real Owner → discovery → multi-slot booking → Open Play → close �
       await member.page
         .getByRole('button', { name: 'Xác nhận tham gia', exact: true })
         .click()
+      await expect(
+        member.page.getByText('2 / 16 thành viên', { exact: true })
+      ).toBeVisible()
+      await member.page.reload()
       await expect(
         member.page.getByText('2 / 16 thành viên', { exact: true })
       ).toBeVisible()
@@ -212,6 +236,10 @@ test('real Owner → discovery → multi-slot booking → Open Play → close �
     await expect(
       member.page.getByText('1 / 16 thành viên', { exact: true })
     ).toBeVisible()
+    await member.page.reload()
+    await expect(
+      member.page.getByText('1 / 16 thành viên', { exact: true })
+    ).toBeVisible()
     await join()
     await player.page.reload()
     await player.page
@@ -226,6 +254,10 @@ test('real Owner → discovery → multi-slot booking → Open Play → close �
     await expect(
       player.page.getByText('2 / 16 thành viên', { exact: true })
     ).toBeVisible()
+    await player.page.reload()
+    await expect(
+      player.page.getByRole('button', { name: 'Đóng phòng', exact: true })
+    ).toBeDisabled()
     await member.page.reload()
     await expect(
       member.page.getByRole('button', { name: 'Rời phòng', exact: true })
@@ -247,6 +279,10 @@ test('real Owner → discovery → multi-slot booking → Open Play → close �
     await player.page
       .getByRole('button', { name: 'Xác nhận hủy booking', exact: true })
       .click()
+    await expect(player.page.locator('.badge-cancelled')).toContainText(
+      'Đã hủy'
+    )
+    await player.page.reload()
     await expect(player.page.locator('.badge-cancelled')).toContainText(
       'Đã hủy'
     )
@@ -287,6 +323,8 @@ test('Owner automatic-offer confirmation, cancellation, profile and maintenance'
       .getByRole('button', { name: 'Lưu lịch tự động', exact: true })
       .click()
     await expect(owner.page.locator('.offer-record')).toContainText('Đã hẹn')
+    await owner.page.reload()
+    await expect(owner.page.locator('.offer-record')).toContainText('Đã hẹn')
     await owner.page
       .getByRole('button', { name: 'Hủy lịch ưu đãi', exact: true })
       .click()
@@ -300,6 +338,8 @@ test('Owner automatic-offer confirmation, cancellation, profile and maintenance'
     await owner.page
       .getByRole('button', { name: 'Xác nhận hủy lịch', exact: true })
       .click()
+    await expect(owner.page.locator('.offer-record')).toContainText('Đã hủy')
+    await owner.page.reload()
     await expect(owner.page.locator('.offer-record')).toContainText('Đã hủy')
     await owner.page.goto('/profile')
     await owner.page
@@ -326,6 +366,8 @@ test('Owner automatic-offer confirmation, cancellation, profile and maintenance'
     await owner.page
       .getByRole('button', { name: 'Xác nhận bảo trì', exact: true })
       .click()
+    await expect(owner.page.locator('.calendar-row.maintenance')).toHaveCount(1)
+    await owner.page.reload()
     await expect(owner.page.locator('.calendar-row.maintenance')).toHaveCount(1)
     await expect(
       owner.page.locator('.calendar-row.slot .badge-blocked')

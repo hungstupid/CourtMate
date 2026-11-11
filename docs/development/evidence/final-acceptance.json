@@ -1,0 +1,134 @@
+{
+  "verifiedAtUtc": "2026-11-11T02:07:31.108280+00:00",
+  "baselineGit": "d74b78d1dd4ceeb14119d5853cbfb0f6f5f7d0ca",
+  "scope": "Final acceptance; real local PostgreSQL/Firebase Auth Emulator, live external Maps, cloud read-only. No production business writes.",
+  "coverage": {
+    "frDone": 49,
+    "frTotal": 49,
+    "acDone": 106,
+    "acTotal": 106,
+    "businessRules": 10,
+    "useCases": 17,
+    "nfr05": "PARTIAL"
+  },
+  "localChecks": {
+    "backendPytest": {
+      "passed": 239
+    },
+    "ruffCheck": "PASS",
+    "ruffFormatCheck": "PASS",
+    "lockedUvSync": "PASS",
+    "migrations": "Local _test DB only: upgrade head twice + schema drift check PASS",
+    "npmCi": "PASS",
+    "frontendLint": "PASS",
+    "frontendTypecheck": "PASS",
+    "frontendBuild": "PASS",
+    "playwright": {
+      "passed": 42,
+      "command": "COURTMATE_VERIFY_MAPS=1 BROWSER_CHANNEL=chrome npm run test:e2e",
+      "externalMapsIncluded": 1,
+      "regularCiExpected": {
+        "passed": 41,
+        "skippedExternal": 1
+      }
+    },
+    "responsiveWidths": [
+      375,
+      768,
+      1280
+    ],
+    "livenessSmoke": "20 localhost requests / 5 workers PASS; not a load/NFR claim",
+    "repositoryGuides": "20 guides present; common secret-filename check PASS"
+  },
+  "maps": {
+    "status": "DONE for tested scenario",
+    "permission": "Actual Chromium geolocation DENIED via CDP",
+    "destination": "Chợ Bến Thành, Thành phố Hồ Chí Minh",
+    "explicitOrigin": "Thảo Cầm Viên Sài Gòn",
+    "provider": "Real Google Maps embed and maps/dir URLs; no intercepted success response/API key/new service",
+    "automatedEvidence": "Provider map-data text, denied permission, resolved origin/destination inputs and route km; prior regression disallows whitespace origin",
+    "visualEvidence": "Reviewed real iframe pin/tiles and route screenshot, approximately 2.2 km shown at capture; Google paints narrow-frame labels outside HTML text. Not a universal geocoding/traffic guarantee.",
+    "faultInjection": "Blocked iframe, delayed document, blank HTML; retained address/origin, retry, links, booking access and keyboard focus. Cross-origin load is not treated as verified content.",
+    "screenshots": [
+      {
+        "name": "courtmate-acceptance-map.png",
+        "sha256": "4192907af21abdc4464d58958019a1bcae9853c75cc36e2117d23fa4ca4fa61c",
+        "storage": "Local temporary visual evidence; binary not committed"
+      },
+      {
+        "name": "courtmate-acceptance-route.png",
+        "sha256": "96e40b0de3e3122ccad67e1c26006a6732fd67a742d64fbbb90570dae8ccc3d8",
+        "storage": "Local temporary visual evidence; binary not committed"
+      }
+    ]
+  },
+  "accessibility": {
+    "status": "PARTIAL",
+    "newDefect": "Generic sport fallback text 2:1 against forest background; white text + centered layout restored; expanded Axe/geometry PASS at all three widths",
+    "automatedScope": "WCAG2A/AA + WCAG2.1AA Axe, keyboard retry/focus, existing modal Escape/inert/focus, validation and draft tests retained",
+    "notClaimed": [
+      "Human VoiceOver/NVDA task execution",
+      "Exhaustive composited color/focus manual review",
+      "Real-device/cross-browser matrix",
+      "New Lighthouse run; historical 26 snapshots retained"
+    ]
+  },
+  "pa2": {
+    "frames": 179,
+    "fullReactionFingerprintsUnchanged": true,
+    "serializedLengthsUnchanged": true,
+    "actions": 4367,
+    "conditionalActions": 133,
+    "missingFrames": [],
+    "unresolvedDestinations": [],
+    "writes": 0,
+    "prototypePlayback": "UNVERIFIED",
+    "manifestSha256": "056abab298755565fba05527fdc2656ed3f0f9f0f68beaf32c65158cf972a4bd",
+    "submittedPdfSha256": "058dc87addbd5696348d3e76e6d403ad638875afd24112a0c6508ef09c3d4c9f"
+  },
+  "cloudReadOnly": {
+    "frontendPublicLogin": [
+      375,
+      768,
+      1280
+    ],
+    "frontendPageErrors": [],
+    "deployedFirebaseProjectMatches": true,
+    "deployedApiOriginMatches": true,
+    "renderHealth": 200,
+    "renderReady": 200,
+    "openapiPaths": 35,
+    "allowedCorsOrigin": "https://courtmate-court-mate.vercel.app",
+    "unauthenticatedBookings": 401,
+    "neonMigrationHead": "0006_room_closure_reason",
+    "neonBranches": {
+      "main": "ready primary",
+      "development": "archived"
+    },
+    "firebaseWebAppMetadata": "PASS via authenticated Firebase CLI"
+  },
+  "productionWriteTests": {
+    "status": "BLOCKED",
+    "reason": "No approved isolated cloud application/auth environment or cloud test credentials identified; local guarded alternative used.",
+    "notRun": [
+      "Production registration",
+      "Production Owner court/hours/slots/offers/maintenance writes",
+      "Production Player booking/cancellation",
+      "Production room create/join/leave/close",
+      "Production write/reload persistence"
+    ]
+  },
+  "renderInvestigation": {
+    "branch": "chore/project-bootstrap",
+    "rootDir": "src/backend",
+    "autoDeploy": "yes",
+    "autoDeployTrigger": "checksPass",
+    "historicalBackendCommit": "3d49b38ef648bcbae5e3d5e88f9b38ca767fff90",
+    "historicalBackendCommitCheckRuns": 0,
+    "subsequentCheckedDocsHead": "c1e33e4b85bd63e7655a2552bb63d8d7ddf0b9b1",
+    "conclusion": "Consistent with filtered/unchecked-commit gap; no conclusive historical webhook diagnosis. Current relevant backend README change provides a fresh CI-gated deployment observation.",
+    "configurationChanged": false,
+    "postPush": "PENDING"
+  },
+  "remoteVerification": "PENDING after current source commit/push"
+}

@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { CourtMap } from '../components/CourtMap'
 import {
   Link,
   useLocation,
@@ -92,13 +93,7 @@ export function CourtPage() {
           <details onToggle={(e) => setShowMap(e.currentTarget.open)}>
             <summary>Vị trí & chỉ đường</summary>
             {showMap && (
-              <iframe
-                className="court-map"
-                title={`Bản đồ ${c.name}`}
-                src={`https://maps.google.com/maps?q=${encodeURIComponent(c.address)}&output=embed`}
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-              />
+              <CourtMap key={c.id} name={c.name} address={c.address} />
             )}
             <p className="muted">
               {c.address}. Bạn có thể nhập điểm đi; không cần quyền GPS.

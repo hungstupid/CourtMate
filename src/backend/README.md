@@ -69,7 +69,7 @@ uv run ruff format --check .
 
 `uv sync` installs the locked runtime and development dependencies into the local `.venv/`. `--locked` additionally rejects a stale lockfile. Commit `uv.lock` alongside dependency changes made with `uv add` or `uv add --dev`. There is no parallel requirements.txt workflow.
 
-The suite currently has 209 tests covering foundation, strict court/slot validation, whole-booking snapshots/cancellation, Open Play, real PostgreSQL contention and additive migration upgrades, plus Auth Emulator → HTTP → committed PostgreSQL integration. Start those isolated services using the development guide; TEST_DATABASE_URL must reference a separate local database ending `_test`. No cloud credentials or demo data are used. HTTPX2 was added for current Starlette TestClient support while retaining HTTPX for smoke tooling.
+The suite currently has 239 tests covering foundation, strict court/slot validation, whole-booking snapshots/cancellation, Open Play, real PostgreSQL contention and additive migration upgrades, plus Auth Emulator → HTTP → committed PostgreSQL integration. Start those isolated services using the development guide; TEST_DATABASE_URL must reference a separate local database ending `_test`. No cloud credentials or demo data are used. HTTPX2 was added for current Starlette TestClient support while retaining HTTPX for smoke tooling.
 
 To apply Ruff formatting before review, run `uv run ruff format .`.
 
@@ -91,3 +91,9 @@ To apply Ruff formatting before review, run `uv run ruff format .`.
 Run commands from this directory so `app.main:app` imports correctly. Use the existing [contribution rules](../../CONTRIBUTING.md) for further changes; this authorized implementation draft remains on `chore/project-bootstrap` and must not be merged automatically.
 
 November release verification: **230 pytest**, **12 Playwright**, frontend lint/typecheck/build, backend Ruff and additive migration/drift checks passed locally. Lighthouse accessibility 100 on the three documented public pages; local 30-VU k6 thresholds passed. Exact scope, pending manual checks and CI/deployment evidence are in [the release report](../../docs/development/frontend-release-report.md).
+
+## Existing Render deployment
+
+The service tracks `chore/project-bootstrap`, with root directory `src/backend` and `autoDeployTrigger: checksPass`. Frontend-only and root documentation changes normally do not trigger this backend service. [Render's monorepo rules](https://render.com/docs/monorepo-support) filter changes by root directory; [After CI Checks Pass](https://render.com/docs/deploys#integrating-with-ci) also requires at least one successful check on the relevant commit. A green check on a different commit does not prove a deploy occurred.
+
+Push each deployable backend commit with its checks, then inspect the service's deploy events and `/health` `X-CourtMate-Commit` header. Compare the frontend's `/version.json` separately. Do not change to On Commit to bypass failed/missing checks, and do not label a manual deployment as automatic. CI uses isolated PostgreSQL/Firebase Emulator; passing CI does not authorize production business-data writes. The acceptance report records current SHAs, actual trigger and any unresolved event-delivery gap.
