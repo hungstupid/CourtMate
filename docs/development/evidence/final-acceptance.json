@@ -1,5 +1,5 @@
 {
-  "verifiedAtUtc": "2026-11-11T02:07:31.108280+00:00",
+  "verifiedAtUtc": "2026-11-11T02:15:35.951279+00:00",
   "baselineGit": "d74b78d1dd4ceeb14119d5853cbfb0f6f5f7d0ca",
   "scope": "Final acceptance; real local PostgreSQL/Firebase Auth Emulator, live external Maps, cloud read-only. No production business writes.",
   "coverage": {
@@ -27,7 +27,7 @@
       "passed": 42,
       "command": "COURTMATE_VERIFY_MAPS=1 BROWSER_CHANNEL=chrome npm run test:e2e",
       "externalMapsIncluded": 1,
-      "regularCiExpected": {
+      "regularCiActual": {
         "passed": 41,
         "skippedExternal": 1
       }
@@ -105,7 +105,20 @@
       "main": "ready primary",
       "development": "archived"
     },
-    "firebaseWebAppMetadata": "PASS via authenticated Firebase CLI"
+    "firebaseWebAppMetadata": "PASS via authenticated Firebase CLI",
+    "postDeployPublicAxe": {
+      "source": "5e53926733d07a3927d9f8623d9c7b30fdeb4daa",
+      "widths": [
+        375,
+        768,
+        1280
+      ],
+      "violations": [],
+      "pageOverflow": false,
+      "pageErrors": [],
+      "loginVisible": true
+    },
+    "postDeployCourtMapRecovery": "NOT RUN: production public discovery has no court link. Local recovery/live-provider checks are separate evidence; no production court created."
   },
   "productionWriteTests": {
     "status": "BLOCKED",
@@ -128,7 +141,47 @@
     "subsequentCheckedDocsHead": "c1e33e4b85bd63e7655a2552bb63d8d7ddf0b9b1",
     "conclusion": "Consistent with filtered/unchecked-commit gap; no conclusive historical webhook diagnosis. Current relevant backend README change provides a fresh CI-gated deployment observation.",
     "configurationChanged": false,
-    "postPush": "PENDING"
+    "postPush": {
+      "source": "5e53926733d07a3927d9f8623d9c7b30fdeb4daa",
+      "status": "LIVE",
+      "deployId": "dep-dbpstvoae00c73fgkpkg",
+      "trigger": "new_commit",
+      "ciIntegrationCompletedAt": "2026-11-11T02:12:11Z",
+      "deployStartedAt": "2026-11-11T02:12:15.524259Z",
+      "deployFinishedAt": "2026-11-11T02:13:31.358149Z",
+      "manualTriggerUsed": false,
+      "healthHeaderMatches": true,
+      "result": "Fresh CI-gated automatic deployment verified without configuration/secret/resource changes. Historical missed-commit cause remains a supported hypothesis, not proven webhook diagnosis."
+    }
   },
-  "remoteVerification": "PENDING after current source commit/push"
+  "remoteVerification": {
+    "snapshotAtUtc": "2026-11-11T02:15:35.951279+00:00",
+    "codeCommit": "5e53926733d07a3927d9f8623d9c7b30fdeb4daa",
+    "githubActions": {
+      "id": 42943912403,
+      "url": "https://github.com/hungstupid/CourtMate/actions/runs/42943912403",
+      "conclusion": "SUCCESS",
+      "backendPytestPassed": 239,
+      "playwrightPassed": 41,
+      "externalMapsSkipped": 1,
+      "jobs": [
+        "frontend-push",
+        "integration-push"
+      ]
+    },
+    "vercel": {
+      "id": "dpl_AApWC8MzT3D5PpkhZvBD5o1Xp58C",
+      "state": "READY",
+      "versionJsonCommit": "5e53926733d07a3927d9f8623d9c7b30fdeb4daa"
+    },
+    "render": {
+      "id": "dep-dbpstvoae00c73fgkpkg",
+      "state": "LIVE",
+      "trigger": "new_commit",
+      "healthHeaderCommit": "5e53926733d07a3927d9f8623d9c7b30fdeb4daa",
+      "readyStatus": 200
+    },
+    "note": "Snapshot of acceptance source; subsequent evidence-only Git commits do not alter the verified application."
+  },
+  "codeCommit": "5e53926733d07a3927d9f8623d9c7b30fdeb4daa"
 }
