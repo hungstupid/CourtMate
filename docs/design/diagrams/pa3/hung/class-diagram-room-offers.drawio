@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='utf-8'?>
+<mxfile host="app.diagrams.net" modified="2026-11-13T14:00:00.000Z" agent="CourtMate PA3" version="24.0.0" type="device">
+  <diagram name="4.2b Rooms and offers entity classes" id="court-mate-pa3-class-diagra">
+    <mxGraphModel dx="1340" dy="860" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1420" pageHeight="835" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="v2" value="User&lt;br&gt;+ id: UUID; role: Role" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ECF7F2;strokeColor=#145D49;fontColor=#133E34;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="75" y="80" width="300" height="82" as="geometry" />
+        </mxCell>
+        <mxCell id="v3" value="Booking&lt;br&gt;+ id: UUID; status: BookingStatus" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ECF7F2;strokeColor=#145D49;fontColor=#133E34;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="470" y="80" width="350" height="82" as="geometry" />
+        </mxCell>
+        <mxCell id="v4" value="Slot&lt;br&gt;+ id: UUID; price_vnd: Money" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ECF7F2;strokeColor=#145D49;fontColor=#133E34;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="930" y="80" width="350" height="82" as="geometry" />
+        </mxCell>
+        <mxCell id="v5" value="Room&lt;br&gt;+ id, booking_id, organizer_id: UUID&lt;br&gt;+ capacity: int; closed: bool&lt;br&gt;+ closed_reason: string&lt;br&gt;/ status: OPEN | FULL | CLOSED" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ECF7F2;strokeColor=#145D49;fontColor=#133E34;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="445" y="330" width="375" height="170" as="geometry" />
+        </mxCell>
+        <mxCell id="v6" value="RoomMember&lt;br&gt;+ room_id, player_id: UUID&lt;br&gt;+ joined_at: Instant" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ECF7F2;strokeColor=#145D49;fontColor=#133E34;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="95" y="610" width="335" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="v7" value="SlotOffer&lt;br&gt;+ id, slot_id: UUID&lt;br&gt;+ mode: manual | automatic&lt;br&gt;+ status: OfferStatus&lt;br&gt;+ price_vnd: Money; lead_hours: Decimal" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ECF7F2;strokeColor=#145D49;fontColor=#133E34;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="935" y="335" width="405" height="155" as="geometry" />
+        </mxCell>
+        <mxCell id="e8" value="1 / 0..1 source booking" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#145D49;fontSize=12;" edge="1" parent="1" source="v3" target="v5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e9" value="1 organizer / 0..*" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#145D49;fontSize=12;" edge="1" parent="1" source="v2" target="v5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e10" value="1 player / 0..*" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#145D49;fontSize=12;" edge="1" parent="1" source="v2" target="v6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e11" value="1 room / 1..* members" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#145D49;fontSize=12;" edge="1" parent="1" source="v5" target="v6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e12" value="1 slot / 0..* offers" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#145D49;fontSize=12;" edge="1" parent="1" source="v4" target="v7">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
