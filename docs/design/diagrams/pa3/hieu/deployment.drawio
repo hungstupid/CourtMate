@@ -1,0 +1,108 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="Page-1" id="2JZz4hJNBb8oq3adZBTR">
+    <mxGraphModel grid="1" page="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <UserObject label="" mermaidData="{&#xa;  &quot;data&quot;: &quot;%%{init: {&#39;theme&#39;: &#39;base&#39;, &#39;themeVariables&#39;: { &#39;fontSize&#39;: &#39;16px&#39;, &#39;fontFamily&#39;: &#39;Arial&#39; }, &#39;flowchart&#39;: { &#39;nodeSpacing&#39;: 80, &#39;rankSpacing&#39;: 100, &#39;curve&#39;: &#39;basis&#39; }}}%%\nflowchart TB\n  subgraph client [\&quot;&lt;b&gt;Client Device (Desktop / Mobile OS)&lt;/b&gt;\&quot;]\n    spa[\&quot;&lt;b&gt;Web Browser — CourtMate SPA&lt;/b&gt;&lt;br/&gt;[React, TypeScript, Vite]&lt;br/&gt;Responsive UI across 375px, 768px, and 1280px viewports\&quot;]\n  end\n\n  subgraph vercel [\&quot;&lt;b&gt;Vercel Cloud Platform (Frontend Edge Network)&lt;/b&gt;\&quot;]\n    cdn[\&quot;&lt;b&gt;Static Asset Host&lt;/b&gt;&lt;br/&gt;[Vercel Global CDN]&lt;br/&gt;Serves compiled HTML, CSS, and JS bundle\&quot;]\n  end\n\n  subgraph gcp [\&quot;&lt;b&gt;Google Cloud Platform (External Identity Node)&lt;/b&gt;\&quot;]\n    firebase[\&quot;&lt;b&gt;Firebase Authentication&lt;/b&gt;&lt;br/&gt;[External Identity Service]&lt;br/&gt;Manages email/password sign-in, issues JWTs &amp; JWKS keys\&quot;]\n  end\n\n  subgraph render [\&quot;&lt;b&gt;Render Cloud Platform (Application Compute Node)&lt;/b&gt;\&quot;]\n    api[\&quot;&lt;b&gt;FastAPI Backend Service&lt;/b&gt;&lt;br/&gt;[Python 3, FastAPI, Uvicorn ASGI]&lt;br/&gt;Enforces server clock (UTC+7), local JWT check,&lt;br/&gt;RBAC/ownership, and transactional services\&quot;]\n  end\n\n  subgraph neon [\&quot;&lt;b&gt;Neon Serverless Cloud (Database Cloud Node)&lt;/b&gt;\&quot;]\n    db[(\&quot;&lt;b&gt;CourtMate Relational Database&lt;/b&gt;&lt;br/&gt;[PostgreSQL 17 Instance]&lt;br/&gt;Persists 11 tables, indexes, and row-level locks\&quot;)]\n  end\n\n  %% Connections\n  spa --&gt;|\&quot;1. Loads static SPA bundle [HTTPS / TLS 1.3]\&quot;| cdn\n  spa --&gt;|\&quot;2. Email/password sign-in -&gt; ID token (JWT) [HTTPS]\&quot;| firebase\n  spa --&gt;|\&quot;3. REST API requests + Bearer JWT [HTTPS / JSON Port 443]\&quot;| api\n  api --&gt;|\&quot;4. Fetches public JWKS keys to verify JWT [HTTPS Port 443]\&quot;| firebase\n  api --&gt;|\&quot;5. Executes ACID transactions &amp; row locks [TLS / TCP Port 5432]\&quot;| db\n\n  %% Styling matching your image\n  classDef blueActor fill:#0044FF,stroke:#002DB3,stroke-width:2px,color:#FFFFFF,rx:12,ry:12;\n  classDef compBox fill:#1168BD,stroke:#0B4884,stroke-width:2px,color:#FFFFFF,rx:10,ry:10;\n  classDef darkBox fill:#08427B,stroke:#052E56,stroke-width:2px,color:#FFFFFF,rx:10,ry:10;\n  classDef extBox fill:#8C8C8C,stroke:#666666,stroke-width:2px,color:#FFFFFF,rx:10,ry:10;\n  classDef nodeBoundary fill:#F4F8FB,stroke:#0B4884,stroke-width:2px,stroke-dasharray: 5 5,color:#08427B;\n\n  class spa blueActor;\n  class cdn,api compBox;\n  class db darkBox;\n  class firebase extBox;\n  class client,vercel,gcp,render,neon nodeBoundary;\n\n  linkStyle default stroke:#555555,stroke-width:2px,color:#0000FF;&quot;,&#xa;  &quot;config&quot;: null,&#xa;  &quot;version&quot;: &quot;12&quot;&#xa;}" id="V1EOGs5bZ6Y0wQE25J3v-18">
+          <mxCell connectable="0" parent="1" style="group;transparentBounds=1;editIcon=1;lockedGroup=0;groupPadding=10;" vertex="1">
+            <mxGeometry as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="&lt;b&gt;Neon Serverless Cloud (Database Cloud Node)&lt;/b&gt;" mermaidId="n:neon" mermaidBaseStyle="html=1;whiteSpace=nowrap;strokeWidth=1;verticalAlign=top;fillColor=light-dark(#ffffde,#1f2020);strokeColor=light-dark(#aaaa33,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;" mermaidBaseValue="&lt;b&gt;Neon Serverless Cloud (Database Cloud Node)&lt;/b&gt;" id="V1EOGs5bZ6Y0wQE25J3v-19">
+          <mxCell parent="V1EOGs5bZ6Y0wQE25J3v-18" style="html=1;whiteSpace=nowrap;strokeWidth=1;verticalAlign=top;fillColor=light-dark(#ffffde,#1f2020);strokeColor=light-dark(#aaaa33,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;" vertex="1">
+            <mxGeometry height="299" width="380" x="1150" y="1000" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="&lt;b&gt;Render Cloud Platform (Application Compute Node)&lt;/b&gt;" mermaidId="n:render" mermaidBaseStyle="html=1;whiteSpace=nowrap;strokeWidth=1;verticalAlign=top;fillColor=light-dark(#ffffde,#1f2020);strokeColor=light-dark(#aaaa33,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;" mermaidBaseValue="&lt;b&gt;Render Cloud Platform (Application Compute Node)&lt;/b&gt;" id="V1EOGs5bZ6Y0wQE25J3v-21">
+          <mxCell parent="V1EOGs5bZ6Y0wQE25J3v-18" style="html=1;whiteSpace=nowrap;strokeWidth=1;verticalAlign=top;fillColor=light-dark(#ffffde,#1f2020);strokeColor=light-dark(#aaaa33,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;" vertex="1">
+            <mxGeometry height="376.5" width="425" x="850" y="476.25" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <mxCell id="V1EOGs5bZ6Y0wQE25J3v-37" parent="V1EOGs5bZ6Y0wQE25J3v-21" style="whiteSpace=wrap;html=1;aspect=fixed;shadow=1;strokeColor=#0B4884;strokeWidth=2;align=center;verticalAlign=middle;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowColor=#000000;shadowOpacity=6;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;fontColor=#FFFFFF;fillColor=#1168BD;" value="&lt;b&gt;FastAPI Backend Service&lt;/b&gt;&lt;br&gt;[Python 3, FastAPI, Uvicorn ASGI]&lt;br&gt;Enforces server clock (UTC+7), local JWT check,&lt;br&gt;RBAC/ownership, and transactional services" vertex="1">
+          <mxGeometry height="216.3793103448276" width="216.3793103448276" x="104.30772727272728" y="80.05758620689654" as="geometry" />
+        </mxCell>
+        <UserObject label="&lt;b&gt;Google Cloud Platform (External Identity Node)&lt;/b&gt;" mermaidId="n:gcp" mermaidBaseStyle="html=1;whiteSpace=nowrap;strokeWidth=1;verticalAlign=top;fillColor=light-dark(#ffffde,#1f2020);strokeColor=light-dark(#aaaa33,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;" mermaidBaseValue="&lt;b&gt;Google Cloud Platform (External Identity Node)&lt;/b&gt;" id="V1EOGs5bZ6Y0wQE25J3v-23">
+          <mxCell parent="V1EOGs5bZ6Y0wQE25J3v-18" style="html=1;whiteSpace=nowrap;strokeWidth=1;verticalAlign=top;fillColor=light-dark(#ffffde,#1f2020);strokeColor=light-dark(#aaaa33,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;" vertex="1">
+            <mxGeometry height="219.02" width="391" x="689" y="1052" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="&lt;b&gt;Vercel Cloud Platform (Frontend Edge Network)&lt;/b&gt;" mermaidId="n:vercel" mermaidBaseStyle="html=1;whiteSpace=nowrap;strokeWidth=1;verticalAlign=top;fillColor=light-dark(#ffffde,#1f2020);strokeColor=light-dark(#aaaa33,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;" mermaidBaseValue="&lt;b&gt;Vercel Cloud Platform (Frontend Edge Network)&lt;/b&gt;" id="V1EOGs5bZ6Y0wQE25J3v-25">
+          <mxCell parent="V1EOGs5bZ6Y0wQE25J3v-18" style="html=1;whiteSpace=nowrap;strokeWidth=1;verticalAlign=top;fillColor=light-dark(#ffffde,#1f2020);strokeColor=light-dark(#aaaa33,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;" vertex="1">
+            <mxGeometry height="267" width="412" x="210" y="493" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="&lt;b&gt;Client Device (Desktop / Mobile OS)&lt;/b&gt;" mermaidId="n:client" mermaidBaseStyle="html=1;whiteSpace=nowrap;strokeWidth=1;verticalAlign=top;fillColor=light-dark(#ffffde,#1f2020);strokeColor=light-dark(#aaaa33,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;" mermaidBaseValue="&lt;b&gt;Client Device (Desktop / Mobile OS)&lt;/b&gt;" id="V1EOGs5bZ6Y0wQE25J3v-27">
+          <mxCell parent="V1EOGs5bZ6Y0wQE25J3v-18" style="html=1;whiteSpace=nowrap;strokeWidth=1;verticalAlign=top;fillColor=light-dark(#ffffde,#1f2020);strokeColor=light-dark(#aaaa33,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;" vertex="1">
+            <mxGeometry height="339" width="327" x="571" y="30" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <mxCell id="V1EOGs5bZ6Y0wQE25J3v-38" parent="V1EOGs5bZ6Y0wQE25J3v-27" style="whiteSpace=wrap;html=1;aspect=fixed;shadow=1;strokeColor=#002DB3;strokeWidth=2;align=center;verticalAlign=middle;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowColor=#000000;shadowOpacity=6;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;fontColor=#FFFFFF;fillColor=#0044FF;" value="&lt;b&gt;Web Browser — CourtMate SPA&lt;/b&gt;&lt;br&gt;[React, TypeScript, Vite]&lt;br&gt;Responsive UI across 375px, 768px, and 1280px viewports" vertex="1">
+          <mxGeometry height="200" width="200" x="63.5" y="69.5" as="geometry" />
+        </mxCell>
+        <UserObject label="1. Loads static SPA bundle [HTTPS / TLS 1.3]" mermaidId="e:spa-&gt;cdn#0" mermaidBaseStyle="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=8;strokeColor=#555555;strokeWidth=2;fontColor=#0000FF;jumpStyle=arc;jumpSize=12;html=1;fontSize=16;labelBackgroundColor=light-dark(#E8E8E88D,#2a2a2a8D);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;exitX=0.29;exitY=1;entryX=0.5;entryY=0;targetPerimeterSpacing=4;" mermaidBaseValue="1. Loads static SPA bundle [HTTPS / TLS 1.3]" id="V1EOGs5bZ6Y0wQE25J3v-29">
+          <mxCell edge="1" parent="V1EOGs5bZ6Y0wQE25J3v-18" source="V1EOGs5bZ6Y0wQE25J3v-38" style="edgeStyle=orthogonalEdgeStyle;rounded=1;startArrow=none;endArrow=block;endSize=8;strokeColor=#555555;strokeWidth=2;fontColor=#0000FF;jumpStyle=arc;jumpSize=12;html=1;fontSize=16;labelBackgroundColor=light-dark(#E8E8E88D,#2a2a2a8D);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;exitX=0.25;exitY=1;entryX=0.5;entryY=0;targetPerimeterSpacing=4;entryDx=0;entryDy=0;exitDx=0;exitDy=0;" target="V1EOGs5bZ6Y0wQE25J3v-36">
+            <mxGeometry relative="1" x="0.165" y="-8" as="geometry">
+              <mxPoint as="offset" />
+              <mxPoint x="639.0800000000004" y="344.9999999999998" as="sourcePoint" />
+              <mxPoint x="347" y="544.0000000000002" as="targetPoint" />
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="2. Email/password sign-in -&gt; ID token (JWT) [HTTPS]" mermaidId="e:spa-&gt;firebase#0" mermaidBaseStyle="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=8;strokeColor=#555555;strokeWidth=2;fontColor=#0000FF;jumpStyle=arc;jumpSize=12;html=1;fontSize=16;labelBackgroundColor=light-dark(#E8E8E88D,#2a2a2a8D);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;exitX=0.5;exitY=1;entryX=0.36;entryY=0;targetPerimeterSpacing=4;" mermaidBaseValue="2. Email/password sign-in -&gt; ID token (JWT) [HTTPS]" id="V1EOGs5bZ6Y0wQE25J3v-30">
+          <mxCell edge="1" parent="V1EOGs5bZ6Y0wQE25J3v-18" source="V1EOGs5bZ6Y0wQE25J3v-38" style="edgeStyle=orthogonalEdgeStyle;rounded=1;startArrow=none;endArrow=block;endSize=8;strokeColor=#555555;strokeWidth=2;fontColor=#0000FF;jumpStyle=arc;jumpSize=12;html=1;fontSize=16;labelBackgroundColor=light-dark(#E8E8E88D,#2a2a2a8D);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;entryX=0;entryY=0.5;targetPerimeterSpacing=4;entryDx=0;entryDy=0;" target="V1EOGs5bZ6Y0wQE25J3v-34">
+            <mxGeometry relative="1" x="0.2492" y="-21" as="geometry">
+              <mxPoint as="offset" />
+              <mxPoint x="671" y="345" as="sourcePoint" />
+              <mxPoint x="836.1200000000003" y="1103" as="targetPoint" />
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="3. REST API requests + Bearer JWT [HTTPS / JSON Port 443]" mermaidId="e:spa-&gt;api#0" mermaidBaseStyle="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=8;strokeColor=#555555;strokeWidth=2;fontColor=#0000FF;jumpStyle=arc;jumpSize=12;html=1;fontSize=16;labelBackgroundColor=light-dark(#E8E8E88D,#2a2a2a8D);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;exitX=0.71;exitY=1;entryX=0.5;entryY=0;targetPerimeterSpacing=4;" mermaidBaseValue="3. REST API requests + Bearer JWT [HTTPS / JSON Port 443]" id="V1EOGs5bZ6Y0wQE25J3v-31">
+          <mxCell edge="1" parent="V1EOGs5bZ6Y0wQE25J3v-18" source="V1EOGs5bZ6Y0wQE25J3v-38" style="edgeStyle=orthogonalEdgeStyle;rounded=1;startArrow=none;endArrow=block;endSize=8;strokeColor=#555555;strokeWidth=2;fontColor=#0000FF;jumpStyle=arc;jumpSize=12;html=1;fontSize=16;labelBackgroundColor=light-dark(#E8E8E88D,#2a2a2a8D);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;exitX=0.75;exitY=1;targetPerimeterSpacing=4;exitDx=0;exitDy=0;" target="V1EOGs5bZ6Y0wQE25J3v-37">
+            <mxGeometry relative="1" x="0.5218" y="-2" as="geometry">
+              <mxPoint as="offset" />
+              <mxPoint x="702.9200000000005" y="344.9999999999998" as="sourcePoint" />
+              <mxPoint x="935" y="504.5" as="targetPoint" />
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="4. Fetches public JWKS keys to verify JWT [HTTPS Port 443]" mermaidId="e:api-&gt;firebase#0" mermaidBaseStyle="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=8;strokeColor=#555555;strokeWidth=2;fontColor=#0000FF;jumpStyle=arc;jumpSize=12;html=1;fontSize=16;labelBackgroundColor=light-dark(#E8E8E88D,#2a2a2a8D);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;exitX=0.36;exitY=1;entryX=0.64;entryY=0;targetPerimeterSpacing=4;" mermaidBaseValue="4. Fetches public JWKS keys to verify JWT [HTTPS Port 443]" id="V1EOGs5bZ6Y0wQE25J3v-32">
+          <mxCell edge="1" parent="V1EOGs5bZ6Y0wQE25J3v-18" source="V1EOGs5bZ6Y0wQE25J3v-37" style="edgeStyle=orthogonalEdgeStyle;rounded=1;startArrow=none;endArrow=block;endSize=8;strokeColor=#555555;strokeWidth=2;fontColor=#0000FF;jumpStyle=arc;jumpSize=12;html=1;fontSize=16;labelBackgroundColor=light-dark(#E8E8E88D,#2a2a2a8D);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;exitX=0.25;exitY=1;entryX=0.75;entryY=0;targetPerimeterSpacing=4;entryDx=0;entryDy=0;exitDx=0;exitDy=0;" target="V1EOGs5bZ6Y0wQE25J3v-34">
+            <mxGeometry relative="1" x="0.2555" y="-7" as="geometry">
+              <mxPoint as="offset" />
+              <Array as="points">
+                <mxPoint x="1008.4" y="980" />
+                <mxPoint x="967.5" y="980" />
+              </Array>
+              <mxPoint x="913.7200000000003" y="864.5" as="sourcePoint" />
+              <mxPoint x="931.8800000000001" y="1103" as="targetPoint" />
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="5. Executes ACID transactions &amp; row locks [TLS / TCP Port 5432]" mermaidId="e:api-&gt;db#0" mermaidBaseStyle="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=8;strokeColor=#555555;strokeWidth=2;fontColor=#0000FF;jumpStyle=arc;jumpSize=12;html=1;fontSize=16;labelBackgroundColor=light-dark(#E8E8E88D,#2a2a2a8D);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;exitX=0.64;exitY=1;entryX=0.5;entryY=0;targetPerimeterSpacing=4;" mermaidBaseValue="5. Executes ACID transactions &amp; row locks [TLS / TCP Port 5432]" id="V1EOGs5bZ6Y0wQE25J3v-33">
+          <mxCell edge="1" parent="V1EOGs5bZ6Y0wQE25J3v-18" source="V1EOGs5bZ6Y0wQE25J3v-37" style="edgeStyle=orthogonalEdgeStyle;rounded=1;startArrow=none;endArrow=block;endSize=8;strokeColor=#555555;strokeWidth=2;fontColor=#0000FF;jumpStyle=arc;jumpSize=12;html=1;fontSize=16;labelBackgroundColor=light-dark(#E8E8E88D,#2a2a2a8D);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;exitX=0.75;exitY=1;entryX=0.5;entryY=0;targetPerimeterSpacing=4;entryDx=0;entryDy=0;entryPerimeter=0;exitDx=0;exitDy=0;" target="V1EOGs5bZ6Y0wQE25J3v-35">
+            <mxGeometry relative="1" x="0.2118" as="geometry">
+              <mxPoint as="offset" />
+              <mxPoint x="956.2800000000002" y="864.5" as="sourcePoint" />
+              <mxPoint x="1282.594458" y="1067.1825840000001" as="targetPoint" />
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="&lt;div&gt;&lt;b&gt;Firebase Authentication&lt;/b&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;[External Identity Service]&lt;br&gt;Manages email/password sign-in, issues JWTs &amp;amp; JWKS keys&lt;/div&gt;" mermaidId="n:firebase" mermaidBaseStyle="rounded=1;absoluteArcSize=1;arcSize=24;whiteSpace=wrap;html=1;fillColor=#8C8C8C;strokeColor=#707070;strokeWidth=2;fontColor=#FFFFFF;align=center;verticalAlign=middle;fontFamily=Open Sans,sans-serif;" mermaidBaseValue="&lt;div style=&quot;font-size:14px;font-weight:bold;line-height:1.07;white-space:nowrap;&quot;&gt;Firebase Authentication&lt;/div&gt;&lt;div style=&quot;font-size:10.5px;margin-top:3px;line-height:1.07;white-space:nowrap;&quot;&gt;[Software System]&lt;/div&gt;&lt;div style=&quot;font-size:11.48px;margin-top:3px;line-height:1.07;white-space:nowrap;&quot;&gt;External Service. Provides JWKS to&lt;br&gt;verify ID tokens.&lt;/div&gt;" id="V1EOGs5bZ6Y0wQE25J3v-34">
+          <mxCell parent="V1EOGs5bZ6Y0wQE25J3v-18" style="rounded=1;absoluteArcSize=1;arcSize=24;whiteSpace=wrap;html=1;fillColor=#8C8C8C;strokeColor=#707070;strokeWidth=2;fontColor=#FFFFFF;align=center;verticalAlign=middle;fontFamily=Open Sans,sans-serif;fontSize=16;" vertex="1">
+            <mxGeometry height="122.81" width="250" x="780" y="1127.19" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="&lt;b&gt;CourtMate Relational Database&lt;/b&gt;&lt;br&gt;[PostgreSQL 17 Instance]&lt;br&gt;Persists 11 tables, indexes, and row-level locks" mermaidId="n:db" mermaidBaseStyle="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15.84;spacingTop=13;fillColor=#1168BD;strokeColor=#0B4884;strokeWidth=2;fontColor=#FFFFFF;align=center;verticalAlign=middle;fontFamily=Open Sans,sans-serif;" mermaidBaseValue="&lt;div style=&quot;font-size:14px;font-weight:bold;line-height:1.07;white-space:nowrap;&quot;&gt;Relational Database&lt;/div&gt;&lt;div style=&quot;font-size:10.5px;margin-top:3px;line-height:1.07;white-space:nowrap;&quot;&gt;[Container: PostgreSQL 17&lt;br&gt;(Neon)]&lt;/div&gt;&lt;div style=&quot;font-size:11.48px;margin-top:3px;line-height:1.07;white-space:nowrap;&quot;&gt;11 tables: users, courts,&lt;br&gt;operating_hours, slots,&lt;br&gt;maintenance_blocks, bookings,&lt;br&gt;booking_slots, slot_claims,&lt;br&gt;rooms, room_members,&lt;br&gt;slot_offers.&lt;/div&gt;" id="V1EOGs5bZ6Y0wQE25J3v-35">
+          <mxCell parent="V1EOGs5bZ6Y0wQE25J3v-18" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15.84;spacingTop=13;fillColor=#1168BD;strokeColor=#0B4884;strokeWidth=2;fontColor=#FFFFFF;align=center;verticalAlign=middle;fontFamily=Open Sans,sans-serif;fontSize=13;" vertex="1">
+            <mxGeometry height="187" width="216" x="1217" y="1084.02" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <mxCell id="V1EOGs5bZ6Y0wQE25J3v-36" parent="V1EOGs5bZ6Y0wQE25J3v-18" style="whiteSpace=wrap;html=1;aspect=fixed;shadow=1;strokeColor=#0B4884;strokeWidth=2;align=center;verticalAlign=middle;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowColor=#000000;shadowOpacity=6;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;fontColor=#FFFFFF;fillColor=#1168BD;" value="&lt;b&gt;Static Asset Host&lt;/b&gt;&lt;br&gt;[Vercel Global CDN]&lt;br&gt;Serves compiled HTML, CSS, and JS bundle" vertex="1">
+          <mxGeometry height="170" width="170" x="310" y="550" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
