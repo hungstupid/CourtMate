@@ -1,0 +1,75 @@
+<?xml version='1.0' encoding='utf-8'?>
+<mxfile host="app.diagrams.net" version="24.7.17">
+  <diagram name="system-context" id="system-context">
+    <mxGraphModel dx="1000" dy="720" grid="1" gridSize="10" page="1" pageScale="1" pageWidth="1000" pageHeight="720">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="visitor" value="&lt;div style=&quot;font-size:23px;font-weight:bold&quot;&gt;Visitor&lt;/div&gt;&lt;div style=&quot;font-size:18px;margin-top:6px&quot;&gt;[Person]&lt;/div&gt;&lt;div style=&quot;font-size:19px;margin-top:6px&quot;&gt;Browse public courts,&lt;/div&gt;&lt;div style=&quot;font-size:19px;margin-top:6px&quot;&gt;slots and Open Play rooms&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#edf1f5;strokeColor=#718096;fontColor=#172b4d;spacing=10;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="25" y="20" width="280" height="145" as="geometry" />
+        </mxCell>
+        <mxCell id="player" value="&lt;div style=&quot;font-size:23px;font-weight:bold&quot;&gt;Player&lt;/div&gt;&lt;div style=&quot;font-size:18px;margin-top:6px&quot;&gt;[Person]&lt;/div&gt;&lt;div style=&quot;font-size:19px;margin-top:6px&quot;&gt;Book / cancel own booking;&lt;/div&gt;&lt;div style=&quot;font-size:19px;margin-top:6px&quot;&gt;participate / organize room&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#edf1f5;strokeColor=#718096;fontColor=#172b4d;spacing=10;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="360" y="20" width="280" height="145" as="geometry" />
+        </mxCell>
+        <mxCell id="owner" value="&lt;div style=&quot;font-size:23px;font-weight:bold&quot;&gt;Court Owner&lt;/div&gt;&lt;div style=&quot;font-size:18px;margin-top:6px&quot;&gt;[Person]&lt;/div&gt;&lt;div style=&quot;font-size:19px;margin-top:6px&quot;&gt;Manage owned courts,&lt;/div&gt;&lt;div style=&quot;font-size:19px;margin-top:6px&quot;&gt;schedules and slot offers&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#edf1f5;strokeColor=#718096;fontColor=#172b4d;spacing=10;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="695" y="20" width="280" height="145" as="geometry" />
+        </mxCell>
+        <mxCell id="courtmate" value="&lt;div style=&quot;font-size:23px;font-weight:bold&quot;&gt;CourtMate&lt;/div&gt;&lt;div style=&quot;font-size:18px;margin-top:6px&quot;&gt;[Software system]&lt;/div&gt;&lt;div style=&quot;font-size:19px;margin-top:6px&quot;&gt;Court discovery and booking; Open Play rooms;&lt;/div&gt;&lt;div style=&quot;font-size:19px;margin-top:6px&quot;&gt;Owner schedule management and optional offers&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e8f1fb;strokeColor=#356a9a;fontColor=#172b4d;spacing=10;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="200" y="310" width="600" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="firebase" value="&lt;div style=&quot;font-size:23px;font-weight:bold&quot;&gt;Firebase Authentication&lt;/div&gt;&lt;div style=&quot;font-size:18px;margin-top:6px&quot;&gt;[External software system]&lt;/div&gt;&lt;div style=&quot;font-size:19px;margin-top:6px&quot;&gt;Manage credentials and issue signed ID tokens&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#edf1f5;strokeColor=#718096;fontColor=#172b4d;spacing=10;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="240" y="580" width="520" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="edge0" value="" style="endArrow=block;endFill=1;strokeColor=#425466;strokeWidth=2;rounded=0;exitX=0.5;exitY=1.0;exitPerimeter=0;entryX=0.125;entryY=0.0;entryPerimeter=0;" edge="1" parent="1" source="visitor" target="courtmate">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="165" y="165" as="sourcePoint" />
+            <mxPoint x="275" y="310" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="165" y="235" />
+              <mxPoint x="275" y="235" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label0" value="Browse public data" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;fillColor=#ffffff;strokeColor=none;fontColor=#172b4d;fontSize=19;" vertex="1" parent="1">
+          <mxGeometry x="15" y="232" width="300" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="edge1" value="" style="endArrow=block;endFill=1;strokeColor=#425466;strokeWidth=2;rounded=0;exitX=0.5;exitY=1.0;exitPerimeter=0;entryX=0.5;entryY=0.0;entryPerimeter=0;" edge="1" parent="1" source="player" target="courtmate">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="500" y="165" as="sourcePoint" />
+            <mxPoint x="500" y="310" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="500" y="235" />
+              <mxPoint x="500" y="235" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label1" value="Book and participate" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;fillColor=#ffffff;strokeColor=none;fontColor=#172b4d;fontSize=19;" vertex="1" parent="1">
+          <mxGeometry x="350" y="232" width="300" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="edge2" value="" style="endArrow=block;endFill=1;strokeColor=#425466;strokeWidth=2;rounded=0;exitX=0.5;exitY=1.0;exitPerimeter=0;entryX=0.875;entryY=0.0;entryPerimeter=0;" edge="1" parent="1" source="owner" target="courtmate">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="835" y="165" as="sourcePoint" />
+            <mxPoint x="725" y="310" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="835" y="235" />
+              <mxPoint x="725" y="235" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label2" value="Manage owned resources" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;fillColor=#ffffff;strokeColor=none;fontColor=#172b4d;fontSize=19;" vertex="1" parent="1">
+          <mxGeometry x="685" y="232" width="300" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="edge3" value="" style="endArrow=block;endFill=1;strokeColor=#425466;strokeWidth=2;rounded=0;exitX=0.5;exitY=1.0;exitPerimeter=0;entryX=0.5;entryY=0.0;entryPerimeter=0;" edge="1" parent="1" source="courtmate" target="firebase">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="500" y="470" as="sourcePoint" />
+            <mxPoint x="500" y="580" as="targetPoint" />
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label3" value="Identity verification" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;fillColor=#ffffff;strokeColor=none;fontColor=#172b4d;fontSize=19;" vertex="1" parent="1">
+          <mxGeometry x="350" y="490" width="300" height="70" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

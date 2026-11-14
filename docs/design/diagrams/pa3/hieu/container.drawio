@@ -1,0 +1,87 @@
+<?xml version='1.0' encoding='utf-8'?>
+<mxfile host="app.diagrams.net" version="24.7.17">
+  <diagram name="container" id="container">
+    <mxGraphModel dx="1000" dy="930" grid="1" gridSize="10" page="1" pageScale="1" pageWidth="1000" pageHeight="930">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="boundary0" value="CourtMate system boundary" style="rounded=1;fillColor=none;strokeColor=#8192a6;verticalAlign=top;align=left;spacingLeft=16;spacingTop=8;fontSize=20;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="20" y="140" width="650" height="760" as="geometry" />
+        </mxCell>
+        <mxCell id="user" value="&lt;div style=&quot;font-size:23px;font-weight:bold&quot;&gt;Visitor / Player / Court Owner&lt;/div&gt;&lt;div style=&quot;font-size:18px;margin-top:6px&quot;&gt;[Person]&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#edf1f5;strokeColor=#718096;fontColor=#172b4d;spacing=10;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="90" y="10" width="520" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="spa" value="&lt;div style=&quot;font-size:23px;font-weight:bold&quot;&gt;Web SPA&lt;/div&gt;&lt;div style=&quot;font-size:18px;margin-top:6px&quot;&gt;[Container: React, TypeScript, Vite]&lt;/div&gt;&lt;div style=&quot;font-size:19px;margin-top:6px&quot;&gt;Runs in the browser; renders responsive UI;&lt;/div&gt;&lt;div style=&quot;font-size:19px;margin-top:6px&quot;&gt;keeps filters, drafts and reviewed selection&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e8f1fb;strokeColor=#356a9a;fontColor=#172b4d;spacing=10;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="90" y="220" width="520" height="135" as="geometry" />
+        </mxCell>
+        <mxCell id="api" value="&lt;div style=&quot;font-size:23px;font-weight:bold&quot;&gt;Backend API&lt;/div&gt;&lt;div style=&quot;font-size:18px;margin-top:6px&quot;&gt;[Container: Python, FastAPI]&lt;/div&gt;&lt;div style=&quot;font-size:19px;margin-top:6px&quot;&gt;REST endpoints; identity and access checks;&lt;/div&gt;&lt;div style=&quot;font-size:19px;margin-top:6px&quot;&gt;booking, schedule, room and offer rules&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e8f1fb;strokeColor=#356a9a;fontColor=#172b4d;spacing=10;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="90" y="485" width="520" height="135" as="geometry" />
+        </mxCell>
+        <mxCell id="db" value="&lt;div style=&quot;font-size:23px;font-weight:bold&quot;&gt;Application database&lt;/div&gt;&lt;div style=&quot;font-size:18px;margin-top:6px&quot;&gt;[Container: PostgreSQL on Neon]&lt;/div&gt;&lt;div style=&quot;font-size:19px;margin-top:6px&quot;&gt;Application users, schedules, bookings, rooms, offers&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e8f1fb;strokeColor=#356a9a;fontColor=#172b4d;spacing=10;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="90" y="750" width="520" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="firebase" value="&lt;div style=&quot;font-size:23px;font-weight:bold&quot;&gt;Firebase Auth&lt;/div&gt;&lt;div style=&quot;font-size:18px;margin-top:6px&quot;&gt;[External system]&lt;/div&gt;&lt;div style=&quot;font-size:19px;margin-top:6px&quot;&gt;Email / password auth;&lt;/div&gt;&lt;div style=&quot;font-size:19px;margin-top:6px&quot;&gt;signed ID tokens;&lt;/div&gt;&lt;div style=&quot;font-size:19px;margin-top:6px&quot;&gt;verification services&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#edf1f5;strokeColor=#718096;fontColor=#172b4d;spacing=10;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="730" y="325" width="250" height="250" as="geometry" />
+        </mxCell>
+        <mxCell id="edge0" value="" style="endArrow=block;endFill=1;strokeColor=#425466;strokeWidth=2;rounded=0;exitX=0.5;exitY=1.0;exitPerimeter=0;entryX=0.9230769230769231;entryY=0.0;entryPerimeter=0;" edge="1" parent="1" source="user" target="spa">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="350" y="100" as="sourcePoint" />
+            <mxPoint x="570" y="220" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="570" y="100" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label0" value="Use web UI" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;fillColor=#ffffff;strokeColor=none;fontColor=#172b4d;fontSize=19;" vertex="1" parent="1">
+          <mxGeometry x="335" y="155" width="300" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="edge1" value="" style="endArrow=block;endFill=1;strokeColor=#425466;strokeWidth=2;rounded=0;exitX=0.5;exitY=1.0;exitPerimeter=0;entryX=0.5;entryY=0.0;entryPerimeter=0;" edge="1" parent="1" source="spa" target="api">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="350" y="355" as="sourcePoint" />
+            <mxPoint x="350" y="485" as="targetPoint" />
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label1" value="REST / JSON over HTTPS&lt;br&gt;Bearer ID token when protected" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;fillColor=#ffffff;strokeColor=none;fontColor=#172b4d;fontSize=19;" vertex="1" parent="1">
+          <mxGeometry x="200" y="385" width="300" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="edge2" value="" style="endArrow=block;endFill=1;strokeColor=#425466;strokeWidth=2;rounded=0;exitX=0.5;exitY=1.0;exitPerimeter=0;entryX=0.5;entryY=0.0;entryPerimeter=0;" edge="1" parent="1" source="api" target="db">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="350" y="620" as="sourcePoint" />
+            <mxPoint x="350" y="750" as="targetPoint" />
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label2" value="SQL over TLS&lt;br&gt;Transactions, locks and constraints" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;fillColor=#ffffff;strokeColor=none;fontColor=#172b4d;fontSize=19;" vertex="1" parent="1">
+          <mxGeometry x="200" y="648" width="300" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="edge3" value="" style="endArrow=block;endFill=1;strokeColor=#425466;strokeWidth=2;rounded=0;exitX=1.0;exitY=0.37037037037037035;exitPerimeter=0;entryX=0.5;entryY=0.0;entryPerimeter=0;" edge="1" parent="1" source="spa" target="firebase">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="610" y="270" as="sourcePoint" />
+            <mxPoint x="855" y="325" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="855" y="270" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label3" value="Sign in / refresh token&lt;br&gt;HTTPS" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;fillColor=#ffffff;strokeColor=none;fontColor=#172b4d;fontSize=19;" vertex="1" parent="1">
+          <mxGeometry x="642" y="187" width="300" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="edge4" value="" style="endArrow=block;endFill=1;strokeColor=#425466;strokeWidth=2;rounded=0;exitX=1.0;exitY=0.48148148148148145;exitPerimeter=0;entryX=0.5;entryY=1.0;entryPerimeter=0;" edge="1" parent="1" source="api" target="firebase">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="610" y="550" as="sourcePoint" />
+            <mxPoint x="855" y="575" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="690" y="550" />
+              <mxPoint x="690" y="650" />
+              <mxPoint x="855" y="650" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label4" value="Verify identity / revocation&lt;br&gt;HTTPS; cached public certificates" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;fillColor=#ffffff;strokeColor=none;fontColor=#172b4d;fontSize=19;" vertex="1" parent="1">
+          <mxGeometry x="675" y="670" width="300" height="70" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
