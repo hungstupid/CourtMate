@@ -1,0 +1,150 @@
+<?xml version='1.0' encoding='utf-8'?>
+<mxfile host="app.diagrams.net" version="24.7.17">
+  <diagram name="component" id="component">
+    <mxGraphModel dx="1000" dy="1250" grid="1" gridSize="10" page="1" pageScale="1" pageWidth="1000" pageHeight="1250">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="boundary0" value="FastAPI backend container" style="rounded=1;fillColor=none;strokeColor=#8192a6;verticalAlign=top;align=left;spacingLeft=16;spacingTop=8;fontSize=20;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="20" y="150" width="960" height="935" as="geometry" />
+        </mxCell>
+        <mxCell id="boundary1" value="Application service modules" style="rounded=1;fillColor=none;strokeColor=#8192a6;verticalAlign=top;align=left;spacingLeft=16;spacingTop=8;fontSize=20;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="170" y="380" width="660" height="470" as="geometry" />
+        </mxCell>
+        <mxCell id="spa" value="&lt;div style=&quot;font-size:23px;font-weight:bold&quot;&gt;Web SPA&lt;/div&gt;&lt;div style=&quot;font-size:18px;margin-top:6px&quot;&gt;[External to backend container]&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#edf1f5;strokeColor=#718096;fontColor=#172b4d;spacing=10;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="80" y="10" width="500" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="firebase" value="&lt;div style=&quot;font-size:23px;font-weight:bold&quot;&gt;Firebase Auth&lt;/div&gt;&lt;div style=&quot;font-size:18px;margin-top:6px&quot;&gt;[External software system]&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#edf1f5;strokeColor=#718096;fontColor=#172b4d;spacing=10;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="700" y="10" width="280" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="routers" value="&lt;div style=&quot;font-size:23px;font-weight:bold&quot;&gt;REST routers&lt;/div&gt;&lt;div style=&quot;font-size:18px;margin-top:6px&quot;&gt;[FastAPI: api/*.py]&lt;/div&gt;&lt;div style=&quot;font-size:19px;margin-top:6px&quot;&gt;Validate DTOs; dispatch in-process calls&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e8f1fb;strokeColor=#356a9a;fontColor=#172b4d;spacing=10;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="70" y="210" width="530" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="auth" value="&lt;div style=&quot;font-size:23px;font-weight:bold&quot;&gt;IdentityAPI / Auth&lt;/div&gt;&lt;div style=&quot;font-size:18px;margin-top:6px&quot;&gt;[Auth component]&lt;/div&gt;&lt;div style=&quot;font-size:19px;margin-top:6px&quot;&gt;Resolve identity and role&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e8f1fb;strokeColor=#356a9a;fontColor=#172b4d;spacing=10;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="680" y="210" width="250" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="courts" value="&lt;div style=&quot;font-size:23px;font-weight:bold&quot;&gt;Courts&lt;/div&gt;&lt;div style=&quot;font-size:18px;margin-top:6px&quot;&gt;[services/courts.py]&lt;/div&gt;&lt;div style=&quot;font-size:19px;margin-top:6px&quot;&gt;Courts and schedules;&lt;/div&gt;&lt;div style=&quot;font-size:19px;margin-top:6px&quot;&gt;search / slot preview&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e8f1fb;strokeColor=#356a9a;fontColor=#172b4d;spacing=10;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="200" y="440" width="270" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="bookings" value="&lt;div style=&quot;font-size:23px;font-weight:bold&quot;&gt;Bookings&lt;/div&gt;&lt;div style=&quot;font-size:18px;margin-top:6px&quot;&gt;[services/bookings.py]&lt;/div&gt;&lt;div style=&quot;font-size:19px;margin-top:6px&quot;&gt;Review / confirm / cancel;&lt;/div&gt;&lt;div style=&quot;font-size:19px;margin-top:6px&quot;&gt;accepted-price snapshots&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e8f1fb;strokeColor=#356a9a;fontColor=#172b4d;spacing=10;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="530" y="440" width="270" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="rooms" value="&lt;div style=&quot;font-size:23px;font-weight:bold&quot;&gt;Rooms&lt;/div&gt;&lt;div style=&quot;font-size:18px;margin-top:6px&quot;&gt;[services/rooms.py]&lt;/div&gt;&lt;div style=&quot;font-size:19px;margin-top:6px&quot;&gt;Booking-linked rooms;&lt;/div&gt;&lt;div style=&quot;font-size:19px;margin-top:6px&quot;&gt;membership and closure&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e8f1fb;strokeColor=#356a9a;fontColor=#172b4d;spacing=10;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="200" y="680" width="270" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="offers" value="&lt;div style=&quot;font-size:23px;font-weight:bold&quot;&gt;Offers&lt;/div&gt;&lt;div style=&quot;font-size:18px;margin-top:6px&quot;&gt;[services/offers.py]&lt;/div&gt;&lt;div style=&quot;font-size:19px;margin-top:6px&quot;&gt;Optional F09; eligibility&lt;/div&gt;&lt;div style=&quot;font-size:19px;margin-top:6px&quot;&gt;and effective slot quotes&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e8f1fb;strokeColor=#356a9a;fontColor=#172b4d;spacing=10;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="530" y="680" width="270" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="session" value="&lt;div style=&quot;font-size:23px;font-weight:bold&quot;&gt;Session and mapped entities&lt;/div&gt;&lt;div style=&quot;font-size:18px;margin-top:6px&quot;&gt;[SQLAlchemy: db/session.py, db/models.py]&lt;/div&gt;&lt;div style=&quot;font-size:19px;margin-top:6px&quot;&gt;One request-scoped transaction; shared models&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e8f1fb;strokeColor=#356a9a;fontColor=#172b4d;spacing=10;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="220" y="950" width="560" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="db" value="&lt;div style=&quot;font-size:23px;font-weight:bold&quot;&gt;PostgreSQL application database&lt;/div&gt;&lt;div style=&quot;font-size:18px;margin-top:6px&quot;&gt;[External to backend container]&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#edf1f5;strokeColor=#718096;fontColor=#172b4d;spacing=10;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="220" y="1160" width="560" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="edge0" value="" style="endArrow=block;endFill=1;strokeColor=#425466;strokeWidth=2;rounded=0;exitX=0.5;exitY=1.0;exitPerimeter=0;entryX=0.9433962264150944;entryY=0.0;entryPerimeter=0;" edge="1" parent="1" source="spa" target="routers">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="330" y="95" as="sourcePoint" />
+            <mxPoint x="570" y="210" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="330" y="125" />
+              <mxPoint x="570" y="125" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label0" value="HTTPS / JSON" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;fillColor=#ffffff;strokeColor=none;fontColor=#172b4d;fontSize=19;" vertex="1" parent="1">
+          <mxGeometry x="180" y="99" width="300" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="edge1" value="" style="endArrow=block;endFill=1;strokeColor=#425466;strokeWidth=2;rounded=0;exitX=1.0;exitY=0.5;exitPerimeter=0;entryX=0.0;entryY=0.5;entryPerimeter=0;" edge="1" parent="1" source="routers" target="auth">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="600" y="260" as="sourcePoint" />
+            <mxPoint x="680" y="260" as="targetPoint" />
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label1" value="Protected guard" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;fillColor=#ffffff;strokeColor=none;fontColor=#172b4d;fontSize=19;" vertex="1" parent="1">
+          <mxGeometry x="490" y="288" width="300" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="edge2" value="" style="endArrow=block;endFill=1;strokeColor=#425466;strokeWidth=2;rounded=0;exitX=0.5;exitY=0.0;exitPerimeter=0;entryX=0.375;entryY=1.0;entryPerimeter=0;" edge="1" parent="1" source="auth" target="firebase">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="805" y="210" as="sourcePoint" />
+            <mxPoint x="805" y="110" as="targetPoint" />
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label2" value="HTTPS" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;fillColor=#ffffff;strokeColor=none;fontColor=#172b4d;fontSize=19;" vertex="1" parent="1">
+          <mxGeometry x="705" y="127" width="300" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="edge3" value="" style="endArrow=block;endFill=1;strokeColor=#425466;strokeWidth=2;rounded=0;exitX=0.5;exitY=1.0;exitPerimeter=0;entryX=0.9242424242424242;entryY=0.0;entryPerimeter=0;" edge="1" parent="1" source="routers" target="boundary1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="335" y="310" as="sourcePoint" />
+            <mxPoint x="780" y="380" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="335" y="340" />
+              <mxPoint x="780" y="340" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label3" value="Route → service dispatch" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;fillColor=#ffffff;strokeColor=none;fontColor=#172b4d;fontSize=19;" vertex="1" parent="1">
+          <mxGeometry x="185" y="311" width="300" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="edge4" value="" style="endArrow=block;endFill=1;strokeColor=#425466;strokeWidth=2;rounded=0;dashed=1;exitX=0.5;exitY=1.0;exitPerimeter=0;entryX=1.0;entryY=0.8;entryPerimeter=0;" edge="1" parent="1" source="auth" target="session">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="805" y="310" as="sourcePoint" />
+            <mxPoint x="780" y="1030" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="945" y="310" />
+              <mxPoint x="945" y="1030" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label4" value="User lookup" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;fillColor=#ffffff;strokeColor=none;fontColor=#172b4d;fontSize=19;" vertex="1" parent="1">
+          <mxGeometry x="750" y="865" width="300" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="edge5" value="" style="endArrow=block;endFill=1;strokeColor=#425466;strokeWidth=2;rounded=0;dashed=1;exitX=1.0;exitY=0.5384615384615384;exitPerimeter=0;entryX=0.5;entryY=0.0;entryPerimeter=0;" edge="1" parent="1" source="courts" target="offers">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="470" y="510" as="sourcePoint" />
+            <mxPoint x="665" y="680" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="500" y="510" />
+              <mxPoint x="500" y="620" />
+              <mxPoint x="665" y="620" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label5" value="Effective quote()" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;fillColor=#ffffff;strokeColor=none;fontColor=#172b4d;fontSize=19;" vertex="1" parent="1">
+          <mxGeometry x="495" y="585" width="300" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="edge6" value="" style="endArrow=block;endFill=1;strokeColor=#425466;strokeWidth=2;rounded=0;dashed=1;exitX=0.7407407407407407;exitY=1.0;exitPerimeter=0;entryX=0.7407407407407407;entryY=0.0;entryPerimeter=0;" edge="1" parent="1" source="bookings" target="offers">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="730" y="570" as="sourcePoint" />
+            <mxPoint x="730" y="680" as="targetPoint" />
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge7" value="" style="endArrow=block;endFill=1;strokeColor=#425466;strokeWidth=2;rounded=0;exitX=0.5;exitY=1.0;exitPerimeter=0;entryX=0.5;entryY=0.0;entryPerimeter=0;" edge="1" parent="1" source="boundary1" target="session">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="500" y="850" as="sourcePoint" />
+            <mxPoint x="500" y="950" as="targetPoint" />
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label7" value="Shared Session / entity access" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;fillColor=#ffffff;strokeColor=none;fontColor=#172b4d;fontSize=19;" vertex="1" parent="1">
+          <mxGeometry x="350" y="865" width="300" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="edge8" value="" style="endArrow=block;endFill=1;strokeColor=#425466;strokeWidth=2;rounded=0;exitX=0.5;exitY=1.0;exitPerimeter=0;entryX=0.5;entryY=0.0;entryPerimeter=0;" edge="1" parent="1" source="session" target="db">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="500" y="1050" as="sourcePoint" />
+            <mxPoint x="500" y="1160" as="targetPoint" />
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label8" value="SQL / TLS" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;fillColor=#ffffff;strokeColor=none;fontColor=#172b4d;fontSize=19;" vertex="1" parent="1">
+          <mxGeometry x="350" y="1070" width="300" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="note0" value="Solid: request / data path. Dashed: quote call or identity lookup." style="text;html=1;align=center;verticalAlign=middle;fontSize=17;" vertex="1" parent="1">
+          <mxGeometry x="50" y="1100" width="900" height="50" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
