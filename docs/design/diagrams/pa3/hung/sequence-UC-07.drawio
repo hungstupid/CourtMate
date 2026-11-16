@@ -1,0 +1,122 @@
+<?xml version='1.0' encoding='utf-8'?>
+<mxfile host="app.diagrams.net" modified="2026-11-13T14:00:00.000Z" agent="CourtMate PA3" version="24.0.0" type="device">
+  <diagram name="UC-07 Cancel whole booking" id="court-mate-pa3-sequence-UC-">
+    <mxGraphModel dx="1340" dy="860" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1020" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="v2" value="Player UI" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ECF7F2;strokeColor=#4A6C60;fontStyle=1;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="50" y="65" width="225" height="68" as="geometry" />
+        </mxCell>
+        <mxCell id="w3" value="" style="html=1;strokeColor=#145D49;fontSize=12;endArrow=none;dashed=1;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="160" y="133" as="sourcePoint" />
+            <mxPoint x="160" y="915" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="v4" value="BookingsAPI" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ECF7F2;strokeColor=#4A6C60;fontStyle=1;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="400" y="65" width="225" height="68" as="geometry" />
+        </mxCell>
+        <mxCell id="w5" value="" style="html=1;strokeColor=#145D49;fontSize=12;endArrow=none;dashed=1;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="510" y="133" as="sourcePoint" />
+            <mxPoint x="510" y="915" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="v6" value="Bookings service" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ECF7F2;strokeColor=#4A6C60;fontStyle=1;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="750" y="65" width="225" height="68" as="geometry" />
+        </mxCell>
+        <mxCell id="w7" value="" style="html=1;strokeColor=#145D49;fontSize=12;endArrow=none;dashed=1;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="860" y="133" as="sourcePoint" />
+            <mxPoint x="860" y="915" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="v8" value="Session/PostgreSQL" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ECF7F2;strokeColor=#4A6C60;fontStyle=1;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="1100" y="65" width="225" height="68" as="geometry" />
+        </mxCell>
+        <mxCell id="w9" value="" style="html=1;strokeColor=#145D49;fontSize=12;endArrow=none;dashed=1;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1210" y="133" as="sourcePoint" />
+            <mxPoint x="1210" y="915" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="w10" value="cancel(booking_id)" style="html=1;strokeColor=#145D49;fontSize=12;endArrow=block;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="160" y="205" as="sourcePoint" />
+            <mxPoint x="510" y="205" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="w11" value="cancel_booking(id, receipt_at)" style="html=1;strokeColor=#145D49;fontSize=12;endArrow=block;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="510" y="290" as="sourcePoint" />
+            <mxPoint x="860" y="290" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="w12" value="LOCK Booking / Court / Room" style="html=1;strokeColor=#145D49;fontSize=12;endArrow=block;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="860" y="375" as="sourcePoint" />
+            <mxPoint x="1210" y="375" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="w13" value="booking and server receipt" style="html=1;strokeColor=#145D49;fontSize=12;endArrow=block;dashed=1;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1210" y="460" as="sourcePoint" />
+            <mxPoint x="860" y="460" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="v14" value="alt   owner &amp; CONFIRMED &amp; &gt;= 6 h to start" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#879991;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="45" y="520" width="1490" height="430" as="geometry" />
+        </mxCell>
+        <mxCell id="v15" value="Success / eligibility satisfied" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF8DA;strokeColor=#D1B05A;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="75" y="552" width="670" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="w16" value="CANCELLED; release all claims" style="html=1;strokeColor=#145D49;fontSize=12;endArrow=block;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="860" y="630" as="sourcePoint" />
+            <mxPoint x="1210" y="630" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="w17" value="close linked room; commit()" style="html=1;strokeColor=#145D49;fontSize=12;endArrow=block;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="860" y="695" as="sourcePoint" />
+            <mxPoint x="1210" y="695" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="w18" value="cancelled BookingView" style="html=1;strokeColor=#145D49;fontSize=12;endArrow=block;dashed=1;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="860" y="760" as="sourcePoint" />
+            <mxPoint x="510" y="760" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="w19" value="200: CANCELLED" style="html=1;strokeColor=#145D49;fontSize=12;endArrow=block;dashed=1;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="510" y="825" as="sourcePoint" />
+            <mxPoint x="160" y="825" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="v20" value="else   Unmet guard / conflict" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF8DA;strokeColor=#D1B05A;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="75" y="890" width="700" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="w21" value="rollback()" style="html=1;strokeColor=#145D49;fontSize=12;endArrow=block;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="860" y="960" as="sourcePoint" />
+            <mxPoint x="1210" y="960" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="w22" value="403/409: rejected" style="html=1;strokeColor=#145D49;fontSize=12;endArrow=block;dashed=1;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="860" y="1025" as="sourcePoint" />
+            <mxPoint x="510" y="1025" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="w23" value="no state change" style="html=1;strokeColor=#145D49;fontSize=12;endArrow=block;dashed=1;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="510" y="1090" as="sourcePoint" />
+            <mxPoint x="160" y="1090" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
