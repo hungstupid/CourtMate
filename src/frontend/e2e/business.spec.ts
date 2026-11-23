@@ -153,6 +153,10 @@ test('real Owner → discovery → multi-slot booking → Open Play → close �
       .getByRole('button', { name: 'Xem lại đặt sân', exact: true })
       .click()
     await expect(player.page.getByRole('dialog')).toContainText('120 phút')
+    await player.page.keyboard.press('Escape')
+    const reviewButton = player.page.getByRole('button', { name: 'Xem lại đặt sân', exact: true })
+    await expect(reviewButton).toBeFocused()
+    await player.page.keyboard.press('Enter')
     await expect(
       player.page.getByRole('dialog').locator('.review-slots > div')
     ).toHaveCount(2)

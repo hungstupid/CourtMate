@@ -7,7 +7,7 @@ import {
   useRef,
   useState,
 } from 'react'
-import type { ReactNode, ReactElement, FormEvent } from 'react'
+import type { ReactNode, ReactElement, FormEvent, RefObject } from 'react'
 import { Link } from 'react-router'
 
 export function Icon({
@@ -238,10 +238,12 @@ export function Modal({
   title,
   children,
   onClose,
+  returnFocusTo,
 }: {
   title: string
   children: ReactNode
   onClose: () => void
+  returnFocusTo?: RefObject<HTMLElement | null>
 }) {
   const ref = useRef<HTMLDialogElement>(null)
   const id = useId()
@@ -251,9 +253,10 @@ export function Modal({
     dialog?.showModal()
     return () => {
       dialog?.close()
-      previous?.focus()
+      const target = returnFocusTo?.current ?? previous
+      target?.focus()
     }
-  }, [])
+  }, [returnFocusTo])
   return (
     <dialog
       ref={ref}

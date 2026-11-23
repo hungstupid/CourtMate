@@ -414,9 +414,7 @@ def test_disabled_f09_preserves_offer_but_booking_uses_regular_quote(
     selection = data["slots"][:1]
     with Session(data["engine"]) as session, session.begin():
         user = session.get(User, data["players"][0])
-        discounted = bookings.review_booking(
-            session, user, selection, lambda _: now
-        )
+        discounted = bookings.review_booking(session, user, selection, lambda _: now)
         assert discounted["total_price_vnd"] == 80_000
 
     monkeypatch.setattr(get_settings(), "slot_offers_enabled", False)

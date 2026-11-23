@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import {
   Link,
   useLocation,
@@ -95,6 +95,7 @@ export function CourtPage() {
 }
 
 export function SlotsPage() {
+  const reviewButton = useRef<HTMLButtonElement>(null)
   const { courtId } = useParams()
   const [params, setParams] = useSearchParams()
   const day = params.get('date') || localDay()
@@ -335,6 +336,7 @@ export function SlotsPage() {
             <p className="muted">Đặt sân dành cho tài khoản Người chơi.</p>
           ) : (
             <button
+              ref={reviewButton}
               disabled={!chosen.length || busy}
               onClick={() => void getReview()}
             >
@@ -346,6 +348,7 @@ export function SlotsPage() {
       {review && (
         <Modal
           title="Xem lại các slot đã chọn"
+          returnFocusTo={reviewButton}
           onClose={() => {
             if (!busy) setReview(null)
           }}
