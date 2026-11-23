@@ -97,3 +97,27 @@ November release verification: **230 pytest**, **12 Playwright**, frontend lint/
 The service tracks `chore/project-bootstrap`, with root directory `src/backend` and `autoDeployTrigger: checksPass`. Frontend-only and root documentation changes normally do not trigger this backend service. [Render's monorepo rules](https://render.com/docs/monorepo-support) filter changes by root directory; [After CI Checks Pass](https://render.com/docs/deploys#integrating-with-ci) also requires at least one successful check on the relevant commit. A green check on a different commit does not prove a deploy occurred.
 
 Push each deployable backend commit with its checks, then inspect the service's deploy events and `/health` `X-CourtMate-Commit` header. Compare the frontend's `/version.json` separately. Do not change to On Commit to bypass failed/missing checks, and do not label a manual deployment as automatic. CI uses isolated PostgreSQL/Firebase Emulator; passing CI does not authorize production business-data writes. The acceptance report records current SHAs, actual trigger and any unresolved event-delivery gap.
+
+## PA3 schema and rollout
+
+Revision `0007_pa3_derived_state` derives the Vietnam playing date from
+`slots.start_at` and keeps only `rooms.closed_reason` as the stored closure
+state. Existing slot IDs, times, bookings, price snapshots, claims and members
+remain in their existing tables. `SLOT_OFFERS_ENABLED=false` makes new bookings
+use the regular price and pauses F09 routes without deleting prior offers or
+changing accepted booking totals.
+
+Before deploying across 0006 → 0007, check the target revision, capture an
+operator-accessible recovery point, and inspect the legacy flag/reason counts
+with a read-only query. The migration aborts on inconsistent or unknown
+history. Reconcile such rows from authoritative records before retrying. The
+checked build runs this migration before its readiness probe can succeed.
+The previous API binary expects both old columns, so allow for interrupted
+reads during the schema switch and validate the live SHA and `/ready` immediately.
+
+Rehearse rollback against a copy. For a cloud rollback, pause writes during
+the operator change window and downgrade only to `0006_room_closure_reason`
+using the approved direct migration connection before starting the older
+binary. This reconstructs both legacy columns from current facts. Confirm the
+schema head and app SHA after recovery. If a downgrade is unsafe, keep traffic
+paused and use the verified backup or Neon restore point under operator control.

@@ -1,0 +1,362 @@
+{
+  "browser": "157.0.8103.80",
+  "scope": "Chromium Lighthouse user-flow accessibility snapshots on authenticated local stage development build",
+  "settings": {
+    "onlyCategories": [
+      "accessibility"
+    ],
+    "formFactor": "desktop",
+    "screenEmulationDisabled": true
+  },
+  "rows": [
+    {
+      "name": "player-search",
+      "width": 1280,
+      "path": "/",
+      "score": 100,
+      "failedAudits": [],
+      "version": "13.6.0",
+      "contrastSamples": [
+        {
+          "ratio": 12.34,
+          "fg": [
+            255,
+            255,
+            255
+          ],
+          "bg": [
+            16,
+            60,
+            42
+          ]
+        },
+        {
+          "ratio": 6.158,
+          "fg": [
+            82,
+            102,
+            91
+          ],
+          "bg": [
+            255,
+            255,
+            255
+          ]
+        }
+      ]
+    },
+    {
+      "name": "player-slots",
+      "width": 1280,
+      "path": "/courts/:id/slots",
+      "score": 100,
+      "failedAudits": [],
+      "version": "13.6.0",
+      "contrastSamples": [
+        {
+          "ratio": 5.709,
+          "fg": [
+            82,
+            102,
+            91
+          ],
+          "bg": [
+            245,
+            247,
+            242
+          ]
+        },
+        {
+          "ratio": 12.862,
+          "fg": [
+            22,
+            45,
+            37
+          ],
+          "bg": [
+            234,
+            243,
+            231
+          ]
+        },
+        {
+          "ratio": 6.158,
+          "fg": [
+            82,
+            102,
+            91
+          ],
+          "bg": [
+            255,
+            255,
+            255
+          ]
+        }
+      ]
+    },
+    {
+      "name": "player-review",
+      "width": 1280,
+      "path": "/courts/:id/slots",
+      "score": 100,
+      "failedAudits": [],
+      "version": "13.6.0",
+      "contrastSamples": [
+        {
+          "ratio": 5.709,
+          "fg": [
+            82,
+            102,
+            91
+          ],
+          "bg": [
+            245,
+            247,
+            242
+          ]
+        },
+        {
+          "ratio": 12.862,
+          "fg": [
+            22,
+            45,
+            37
+          ],
+          "bg": [
+            234,
+            243,
+            231
+          ]
+        },
+        {
+          "ratio": 6.158,
+          "fg": [
+            82,
+            102,
+            91
+          ],
+          "bg": [
+            255,
+            255,
+            255
+          ]
+        },
+        {
+          "ratio": 13.556,
+          "fg": [
+            22,
+            45,
+            37
+          ],
+          "bg": [
+            245,
+            247,
+            242
+          ]
+        },
+        {
+          "ratio": 5.709,
+          "fg": [
+            82,
+            102,
+            91
+          ],
+          "bg": [
+            245,
+            247,
+            242
+          ]
+        }
+      ]
+    },
+    {
+      "name": "open-play-discovery",
+      "width": 1280,
+      "path": "/rooms",
+      "score": 100,
+      "failedAudits": [],
+      "version": "13.6.0",
+      "contrastSamples": [
+        {
+          "ratio": 5.709,
+          "fg": [
+            82,
+            102,
+            91
+          ],
+          "bg": [
+            245,
+            247,
+            242
+          ]
+        },
+        {
+          "ratio": 13.556,
+          "fg": [
+            22,
+            45,
+            37
+          ],
+          "bg": [
+            245,
+            247,
+            242
+          ]
+        },
+        {
+          "ratio": 6.158,
+          "fg": [
+            82,
+            102,
+            91
+          ],
+          "bg": [
+            255,
+            255,
+            255
+          ]
+        },
+        {
+          "ratio": 14.622,
+          "fg": [
+            22,
+            45,
+            37
+          ],
+          "bg": [
+            255,
+            255,
+            255
+          ]
+        },
+        {
+          "ratio": 14.622,
+          "fg": [
+            22,
+            45,
+            37
+          ],
+          "bg": [
+            255,
+            255,
+            255
+          ]
+        }
+      ]
+    },
+    {
+      "name": "owner-schedule",
+      "width": 1280,
+      "path": "/owner/schedule",
+      "score": 100,
+      "failedAudits": [],
+      "version": "13.6.0",
+      "contrastSamples": [
+        {
+          "ratio": 5.709,
+          "fg": [
+            82,
+            102,
+            91
+          ],
+          "bg": [
+            245,
+            247,
+            242
+          ]
+        },
+        {
+          "ratio": 5.709,
+          "fg": [
+            82,
+            102,
+            91
+          ],
+          "bg": [
+            245,
+            247,
+            242
+          ]
+        }
+      ]
+    }
+  ],
+  "keyboard": [
+    {
+      "name": "search",
+      "width": 375,
+      "visibleFocus": true
+    },
+    {
+      "name": "slots",
+      "width": 375,
+      "visibleFocus": true
+    },
+    {
+      "name": "review Escape and focus return",
+      "width": 375,
+      "visibleFocus": true
+    },
+    {
+      "name": "open-play",
+      "width": 375,
+      "visibleFocus": true
+    },
+    {
+      "name": "schedule",
+      "width": 375,
+      "visibleFocus": true
+    },
+    {
+      "name": "search",
+      "width": 768,
+      "visibleFocus": true
+    },
+    {
+      "name": "slots",
+      "width": 768,
+      "visibleFocus": true
+    },
+    {
+      "name": "review Escape and focus return",
+      "width": 768,
+      "visibleFocus": true
+    },
+    {
+      "name": "open-play",
+      "width": 768,
+      "visibleFocus": true
+    },
+    {
+      "name": "schedule",
+      "width": 768,
+      "visibleFocus": true
+    },
+    {
+      "name": "search",
+      "width": 1280,
+      "visibleFocus": true
+    },
+    {
+      "name": "slots",
+      "width": 1280,
+      "visibleFocus": true
+    },
+    {
+      "name": "review Escape and focus return",
+      "width": 1280,
+      "visibleFocus": true
+    },
+    {
+      "name": "open-play",
+      "width": 1280,
+      "visibleFocus": true
+    },
+    {
+      "name": "schedule",
+      "width": 1280,
+      "visibleFocus": true
+    }
+  ],
+  "limitations": "Computed contrast of sampled visible body text with opaque/ancestor backgrounds, plus Axe checks in separate browser suite. Human screen-reader tasks remain pending."
+}

@@ -1,0 +1,50 @@
+ID,Feature,Priority,Requirement,Test cases,Status
+FR-001,F01,Must,Register by email and select an initial role.,TC-01,Mapped
+FR-002,F01,Must,Sign in by email and sign out.,TC-02,Mapped
+FR-003,F01,Must,Assign user roles.,TC-01,Mapped
+FR-004,F01,Must,Require authentication for protected actions.,"TC-01, TC-02",Mapped
+FR-005,F01,Must,Check role and resource ownership.,"TC-01, TC-02, TC-12, TC-17",Mapped
+FR-006,F02,Must,Display active court listings.,TC-03,Mapped
+FR-007,F02,Must,Search courts by name.,TC-03,Mapped
+FR-008,F02,Must,"Filter courts by sport, address or area and optional time bounds.",TC-03,Mapped
+FR-009,F02,Must,Handle empty search results.,TC-03,Mapped
+FR-010,F03,Must,Display court details.,TC-04,Mapped
+FR-011,F03,Must,Display published slot lists and slot details,TC-04,Mapped
+FR-012,F03,Must,Select eligible consecutive court slots.,"TC-04, TC-05, TC-06",Mapped
+FR-013,F03,Should,Show optional court map and directions.,,Deferred in PA3
+FR-014,F04,Must,Review selected slots and total booking price.,"TC-05, TC-06",Mapped
+FR-015,F04,Must,Validate booking eligibility and time rules.,"TC-05, TC-06",Mapped
+FR-016,F04,Must,Prevent overlapping bookings.,"TC-05, TC-06",Mapped
+FR-017,F04,Must,Create one confirmed booking for selected slots.,"TC-05, TC-06",Mapped
+FR-018,F04,Must,Revalidate slots and prices at confirmation.,"TC-05, TC-06",Mapped
+FR-019,F05,Must,View recent booking history.,TC-07,Mapped
+FR-020,F05,Must,Cancel an eligible whole booking.,TC-08,Mapped
+FR-021,F05,Must,Display cancellation eligibility.,TC-08,Mapped
+FR-022,F05,Must,Release slots after booking cancellation.,TC-08,Mapped
+FR-023,F06,Must,Create and edit owned court listings.,TC-09,Mapped
+FR-024,F06,Must,Deactivate an owned court.,TC-09,Mapped
+FR-025,F06,Must,Manage operating hours and published slots.,TC-10,Mapped
+FR-026,F06,Must,Mark court maintenance intervals.,TC-11,Mapped
+FR-027,F06,Must,Protect confirmed bookings from schedule edits.,"TC-10, TC-11",Mapped
+FR-028,F07,Must,View bookings for owned courts.,TC-12,Mapped
+FR-029,F07,Must,Display owned-court booking details.,TC-12,Mapped
+FR-030,F07,Must,Restrict access to other owners’ bookings.,TC-12,Mapped
+FR-031,F10,Must,Create one room per eligible booking.,TC-13,Mapped
+FR-032,F10,Must,Validate Open Play Room capacity.,TC-13,Mapped
+FR-033,F10,Must,Browse and search public rooms by court address or area.,TC-14,Mapped
+FR-034,F10,Must,Join an eligible Open Play Room.,TC-15,Mapped
+FR-035,F10,Must,Prevent room overcapacity and duplicate joins.,TC-15,Mapped
+FR-036,F10,Must,Leave an eligible Open Play Room.,TC-16,Mapped
+FR-037,F10,Must,Close rooms automatically or by organizer confirmation.,"TC-16, TC-17",Mapped
+FR-038,F10,Must,Display per-person cost estimate.,"TC-13, TC-14, TC-15, TC-16, TC-17",Mapped
+FR-039,F08,Should,Display editable basic profile.,TC-18,Mapped
+FR-040,F08,Should,Validate and save profile changes.,TC-18,Mapped
+FR-041,F09,Should,Create manual slot-specific discounts.,TC-19,Mapped
+FR-042,F09,Should,Deactivate an active discount offer.,TC-19,Mapped
+FR-043,F09,Should,Re-evaluate eligible offers after cancellation.,TC-19,Mapped
+FR-044,F09,Should,Revalidate manual/automatic offers at confirmation.,TC-19,Mapped
+FR-045,F09,Should,Save the accepted discounted booking total.,TC-19,Mapped
+FR-046,F02,Must,Preview a result court’s matching or nearest slots.,"TC-03, TC-04",Mapped
+FR-047,F09,Should,Configure a slot-specific automatic offer.,TC-19,Mapped
+FR-048,F09,Should,Apply automatic offers at the configured threshold.,TC-19,Mapped
+FR-049,F09,Should,Cancel a pending automatic offer schedule.,TC-19,Mapped

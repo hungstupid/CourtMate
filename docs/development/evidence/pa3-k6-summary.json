@@ -1,0 +1,29 @@
+{
+  "engine": "k6 2.3.0, Docker ARM64",
+  "database": "isolated localhost PostgreSQL 17; Firebase Auth Emulator; API 8017",
+  "warmupSeconds": 5,
+  "steadySeconds": 60,
+  "virtualUsers": 30,
+  "thinkSeconds": 1,
+  "fixture": {
+    "courts": 1,
+    "slots": 8,
+    "players": 30,
+    "owners": 1
+  },
+  "mix": "search, detail, availability, preview, review, confirm, cancel; deliberately contended two-slot selections",
+  "steadyRequests": 1858,
+  "readP95Ms": 690.56,
+  "writeP95Ms": 675.17,
+  "unexpectedErrors": 0,
+  "allPhasesHttpRequests": 2006,
+  "allPhasesHttp409": 153,
+  "thresholds": {
+    "readP95Ms": 800,
+    "writeP95Ms": 1500,
+    "unexpectedErrorRate": 0.01
+  },
+  "rawPoints": "pa3-k6-steady.jsonl.gz",
+  "source": "7bd1601-compatible backend d4df9a3",
+  "result": "PASS for the documented local workload"
+}
