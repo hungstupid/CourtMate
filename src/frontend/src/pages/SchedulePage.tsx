@@ -1,3 +1,4 @@
+import { slotBlockedMessage } from '../lib/messages'
 import { useState } from 'react'
 import { Link, useSearchParams } from 'react-router'
 import {
@@ -918,9 +919,7 @@ function DailySchedule({ court, day }: { court: Court; day: string }) {
                     <Badge
                       status={
                         slot
-                          ? !slot.published
-                            ? 'UNPUBLISHED'
-                            : slot.status
+                          ? slot.status
                           : row.kind === 'gap'
                             ? 'UNPUBLISHED'
                             : 'BLOCKED'
@@ -934,7 +933,9 @@ function DailySchedule({ court, day }: { court: Court; day: string }) {
                           ? 'Bảo trì · Không nhận booking'
                           : row.kind === 'gap'
                             ? 'Chưa công bố'
-                            : 'Slot của sân'}
+                            : slot?.status === 'BLOCKED'
+                              ? slotBlockedMessage(slot)
+                              : 'Slot của sân'}
                     </span>
                     <div className="actions">
                       {booking ? (

@@ -1,4 +1,4 @@
-import type { Booking, Offer } from './types'
+import type { Booking, Offer, Slot } from './types'
 
 export function cancellationMessage(booking: Booking) {
   if (booking.status === 'CANCELLED') return 'Lượt đặt đã được hủy.'
@@ -18,4 +18,17 @@ export function offerMessage(offer: Offer) {
   if (offer.reason?.includes('below'))
     return 'Giá ưu đãi phải thấp hơn giá thường hiện tại. Cấu hình được giữ để kiểm tra lại.'
   return 'Đang chờ sân và slot đủ điều kiện: còn hoạt động, đã công bố, trống và không bị chặn. Cấu hình ưu đãi được giữ nguyên.'
+}
+
+
+const slotBlockedReasons: Record<string, string> = {
+  MAINTENANCE: 'Sân đang bảo trì',
+  OWNER_BLOCKED: 'Chủ sân đã chặn giờ này',
+  COURT_INACTIVE: 'Sân đã ngừng nhận đặt mới',
+  STARTED: 'Đã đến giờ chơi',
+  OUTSIDE_HOURS: 'Ngoài giờ hoạt động',
+}
+
+export function slotBlockedMessage(slot: Slot) {
+  return slotBlockedReasons[slot.blocked_reason || ''] || 'Không thể đặt giờ này'
 }

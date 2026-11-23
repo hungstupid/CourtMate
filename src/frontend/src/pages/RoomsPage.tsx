@@ -263,7 +263,7 @@ export function RoomPage() {
                 : 'Tham gia phòng'}
           </button>
         )}
-        {room.is_organizer && (
+        {room.is_organizer && room.booking_id && (
           <Link
             className="button secondary"
             to={`/bookings/${room.booking_id}`}

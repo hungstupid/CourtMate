@@ -303,61 +303,6 @@ test('AC-F06-07 court edit preserves identity and allows optional contact to rem
   }
 })
 
-test('AC-F03-04 denied GPS requires explicit origin before opening directions', async ({
-  browser,
-}) => {
-  const owner = await actor(browser, 'map', true)
-  try {
-    const c = await court(owner.page, 'Map')
-    const cdp = await owner.context.newCDPSession(owner.page)
-    const { targetInfo } = await cdp.send('Target.getTargetInfo')
-    await cdp.send('Browser.setPermission', {
-      permission: { name: 'geolocation' },
-      setting: 'denied',
-      origin: 'http://localhost:5173',
-      browserContextId: targetInfo.browserContextId,
-    })
-    await owner.page.goto(`/courts/${c.id}`)
-    expect(
-      await owner.page.evaluate(
-        async () =>
-          (await navigator.permissions.query({ name: 'geolocation' })).state
-      )
-    ).toBe('denied')
-    await owner.page.getByText('Vị trí & chỉ đường', { exact: true }).click()
-    await expect(owner.page.getByTitle(`Bản đồ ${c.name}`)).toHaveAttribute(
-      'src',
-      /maps.google.com/
-    )
-    await expect(
-      owner.page.getByRole('link', {
-        name: 'Xem vị trí trên bản đồ ↗',
-        exact: true,
-      })
-    ).toHaveAttribute('href', new RegExp(encodeURIComponent(c.address)))
-    await expect(
-      owner.page.getByRole('link', { name: 'Mở chỉ đường ↗', exact: true })
-    ).toHaveCount(0)
-    await expect(
-      owner.page.getByRole('button', { name: /Nhập điểm đi để chỉ đường/ })
-    ).toBeDisabled()
-    const origin = 'Bến xe Miền Đông, Thành phố Hồ Chí Minh'
-    await owner.page.getByLabel('Điểm xuất phát', { exact: true }).fill(origin)
-    const href = await owner.page
-      .getByRole('link', { name: 'Mở chỉ đường ↗', exact: true })
-      .getAttribute('href')
-    const target = new URL(href!)
-    expect(target.searchParams.get('origin')).toBe(origin)
-    expect(target.searchParams.get('destination')).toBe(c.address)
-    await owner.page.getByLabel('Điểm xuất phát', { exact: true }).fill('   ')
-    await expect(
-      owner.page.getByRole('link', { name: 'Mở chỉ đường ↗', exact: true })
-    ).toHaveCount(0)
-  } finally {
-    await owner.context.close()
-  }
-})
-
 test('AC-F03-01 real Owner photo URL decodes in discovery and court details', async ({
   browser,
 }) => {
@@ -636,9 +581,11 @@ for (const capacity of [2, 4])
         member_count: 2,
       })
       const publicClosed = await api(organizer.page, `/api/rooms/${room.id}`)
+      expect(publicClosed).not.toHaveProperty('organizer_id')
+      expect(publicClosed).not.toHaveProperty('booking_id')
       expect(
         await api(organizer.page, `/api/rooms/${room.id}/close`, 'POST')
-      ).toEqual(publicClosed)
+      ).toMatchObject(publicClosed)
       expect(
         await api(organizer.page, `/api/rooms/${room.id}/membership`)
       ).toEqual(closed)

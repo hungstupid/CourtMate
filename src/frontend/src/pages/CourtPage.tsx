@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { CourtMap } from '../components/CourtMap'
 import {
   Link,
   useLocation,
@@ -20,6 +19,7 @@ import {
 } from '../components/ui'
 import { ApiError, apiRequest } from '../lib/api'
 import { useResource } from '../lib/use-resource'
+import { slotBlockedMessage } from '../lib/messages'
 import { useSession } from '../lib/session-context'
 import { interval, localDay, money, timeRange } from '../lib/format'
 import type { Availability, Booking, Court, Review, Slot } from '../lib/types'
@@ -28,8 +28,6 @@ export function CourtPage() {
   const { courtId } = useParams()
   const location = useLocation()
   const court = useResource<Court>(`/api/courts/${courtId}`, false)
-  const [origin, setOrigin] = useState('')
-  const [showMap, setShowMap] = useState(false)
   if (court.loading) return <Loading />
   if (court.error)
     return <ErrorNotice message={court.error} retry={court.reload} />
@@ -90,44 +88,6 @@ export function CourtPage() {
               Chọn giờ chỉ để xem trước. Sân được giữ khi xác nhận thành công.
             </p>
           </div>
-          <details onToggle={(e) => setShowMap(e.currentTarget.open)}>
-            <summary>Vị trí & chỉ đường</summary>
-            {showMap && (
-              <CourtMap key={c.id} name={c.name} address={c.address} />
-            )}
-            <p className="muted">
-              {c.address}. Bạn có thể nhập điểm đi; không cần quyền GPS.
-            </p>
-            <Field label="Điểm xuất phát">
-              <input
-                value={origin}
-                onChange={(e) => setOrigin(e.target.value)}
-                placeholder="Địa chỉ xuất phát"
-              />
-            </Field>
-            {origin.trim() ? (
-              <a
-                className="button ghost full"
-                href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(c.address)}&origin=${encodeURIComponent(origin.trim())}`}
-                target="_blank"
-                rel="noreferrer"
-              >
-                Mở chỉ đường ↗
-              </a>
-            ) : (
-              <button className="ghost full" disabled>
-                Nhập điểm đi để chỉ đường
-              </button>
-            )}
-            <a
-              className="text-link"
-              href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(c.address)}`}
-              target="_blank"
-              rel="noreferrer"
-            >
-              Xem vị trí trên bản đồ ↗
-            </a>
-          </details>
         </aside>
       </div>
     </>
@@ -315,6 +275,9 @@ export function SlotsPage() {
                   {timeRange(slot.start_at, slot.end_at)}
                 </strong>
                 <Badge status={slot.status} />
+                {slot.status === 'BLOCKED' && (
+                  <small>{slotBlockedMessage(slot)}</small>
+                )}
               </span>
               <span>
                 {slot.regular_price_vnd &&

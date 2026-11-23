@@ -37,6 +37,7 @@ export type Slot = {
   blocked: boolean
   version: number
   status: string
+  blocked_reason?: string
   offer?: Offer | null
 }
 export type Maintenance = { id: string; start_at: string; end_at: string }
@@ -84,8 +85,8 @@ export type Booking = {
 }
 export type Room = {
   id: string
-  booking_id: string
-  organizer_id: string
+  booking_id?: string
+  organizer_id?: string
   court_id: string
   court_name: string
   sport: string
