@@ -114,6 +114,10 @@ history. Reconcile such rows from authoritative records before retrying. The
 checked build runs this migration before its readiness probe can succeed.
 The previous API binary expects both old columns, so allow for interrupted
 reads during the schema switch and validate the live SHA and `/ready` immediately.
+Render requires a change under `src/backend` for this service to auto-deploy
+after CI passes. If a frontend-only follow-up leaves Render on an older backend
+SHA, compare the deployed backend with the tested source before deciding whether
+to deploy the latest branch revision. Read the runtime SHA from `/health`.
 
 Rehearse rollback against a copy. For a cloud rollback, pause writes during
 the operator change window and downgrade only to `0006_room_closure_reason`

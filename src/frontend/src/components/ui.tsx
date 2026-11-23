@@ -249,11 +249,10 @@ export function Modal({
   const id = useId()
   useEffect(() => {
     const dialog = ref.current
-    const previous = document.activeElement as HTMLElement | null
+    const target = returnFocusTo?.current ?? (document.activeElement as HTMLElement | null)
     dialog?.showModal()
     return () => {
       dialog?.close()
-      const target = returnFocusTo?.current ?? previous
       target?.focus()
     }
   }, [returnFocusTo])

@@ -84,6 +84,7 @@ The 17 Must functional test groups were executed in the isolated setup and passe
 | D-04, review keyboard focus | Medium | Pending quote disabled the dialog trigger and Escape lost focus. Explicit focus return added. | Business integration and three widths |
 | D-05, harness mismatch | Test only | Two tests compared public and protected projections as identical and one clicked a duplicate link name. Corrected API comparison and scoped navigation. | 50/50 rerun |
 | D-06, F09 test clock | Test only | Initial fixture reviewed before its configured window. Fixture now uses an eligible instant. | 242/242 rerun |
+| D-07, focus-ref lint | Build gate | The focus effect read a React ref during cleanup. It now captures the trigger before opening the dialog. | Lint, typecheck, build and all six business browser cases passed after the change. |
 
 ### Service coverage and automated system tests
 
