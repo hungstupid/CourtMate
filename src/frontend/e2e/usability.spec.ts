@@ -995,6 +995,7 @@ test('UC-09 finishing a modal save clears a browser Back blocker without a stale
     const c = await court(owner.page, 'Modal save')
     await owner.page.goto('/owner')
     await owner.page
+      .getByRole('navigation', { name: 'Điều hướng chính' })
       .getByRole('link', { name: 'Lịch sân', exact: true })
       .click()
     await owner.page
