@@ -7,6 +7,7 @@ from uuid import UUID
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
+from app.core.settings import get_settings
 from app.db.models import Court, Slot, SlotOffer, User
 from app.services.common import Clock, database_now, fail, lock_court, slot_state
 
@@ -51,6 +52,8 @@ def effective(
 
 
 def current(session: Session, court: Court, slot: Slot, now: datetime) -> dict | None:
+    if not get_settings().slot_offers_enabled:
+        return None
     offer = session.scalar(
         select(SlotOffer).where(
             SlotOffer.slot_id == slot.id, SlotOffer.status.in_(["SCHEDULED", "ACTIVE"])

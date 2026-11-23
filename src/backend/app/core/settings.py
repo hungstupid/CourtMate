@@ -20,6 +20,7 @@ class Settings(BaseSettings):
     database_url: SecretStr = SecretStr("")
     migration_database_url: SecretStr = SecretStr("")
     test_database_url: SecretStr = SecretStr("")
+    slot_offers_enabled: bool = True
     firebase_project_id: str = ""
     firebase_service_account_json: SecretStr = SecretStr("")
     firebase_auth_emulator_host: str = ""

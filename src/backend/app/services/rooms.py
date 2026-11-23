@@ -3,6 +3,7 @@
 from datetime import datetime
 from uuid import UUID
 
+from fastapi import HTTPException
 from sqlalchemy import func, or_, select
 from sqlalchemy.orm import Session
 
@@ -57,15 +58,25 @@ def _member_count(session: Session, room: Room) -> int:
     )
 
 
-def _status(room: Room, booking: Booking, count: int, now: datetime) -> str:
-    if room.closed or booking.status != "CONFIRMED" or now >= booking.start_at:
-        if not room.closed:
-            room.closed_reason = (
-                "BOOKING_CANCELLED" if booking.status != "CONFIRMED" else "PLAY_STARTED"
-            )
-        room.closed = True
-        return "CLOSED"
-    return "FULL" if count >= room.capacity else "OPEN"
+class JoinDetectedClosure(HTTPException):
+    def __init__(self) -> None:
+        super().__init__(
+            409,
+            {
+                "code": "ROOM_CLOSED",
+                "message": "The room is closed to membership changes.",
+            },
+        )
+
+
+def _closure_reason(room: Room, booking: Booking, now: datetime) -> str | None:
+    if room.closed_reason is not None:
+        return room.closed_reason
+    if booking.status == "CANCELLED":
+        return "BOOKING_CANCELLED"
+    if now >= booking.start_at:
+        return "PLAY_STARTED"
+    return None
 
 
 def _estimate(session: Session, booking: Booking, count: int) -> int | None:
@@ -111,7 +122,9 @@ def _serialize(
     viewer_id: UUID | None = None,
 ) -> dict:
     count = _member_count(session, room)
-    status = _status(room, booking, count, now)
+    reason = _closure_reason(room, booking, now)
+    room.closed_reason = reason
+    status = "CLOSED" if reason else "FULL" if count >= room.capacity else "OPEN"
     estimate = _estimate(session, booking, count)
     session.flush()
     return {
@@ -179,7 +192,6 @@ def create_room(
         booking_id=booking.id,
         organizer_id=player.id,
         capacity=capacity,
-        closed=False,
         created_at=now,
     )
     session.add(room)
@@ -191,7 +203,10 @@ def create_room(
 
 def room_detail(session: Session, room_id: UUID, clock: Clock = database_now) -> dict:
     court, booking, room = _locked_room(session, room_id)
-    return _serialize(session, court, booking, room, clock(session))
+    result = _serialize(session, court, booking, room, clock(session))
+    result.pop("organizer_id")
+    result.pop("booking_id")
+    return result
 
 
 def list_rooms(
@@ -222,15 +237,18 @@ def join_room(
     court, booking, room = _locked_room(session, room_id)
     now = clock(session)
     count = _member_count(session, room)
-    status = _status(room, booking, count, now)
-    if status == "CLOSED":
+    reason = _closure_reason(room, booking, now)
+    if reason is not None:
+        if room.closed_reason is None:
+            room.closed_reason = reason
+            raise JoinDetectedClosure()
         fail("ROOM_CLOSED", "The room is closed to membership changes.")
     if (
         session.get(RoomMember, (room.id, player.id), populate_existing=True)
         is not None
     ):
         fail("ALREADY_MEMBER", "This Player is already a member of the room.")
-    if status == "FULL":
+    if count >= room.capacity:
         fail("ROOM_FULL", "The room has no remaining place.")
     session.add(RoomMember(room_id=room.id, player_id=player.id, joined_at=now))
     session.flush()
@@ -243,7 +261,7 @@ def leave_room(
     _player(player)
     court, booking, room = _locked_room(session, room_id)
     now = clock(session)
-    if _status(room, booking, _member_count(session, room), now) == "CLOSED":
+    if _closure_reason(room, booking, now) is not None:
         fail("ROOM_CLOSED", "The room is closed to membership changes.")
     if room.organizer_id == player.id:
         fail("ORGANIZER_CANNOT_LEAVE", "The organizer must remain in the linked room.")
@@ -277,9 +295,6 @@ def close_room(
         fail("NOT_ORGANIZER", "Only this room's organizer may close it.", 403)
     now = clock(session)
     # Effective time/cancellation closure is sticky; repeated closure is idempotent.
-    _status(room, booking, _member_count(session, room), now)
-    if not room.closed:
-        room.closed_reason = "ORGANIZER_CLOSED"
-    room.closed = True
+    room.closed_reason = _closure_reason(room, booking, now) or "ORGANIZER_CLOSED"
     session.flush()
     return _serialize(session, court, booking, room, now)

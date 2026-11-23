@@ -89,13 +89,10 @@ def _locked_selection(
     if any(slot.court_id != court.id for slot in slots):
         fail("INVALID_SELECTION", "All selected slots must belong to the same court.")
     slots.sort(key=lambda slot: (slot.start_at, slot.id))
-    selected_date = slots[0].playing_date
+    selected_date = playing_date(slots[0].start_at)
     for slot in slots:
         validate_interval(slot.start_at, slot.end_at, slot=True)
-        if (
-            slot.playing_date != selected_date
-            or playing_date(slot.start_at) != selected_date
-        ):
+        if playing_date(slot.start_at) != selected_date:
             fail("INVALID_SELECTION", "Selected slots violate the date or time grid.")
         if slot.start_at <= now or slot_state(session, court, slot, now) != "AVAILABLE":
             fail("SLOT_UNAVAILABLE", "A selected slot is no longer available.")
@@ -333,9 +330,8 @@ def cancel_booking(
         )
         fail(code, reason)
     if room is not None:
-        if not room.closed:
+        if room.closed_reason is None:
             room.closed_reason = "BOOKING_CANCELLED"
-        room.closed = True
     booking.status = "CANCELLED"
     booking.cancelled_at = now
     court.version += 1

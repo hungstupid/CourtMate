@@ -74,7 +74,7 @@ def verified_identity(
         ) from error
 
 
-def current_user(
+def registered_user(
     identity: Annotated[dict[str, Any], Depends(verified_identity)],
     session: Annotated[Session, Depends(get_session, scope="function")],
 ) -> User:
@@ -90,11 +90,24 @@ def current_user(
                 "message": "Complete initial account registration before continuing.",
             },
         )
+    return user
+
+
+def current_user(
+    identity: Annotated[dict[str, Any], Depends(verified_identity)],
+    user: Annotated[User, Depends(registered_user)],
+) -> User:
     # Email belongs to Firebase; request bodies/profile edits cannot overwrite it.
     email = identity.get("email")
     if isinstance(email, str) and len(email) <= 320:
         user.registration_email = email
     return user
+
+
+def require_player_readonly(user: Annotated[User, Depends(registered_user)]) -> User:
+    # Join can commit a closure while rejecting the mutation. Identity lookup
+    # here must not sync profile fields in the same transaction.
+    return require_player(user)
 
 
 def require_owner(user: Annotated[User, Depends(current_user)]) -> User:

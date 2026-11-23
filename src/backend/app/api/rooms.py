@@ -1,12 +1,12 @@
 from typing import Annotated
 from uuid import UUID
 
-from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi import APIRouter, Depends, Query
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, ConfigDict, Field, StrictInt
 from sqlalchemy.orm import Session
 
-from app.core.auth import require_player
+from app.core.auth import require_player, require_player_readonly
 from app.db.models import User
 from app.db.session import get_session
 from app.services import rooms
@@ -22,21 +22,6 @@ ServerClock = Annotated[Clock, Depends(get_clock)]
 class RoomCreation(BaseModel):
     model_config = ConfigDict(extra="forbid")
     capacity: StrictInt = Field(ge=2, le=60)
-
-
-def _closed_response(error: HTTPException) -> JSONResponse:
-    """Commit derived closure even when an otherwise read-only mutation is rejected.
-
-    Room services check CLOSED before touching membership. Returning the same
-    409 body lets the function-scope Session commit only that sticky closed flag
-    (and harmless identity provisioning), so a later clock correction cannot
-    reopen the room. Every other failure still propagates and rolls back.
-    """
-    if isinstance(error.detail, dict) and error.detail.get("code") == "ROOM_CLOSED":
-        return JSONResponse(
-            status_code=409, content={"detail": error.detail}, headers=error.headers
-        )
-    raise error
 
 
 @router.post("/bookings/{booking_id}/room", status_code=201)
@@ -65,19 +50,23 @@ def detail(room_id: UUID, session: Database, clock: ServerClock):
 
 
 @router.post("/rooms/{room_id}/join")
-def join(room_id: UUID, session: Database, player: Player, clock: ServerClock):
+def join(
+    room_id: UUID,
+    session: Database,
+    player: Annotated[User, Depends(require_player_readonly)],
+    clock: ServerClock,
+):
     try:
         return rooms.join_room(session, player, room_id, clock)
-    except HTTPException as error:
-        return _closed_response(error)
+    except rooms.JoinDetectedClosure as error:
+        # The authenticated lookup is read-only and the service checks closure
+        # before any roster mutation. Only this newly detected reason commits.
+        return JSONResponse(status_code=409, content={"detail": error.detail})
 
 
 @router.post("/rooms/{room_id}/leave")
 def leave(room_id: UUID, session: Database, player: Player, clock: ServerClock):
-    try:
-        return rooms.leave_room(session, player, room_id, clock)
-    except HTTPException as error:
-        return _closed_response(error)
+    return rooms.leave_room(session, player, room_id, clock)
 
 
 @router.get("/rooms/{room_id}/membership")

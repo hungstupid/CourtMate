@@ -9,12 +9,23 @@ from pydantic import BaseModel, ConfigDict, Field, StrictInt, field_validator
 from sqlalchemy.orm import Session
 
 from app.core.auth import require_owner
+from app.core.settings import get_settings
 from app.db.models import User
 from app.db.session import get_session
 from app.services import offers
-from app.services.common import Clock, get_clock
+from app.services.common import Clock, fail, get_clock
 
-router = APIRouter(prefix="/api/owner", tags=["slot offers"])
+
+def require_offers_enabled() -> None:
+    if not get_settings().slot_offers_enabled:
+        fail("OFFERS_DISABLED", "Slot offers are unavailable.", 404)
+
+
+router = APIRouter(
+    prefix="/api/owner",
+    tags=["slot offers"],
+    dependencies=[Depends(require_offers_enabled)],
+)
 Database = Annotated[Session, Depends(get_session, scope="function")]
 Owner = Annotated[User, Depends(require_owner)]
 ServerClock = Annotated[Clock, Depends(get_clock)]

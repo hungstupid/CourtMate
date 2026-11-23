@@ -18,6 +18,8 @@ from app.db.models import (
     Court,
     MaintenanceBlock,
     OperatingHours,
+    Room,
+    RoomMember,
     Slot,
     SlotClaim,
     SlotOffer,
@@ -322,10 +324,50 @@ def test_real_http_public_room_player_membership_and_atomic_cancel(
     left = client.post(room_path + "/leave", headers=member)
     assert left.status_code == 200 and left.json()["status"] == "OPEN"
     assert client.post(room_path + "/join", headers=member).status_code == 200
-    # Persist closure on the rejected start-time request, including a later
-    # clock correction. Only this injected test clock moves, never system time.
+    # Force a detectable side effect in the auth path unless the request
+    # rolls back (or looks up identity read-only for the closure exception).
+    room_id = uuid.UUID(room["id"])
+    member_id = uuid.UUID(client.get("/api/me", headers=member).json()["id"])
+    owner_id = uuid.UUID(client.get("/api/me", headers=owner).json()["id"])
+    booking_id = uuid.UUID(booking["id"])
+    with Session(database_engine) as observer, observer.begin():
+        observer.get(User, member_id).registration_email = None
+        observer.get(User, owner_id).registration_email = None
+
+    def assert_unchanged(reason):
+        with Session(database_engine) as observer:
+            stored = observer.get(Room, room_id)
+            assert stored.closed_reason == reason
+            assert stored.capacity == 2
+            assert observer.get(User, member_id).registration_email is None
+            assert observer.get(User, owner_id).registration_email is None
+            actual_booking = observer.get(Booking, booking_id)
+            assert actual_booking.status == "CONFIRMED"
+            assert actual_booking.total_price_vnd == 100_001
+            assert (
+                observer.get(SlotClaim, uuid.UUID(slot.json()["id"])).booking_id
+                == booking_id
+            )
+            assert observer.get(RoomMember, (room_id, member_id)) is not None
+            assert (
+                observer.scalar(
+                    select(func.count())
+                    .select_from(RoomMember)
+                    .where(RoomMember.room_id == room_id)
+                )
+                == 2
+            )
+
+    assert client.post(room_path + "/join", headers=member).status_code == 409
+    assert_unchanged(None)
     app.dependency_overrides[get_clock] = lambda: lambda session: START
+    assert client.post(room_path + "/join", headers=owner).status_code == 403
     assert client.post(room_path + "/leave", headers=member).status_code == 409
+    assert_unchanged(None)
+    assert client.post(room_path + "/join", headers=member).status_code == 409
+    assert_unchanged("PLAY_STARTED")
+    assert client.post(room_path + "/join", headers=member).status_code == 409
+    assert_unchanged("PLAY_STARTED")
     app.dependency_overrides[get_clock] = lambda: lambda session: NOW
     assert client.get(room_path).json()["status"] == "CLOSED"
     cancelled = client.post(f"/api/bookings/{booking['id']}/cancel", headers=organizer)
@@ -334,10 +376,8 @@ def test_real_http_public_room_player_membership_and_atomic_cancel(
     assert public["status"] == "CLOSED" and public["member_count"] == 2
     assert client.post(room_path + "/leave", headers=member).status_code == 409
     assert client.post(room_path + "/join", headers=member).status_code == 409
-    from app.db.models import Room
-
     with Session(database_engine) as observer:
-        assert observer.get(Room, uuid.UUID(room["id"])).closed is True
+        assert observer.get(Room, uuid.UUID(room["id"])).closed_reason == "PLAY_STARTED"
         assert (
             observer.scalar(
                 select(func.count())

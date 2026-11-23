@@ -27,7 +27,9 @@ from app.services.common import (
     in_hours,
     lock_court,
     playing_date,
+    playing_day_bounds,
     slot_state,
+    slot_state_and_reason,
     validate_interval,
 )
 
@@ -156,7 +158,7 @@ def update_court(
                 Booking.court_id == court.id,
                 Booking.status == "CONFIRMED",
                 Booking.start_at > now,
-                Room.closed.is_(False),
+                Room.closed_reason.is_(None),
                 Room.capacity > 2 * values["max_players"],
             )
             .limit(1)
@@ -274,7 +276,6 @@ def _validate_slot(session: Session, court: Court, slot: Slot, now: datetime) ->
     slot.start_at, slot.end_at = validate_interval(
         slot.start_at, slot.end_at, slot=True
     )
-    slot.playing_date = playing_date(slot.start_at)
     _price(slot.price_vnd)
     if type(slot.published) is not bool or type(slot.blocked) is not bool:
         fail("INVALID_SLOT", "Slot flags must be booleans.", status=422)
@@ -373,7 +374,7 @@ def update_slot(
         setattr(candidate, key, value)
     with session.no_autoflush:
         _validate_slot(session, court, candidate, clock(session))
-    for key in SLOT_FIELDS | {"playing_date"}:
+    for key in SLOT_FIELDS:
         setattr(slot, key, getattr(candidate, key))
     slot.version += 1
     court.version += 1
@@ -444,7 +445,6 @@ def dump_slot(slot: Slot, state: str | None = None) -> dict[str, Any]:
         for key in [
             "id",
             "court_id",
-            "playing_date",
             "start_at",
             "end_at",
             "price_vnd",
@@ -453,6 +453,7 @@ def dump_slot(slot: Slot, state: str | None = None) -> dict[str, Any]:
             "blocked",
         ]
     }
+    result["playing_date"] = playing_date(slot.start_at)
     if state is not None:
         result["status"] = state
     return result
@@ -465,17 +466,17 @@ def availability(
     if not court.active:
         fail("NOT_FOUND", "Active court not found.", 404)
     now = clock(session)
+    lower, upper = playing_day_bounds(day)
     slots = session.scalars(
         select(Slot)
         .where(
             Slot.court_id == court.id,
-            Slot.playing_date == day,
+            Slot.start_at >= lower,
+            Slot.start_at < upper,
             Slot.published.is_(True),
         )
         .order_by(Slot.start_at, Slot.id)
     ).all()
-    lower = datetime.combine(day, time.min, LOCAL_TZ)
-    upper = lower + timedelta(days=1)
     blocks = session.scalars(
         select(MaintenanceBlock)
         .where(
@@ -524,7 +525,9 @@ def publish_batch(
         )
         with session.no_autoflush:
             _validate_slot(session, court, candidate, now)
-        if candidates and candidate.playing_date != candidates[0].playing_date:
+        if candidates and playing_date(candidate.start_at) != playing_date(
+            candidates[0].start_at
+        ):
             fail(
                 "BATCH_DATE",
                 "Every draft row must use the selected playing date.",
@@ -571,7 +574,15 @@ def matching_slots(
 
 
 def quoted_slot(session: Session, court: Court, slot: Slot, now: datetime) -> dict:
-    result = dump_slot(slot, slot_state(session, court, slot, now))
+    state, reason = slot_state_and_reason(session, court, slot, now)
+    if state != "BOOKED":
+        if not slot.published:
+            state = "UNPUBLISHED"
+        elif state == "UNAVAILABLE":
+            state = "BLOCKED"
+    result = dump_slot(slot, state)
+    if state == "BLOCKED":
+        result["blocked_reason"] = reason
     price, offer = offers.quote(session, court, slot, now)
     result.update(regular_price_vnd=slot.price_vnd, price_vnd=price, offer=offer)
     return result

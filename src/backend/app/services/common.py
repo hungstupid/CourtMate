@@ -57,6 +57,11 @@ def playing_date(start: datetime) -> date:
     return start.astimezone(LOCAL_TZ).date()
 
 
+def playing_day_bounds(day: date) -> tuple[datetime, datetime]:
+    lower = datetime.combine(day, datetime.min.time(), LOCAL_TZ)
+    return lower, lower + timedelta(days=1)
+
+
 def validate_interval(
     start: datetime, end: datetime, slot: bool = False
 ) -> tuple[datetime, datetime]:
@@ -99,6 +104,12 @@ def in_hours(session: Session, court: Court, start: datetime, end: datetime) -> 
 
 
 def slot_state(session: Session, court: Court, slot: Slot, now: datetime) -> str:
+    return slot_state_and_reason(session, court, slot, now)[0]
+
+
+def slot_state_and_reason(
+    session: Session, court: Court, slot: Slot, now: datetime
+) -> tuple[str, str | None]:
     occupied = session.get(SlotClaim, slot.id)
     conflict = session.scalar(
         select(Booking.id)
@@ -111,7 +122,7 @@ def slot_state(session: Session, court: Court, slot: Slot, now: datetime) -> str
         .limit(1)
     )
     if occupied or conflict:
-        return "BOOKED"
+        return "BOOKED", None
     maintenance = session.scalar(
         select(MaintenanceBlock.id)
         .where(
@@ -121,13 +132,16 @@ def slot_state(session: Session, court: Court, slot: Slot, now: datetime) -> str
         )
         .limit(1)
     )
-    if slot.blocked or maintenance:
-        return "BLOCKED"
-    if (
-        not court.active
-        or not slot.published
-        or slot.start_at <= now
-        or not in_hours(session, court, slot.start_at, slot.end_at)
-    ):
-        return "UNAVAILABLE"
-    return "AVAILABLE"
+    if maintenance:
+        return "BLOCKED", "MAINTENANCE"
+    if slot.blocked:
+        return "BLOCKED", "OWNER_BLOCKED"
+    if not court.active:
+        return "UNAVAILABLE", "COURT_INACTIVE"
+    if not slot.published:
+        return "UNAVAILABLE", "UNPUBLISHED"
+    if slot.start_at <= now:
+        return "UNAVAILABLE", "STARTED"
+    if not in_hours(session, court, slot.start_at, slot.end_at):
+        return "UNAVAILABLE", "OUTSIDE_HOURS"
+    return "AVAILABLE", None

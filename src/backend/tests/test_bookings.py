@@ -13,6 +13,7 @@ from sqlalchemy.orm import Session
 from app.api.bookings import Confirmation, Selection
 from app.db.models import Booking, BookingSlot, SlotClaim, User
 from app.services import bookings, courts
+from app.services.common import playing_date
 
 NOW = datetime(2035, 1, 1, tzinfo=UTC)
 START = NOW + timedelta(days=1, hours=3)
@@ -113,7 +114,7 @@ def test_owner_publish_review_confirm_history_and_whole_cancel(booking_data):
         row["id"] for row in bookings.player_bookings(d.session, d.player, fixed_clock)
     ] == [booking["id"]]
     view = courts.availability(
-        d.session, d.court.id, first.playing_date, clock=fixed_clock
+        d.session, d.court.id, playing_date(first.start_at), clock=fixed_clock
     )
     assert [slot["status"] for slot in view["slots"]] == ["BOOKED", "BOOKED"]
     result = bookings.cancel_booking(d.session, d.player, booking["id"], fixed_clock)
@@ -122,7 +123,7 @@ def test_owner_publish_review_confirm_history_and_whole_cancel(booking_data):
     assert count(d.session, SlotClaim) == 0
     assert count(d.session, BookingSlot) == 2
     view = courts.availability(
-        d.session, d.court.id, first.playing_date, clock=fixed_clock
+        d.session, d.court.id, playing_date(first.start_at), clock=fixed_clock
     )
     assert [slot["status"] for slot in view["slots"]] == ["AVAILABLE", "AVAILABLE"]
 
@@ -190,7 +191,7 @@ def test_unavailable_slots_never_create_booking(booking_data, mode):
         from app.db.models import OperatingHours
 
         window = d.session.get(
-            OperatingHours, (d.court.id, slot.playing_date.weekday())
+            OperatingHours, (d.court.id, playing_date(slot.start_at).weekday())
         )
         window.closes_minute = 60
         d.session.flush()

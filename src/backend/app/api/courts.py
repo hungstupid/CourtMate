@@ -17,10 +17,17 @@ from sqlalchemy import or_, select
 from sqlalchemy.orm import Session
 
 from app.core.auth import require_owner
+from app.core.settings import get_settings
 from app.db.models import Court, MaintenanceBlock, OperatingHours, Slot, User
 from app.db.session import get_session
 from app.services import courts
-from app.services.common import LOCAL_TZ, Clock, get_clock, lock_court
+from app.services.common import (
+    LOCAL_TZ,
+    Clock,
+    get_clock,
+    lock_court,
+    playing_day_bounds,
+)
 
 router = APIRouter(prefix="/api", tags=["courts and availability"])
 Database = Annotated[Session, Depends(get_session, scope="function")]
@@ -308,8 +315,9 @@ def owner_slots(
     now = clock(session)
     query = select(Slot).where(Slot.court_id == court.id)
     if day is not None:
-        query = query.where(Slot.playing_date == day)
-    rows = session.scalars(query.order_by(Slot.playing_date, Slot.start_at, Slot.id))
+        lower, upper = playing_day_bounds(day)
+        query = query.where(Slot.start_at >= lower, Slot.start_at < upper)
+    rows = session.scalars(query.order_by(Slot.start_at, Slot.id))
     return [courts.quoted_slot(session, court, slot, now) for slot in rows]
 
 
@@ -434,6 +442,8 @@ def batch(
 def current_deals(session: Database, clock: ServerClock):
     from app.db.models import SlotOffer
 
+    if not get_settings().slot_offers_enabled:
+        return []
     ids = session.execute(
         select(Slot.court_id, Slot.id)
         .join(SlotOffer, SlotOffer.slot_id == Slot.id)

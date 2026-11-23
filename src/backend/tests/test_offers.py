@@ -401,3 +401,32 @@ def test_automatic_pending_inactive_court_recovers_same_offer_without_changing_b
             )
         assert session.get(Booking, booked["id"]).status == "CONFIRMED"
         assert session.get(Booking, booked["id"]).total_price_vnd == 220_000
+
+
+def test_disabled_f09_preserves_offer_but_booking_uses_regular_quote(
+    race_data, monkeypatch
+):
+    from app.core.settings import get_settings
+
+    data = race_data
+    now = races.START - timedelta(hours=2)
+    configured = configure(data, lead=Decimal("24"), now=now)
+    selection = data["slots"][:1]
+    with Session(data["engine"]) as session, session.begin():
+        user = session.get(User, data["players"][0])
+        discounted = bookings.review_booking(
+            session, user, selection, lambda _: now
+        )
+        assert discounted["total_price_vnd"] == 80_000
+
+    monkeypatch.setattr(get_settings(), "slot_offers_enabled", False)
+    with Session(data["engine"]) as session, session.begin():
+        user = session.get(User, data["players"][0])
+        regular = bookings.review_booking(session, user, selection, lambda _: now)
+        assert regular["total_price_vnd"] == 100_000
+        assert regular["quote"] != discounted["quote"]
+        saved = bookings.confirm_booking(
+            session, user, selection, regular["quote"], lambda _: now
+        )
+        assert saved["total_price_vnd"] == 100_000
+        assert session.get(SlotOffer, configured["id"]).status == "ACTIVE"

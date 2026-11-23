@@ -189,7 +189,7 @@ def test_slot_day_midnight_and_aware_instants(db_session, graph):
     slot = courts.publish_slot(
         db_session, owner, court.id, slot_values(23, 60), clock=clock
     )
-    assert slot.playing_date == DAY
+    assert courts.dump_slot(slot)["playing_date"] == DAY
     with pytest.raises(HTTPException) as error:
         courts.publish_slot(
             db_session, owner, court.id, slot_values(22, 180), clock=clock
@@ -244,7 +244,7 @@ def test_effective_availability_block_maintenance_unpublish_and_past(db_session,
             db_session, court.id, DAY, clock=lambda _: start(8)
         )["slots"]
     }
-    assert states[available.id] == "UNAVAILABLE"
+    assert states[available.id] == "BLOCKED"
     courts.remove_maintenance(db_session, owner, maintenance.id, clock=clock)
     assert db_session.get(MaintenanceBlock, maintenance.id) is None
 
@@ -447,7 +447,8 @@ def test_owner_readback_includes_unpublished_slots_and_inactive_court_after_relo
     assert [row["id"] for row in response.json()] == [str(value) for value in slot_ids]
     assert response.json()[1]["published"] is False
     assert response.json()[1]["blocked"] is True
-    assert response.json()[0]["status"] == "UNAVAILABLE"
+    assert response.json()[0]["status"] == "BLOCKED"
+    assert response.json()[0]["blocked_reason"] == "COURT_INACTIVE"
     filtered = api_client.get(f"/api/owner/courts/{court_id}/slots?date={DAY}").json()
     assert [row["id"] for row in filtered] == [str(value) for value in slot_ids[:2]]
     response = api_client.get(f"/api/owner/courts/{court_id}/maintenance")

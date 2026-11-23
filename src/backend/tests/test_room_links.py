@@ -67,7 +67,6 @@ def linked_room(db_session):
         booking_id=booking.id,
         organizer_id=organizer.id,
         capacity=16,
-        closed=False,
         created_at=NOW,
     )
     db_session.add(room)
@@ -141,7 +140,7 @@ def test_capacity_change_allows_effectively_closed_room_and_preserves_history(
     d = linked_room
     now = NOW
     if lifecycle == "closed":
-        d.room.closed = True
+        d.room.closed_reason = "ORGANIZER_CLOSED"
         d.session.flush()
     elif lifecycle == "cancelled":
         bookings.cancel_booking(d.session, d.organizer, d.booking.id, clock)
@@ -170,7 +169,7 @@ def test_noninvalidating_capacity_and_other_court_changes_remain_allowed(linked_
     assert d.room.capacity == 16
     courts.update_court(d.session, d.owner, d.court.id, {"active": False}, clock=clock)
     assert d.booking.status == "CONFIRMED"
-    assert d.room.closed is False
+    assert d.room.closed_reason is None
 
 
 def test_whole_booking_cancellation_closes_room_and_retains_members_and_prices(
@@ -182,7 +181,10 @@ def test_whole_booking_cancellation_closes_room_and_retains_members_and_prices(
     accepted_total = d.booking.total_price_vnd
     result = bookings.cancel_booking(d.session, d.organizer, d.booking.id, clock)
     assert result["status"] == "CANCELLED"
-    assert d.session.get(Room, d.room.id, populate_existing=True).closed is True
+    assert (
+        d.session.get(Room, d.room.id, populate_existing=True).closed_reason
+        == "BOOKING_CANCELLED"
+    )
     assert d.booking.cancelled_at == NOW
     assert d.booking.total_price_vnd == accepted_total == 100_000
     assert member_count(d) == 2
@@ -207,6 +209,6 @@ def test_failed_cancellation_leaves_room_members_and_active_claims(linked_room, 
         bookings.cancel_booking(d.session, actor, d.booking.id, lambda _: now)
     assert error.value.status_code == (403 if case == "wrong-player" else 409)
     assert d.booking.status == "CONFIRMED"
-    assert d.room.closed is False
+    assert d.room.closed_reason is None
     assert member_count(d) == 1
     assert d.session.get(SlotClaim, d.slot.id).booking_id == d.booking.id

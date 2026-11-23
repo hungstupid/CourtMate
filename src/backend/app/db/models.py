@@ -1,12 +1,11 @@
 import uuid
-from datetime import date, datetime
+from datetime import datetime
 from decimal import Decimal
 
 from sqlalchemy import (
     BigInteger,
     Boolean,
     CheckConstraint,
-    Date,
     DateTime,
     ForeignKey,
     ForeignKeyConstraint,
@@ -109,8 +108,8 @@ class Slot(Base):
             name="ck_slot_grid",
         ),
         CheckConstraint(
-            "playing_date = (start_at AT TIME ZONE 'Asia/Ho_Chi_Minh')::date "
-            "AND end_at <= ((playing_date + 1)::timestamp "
+            "end_at <= (((start_at AT TIME ZONE 'Asia/Ho_Chi_Minh')::date + 1)"
+            "::timestamp "
             "AT TIME ZONE 'Asia/Ho_Chi_Minh')",
             name="ck_slot_playing_date",
         ),
@@ -118,7 +117,6 @@ class Slot(Base):
     )
     id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4)
     court_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("courts.id"))
-    playing_date: Mapped[date] = mapped_column(Date)
     start_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
     end_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
     price_vnd: Mapped[int] = mapped_column(BigInteger)
@@ -213,6 +211,11 @@ class Room(Base):
     __tablename__ = "rooms"
     __table_args__ = (
         CheckConstraint("capacity BETWEEN 2 AND 60", name="ck_room_capacity"),
+        CheckConstraint(
+            "closed_reason IN "
+            "('ORGANIZER_CLOSED', 'BOOKING_CANCELLED', 'PLAY_STARTED')",
+            name="ck_room_closed_reason",
+        ),
     )
     id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4)
     booking_id: Mapped[uuid.UUID] = mapped_column(
@@ -220,7 +223,6 @@ class Room(Base):
     )
     organizer_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("users.id"))
     capacity: Mapped[int] = mapped_column(Integer)
-    closed: Mapped[bool] = mapped_column(Boolean, default=False, server_default="false")
     closed_reason: Mapped[str | None] = mapped_column(String(32))
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.clock_timestamp()

@@ -215,7 +215,7 @@ def test_join_and_cancellation_are_serialized_and_end_closed(race_data):
     assert results[0]["ok"] or results[0]["status"] == 409
     with Session(race_data["engine"]) as session:
         assert session.get(Booking, booking_id).status == "CANCELLED"
-        assert session.get(Room, room_id).closed is True
+        assert session.get(Room, room_id).closed_reason == "BOOKING_CANCELLED"
         state = rooms.room_detail(session, room_id, clock=races.fixed_clock)
         assert state["status"] == "CLOSED"
         joined = session.get(RoomMember, (room_id, joining_player)) is not None
@@ -351,7 +351,7 @@ def test_join_waiting_behind_cancellation_cannot_commit_membership(race_data):
     assert future.result(timeout=1) == 409
     with Session(engine) as session:
         assert session.get(RoomMember, (room_id, player_id)) is None
-        assert session.get(Room, room_id).closed is True
+        assert session.get(Room, room_id).closed_reason == "BOOKING_CANCELLED"
         assert session.get(Booking, booking_id).status == "CANCELLED"
 
 

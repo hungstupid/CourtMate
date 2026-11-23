@@ -94,7 +94,6 @@ def race_data(database_engine):
             Slot(
                 id=identity,
                 court_id=court_id,
-                playing_date=START.date(),
                 start_at=START + timedelta(hours=index),
                 end_at=START + timedelta(hours=index + 1),
                 price_vnd=100_000 + index * 20_000,

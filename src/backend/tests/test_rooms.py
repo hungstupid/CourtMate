@@ -151,7 +151,7 @@ def test_closed_historical_room_prevents_second_room_for_booking(room_data):
     d = room_data
     result = create(d)
     room = d.session.get(Room, result["id"])
-    room.closed = True
+    room.closed_reason = "ORGANIZER_CLOSED"
     d.session.flush()
     with pytest.raises(HTTPException) as error:
         create(d)
@@ -223,7 +223,7 @@ def test_at_and_after_start_read_closes_irreversibly_and_join_leave_reject(
     assert before["status"] == "OPEN"
     result = rooms.room_detail(d.session, room["id"], at_start)
     assert result["status"] == "CLOSED"
-    assert d.session.get(Room, room["id"]).closed is True
+    assert d.session.get(Room, room["id"]).closed_reason == "PLAY_STARTED"
     assert rooms.room_detail(d.session, room["id"], fixed_clock)["status"] == "CLOSED"
     for service, player in (
         (rooms.join_room, d.players[2]),
@@ -240,7 +240,7 @@ def test_cancellation_closes_linked_room_and_membership_is_retained(room_data):
     room = create(d, 3)
     rooms.join_room(d.session, d.players[1], room["id"], fixed_clock)
     bookings.cancel_booking(d.session, d.players[0], d.booking.id, fixed_clock)
-    assert d.session.get(Room, room["id"]).closed is True
+    assert d.session.get(Room, room["id"]).closed_reason == "BOOKING_CANCELLED"
     assert rooms.room_detail(d.session, room["id"], fixed_clock)["status"] == "CLOSED"
     for service in (rooms.join_room, rooms.leave_room):
         with pytest.raises(HTTPException) as error:
@@ -268,7 +268,17 @@ def test_public_listing_detail_and_closed_history_do_not_disclose_private_member
     results = rooms.list_rooms(d.session, fixed_clock)
     assert len(results) == 1 and results[0]["id"] == room["id"]
     assert results[0]["status"] == "CLOSED"
-    assert not {"player_id", "email", "phone", "firebase_uid"} & results[0].keys()
+    assert (
+        not {
+            "player_id",
+            "organizer_id",
+            "booking_id",
+            "email",
+            "phone",
+            "firebase_uid",
+        }
+        & results[0].keys()
+    )
 
     assert all(
         set(member) == {"display_name", "is_organizer"}
