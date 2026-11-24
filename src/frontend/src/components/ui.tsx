@@ -365,7 +365,7 @@ function CourtImageContent({
     <img
       className="court-image"
       src={urls[0]}
-      alt={name}
+      alt={name.endsWith(' · Demo') ? `Ảnh minh họa ${sport}` : name}
       loading="lazy"
       referrerPolicy="no-referrer"
       onError={() => setBroken(true)}

@@ -237,6 +237,12 @@ export function CourtsPage() {
           <span className="muted">{resource.data.length} sân phù hợp</span>
         )}
       </div>
+      {resource.data?.some((court) => court.name.endsWith(' · Demo')) && (
+        <p className="muted">
+          Sân gắn nhãn Demo dùng ảnh, giá và lịch mẫu. Đặt thử trên CourtMate
+          không giữ chỗ tại địa điểm thật.
+        </p>
+      )}
       {resource.loading ? (
         <Loading>Đang tải sân…</Loading>
       ) : resource.error ? (
