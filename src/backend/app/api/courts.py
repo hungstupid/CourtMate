@@ -195,7 +195,8 @@ def list_courts(
         courts.dump_court(court)
         for court in session.scalars(query.order_by(Court.name, Court.id))
         if (start is None and end is None)
-        or courts.matching_slots(session, court, now, start, end)
+        or next(courts.matching_slots(session, court, now, start, end), None)
+        is not None
     ]
 
 

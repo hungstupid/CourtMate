@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { lazy, Suspense, useEffect, useRef, useState } from 'react'
 import type { ReactNode } from 'react'
 import {
   createBrowserRouter,
@@ -23,7 +23,13 @@ import { OwnerPage, CourtEditPage } from '../pages/OwnerPage'
 import { SchedulePage } from '../pages/SchedulePage'
 import { DealsPage, OffersPage } from '../pages/OffersPage'
 import { ProfilePage } from '../pages/ProfilePage'
-import { DevelopmentPage } from '../pages/DevelopmentPage'
+const DevelopmentPage = import.meta.env.DEV
+  ? lazy(() =>
+      import('../pages/DevelopmentPage').then(({ DevelopmentPage }) => ({
+        default: DevelopmentPage,
+      }))
+    )
+  : null
 
 function Protected({
   role,
@@ -252,7 +258,16 @@ function Shell() {
               </Protected>
             }
           />
-          <Route path="/development" element={<DevelopmentPage />} />
+          {DevelopmentPage && (
+            <Route
+              path="/development"
+              element={
+                <Suspense fallback={<Loading />}>
+                  <DevelopmentPage />
+                </Suspense>
+              }
+            />
+          )}
           <Route
             path="*"
             element={

@@ -1,5 +1,6 @@
 """Court scheduling operations. Caller owns the transaction and its commit."""
 
+from collections.abc import Iterator
 from datetime import date, datetime, time, timedelta
 from typing import Any
 from urllib.parse import urlsplit
@@ -558,7 +559,7 @@ def matching_slots(
     now: datetime,
     start: datetime | None = None,
     end: datetime | None = None,
-) -> list[Slot]:
+) -> Iterator[Slot]:
     query = select(Slot).where(
         Slot.court_id == court.id, Slot.published.is_(True), Slot.start_at > now
     )
@@ -566,11 +567,9 @@ def matching_slots(
         query = query.where(Slot.start_at >= start)
     if end is not None:
         query = query.where(Slot.end_at <= end)
-    return [
-        slot
-        for slot in session.scalars(query.order_by(Slot.start_at, Slot.id))
-        if slot_state(session, court, slot, now) == "AVAILABLE"
-    ]
+    for slot in session.scalars(query.order_by(Slot.start_at, Slot.id)):
+        if slot_state(session, court, slot, now) == "AVAILABLE":
+            yield slot
 
 
 def quoted_slot(session: Session, court: Court, slot: Slot, now: datetime) -> dict:

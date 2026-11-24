@@ -4,10 +4,13 @@ import AxeBuilder from '@axe-core/playwright'
 test('frontend connects to the real API', async ({ page }) => {
   const errors: string[] = []
   page.on('pageerror', (error) => errors.push(error.message))
-  await page.goto('/development')
-  await expect(
-    page.getByRole('status').filter({ hasText: /^Connected$/ })
-  ).toBeVisible({ timeout: 90000 })
+  const response = page.waitForResponse(
+    (result) => new URL(result.url()).pathname === '/api/courts',
+    { timeout: 90000 }
+  )
+  await page.goto('/')
+  expect((await response).ok()).toBe(true)
+  await expect(page.getByRole('heading', { name: 'Khám phá sân chơi' })).toBeVisible()
   expect(errors).toEqual([])
 })
 

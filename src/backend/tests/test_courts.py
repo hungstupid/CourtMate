@@ -97,6 +97,41 @@ def test_court_api_rejects_invalid_fields_and_elevation(field, value):
         CourtCreate(**court_values(**{field: value}))
 
 
+def test_time_search_stops_after_first_eligible_slot(
+    db_session, api_client, graph, monkeypatch
+):
+    owner, _, _, court = graph
+    first, second, third = courts.publish_batch(
+        db_session, owner, court.id, [slot_values(h) for h in (8, 9, 10)], clock=clock
+    )
+    first.blocked = True
+    db_session.flush()
+    evaluated = []
+    actual_slot_state = courts.slot_state
+
+    def tracked_state(session, current_court, slot, now):
+        evaluated.append(slot.id)
+        return actual_slot_state(session, current_court, slot, now)
+
+    monkeypatch.setattr(courts, "slot_state", tracked_state)
+    app.dependency_overrides[get_clock] = lambda: clock
+    try:
+        params = {"q": court.name, "start": first.start_at.isoformat()}
+        response = api_client.get("/api/courts", params=params)
+        assert response.status_code == 200
+        assert [row["id"] for row in response.json()] == [str(court.id)]
+        assert evaluated == [first.id, second.id]
+
+        preview = api_client.get(f"/api/courts/{court.id}/preview", params=params)
+        assert preview.status_code == 200
+        assert [row["id"] for row in preview.json()["slots"]] == [
+            str(second.id),
+            str(third.id),
+        ]
+    finally:
+        app.dependency_overrides.pop(get_clock, None)
+
+
 @pytest.mark.parametrize("value", [0, -1, 2.5, True, "100000"])
 def test_slot_quote_requires_positive_whole_vnd(value):
     with pytest.raises(ValidationError):
