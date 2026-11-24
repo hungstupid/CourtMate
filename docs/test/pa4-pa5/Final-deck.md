@@ -103,5 +103,5 @@ T05 Nexora · Introduction to Software Engineering · HCMUS
 ## Questions and product handoff
 
 - [CourtMate live application](https://courtmate-court-mate.vercel.app)
-- [Release candidate and CI](https://github.com/hungstupid/CourtMate/pull/98)
+- [Release candidate and CI](https://github.com/hungstupid/CourtMate/pull/100)
 - Ask about stale quotes, the exact six-hour cancellation boundary or recovery after a schema rollback.

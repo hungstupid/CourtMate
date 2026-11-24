@@ -6,7 +6,7 @@ from pydantic import SecretStr
 from sqlalchemy import select
 
 from app.core.settings import Settings
-from app.db.models import Court
+from app.db.models import Court, User
 from app.scripts import demo_seed
 from app.scripts.demo_verify import verify_catalog
 from app.services.common import database_now
@@ -58,12 +58,16 @@ def test_catalog_seed_is_repeatable_and_preserves_user_edits(db_session):
     assert first["maintenance"] == 2
     assert first["bookings"] == 30
     assert first["violations"] == {}
+    player = session.get(User, demo_seed.fixture_id("player-01"))
+    assert player.display_name == "An · Sáng sớm"
+    player.display_name = "An · Tập sau giờ học"
 
     court = session.get(Court, ids[0])
     court.description = "Updated by the demo Owner."
     session.flush()
     assert demo_seed.seed_catalog(session, rows, origin, now) == ids
     assert verify_catalog(session, ids) == first
+    assert player.display_name == "An · Tập sau giờ học"
     assert session.scalar(select(Court.description).where(Court.id == ids[0])) == (
         "Updated by the demo Owner."
     )

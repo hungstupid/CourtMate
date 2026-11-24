@@ -42,10 +42,58 @@ from app.services.common import (
 CATALOG = Path(__file__).with_name("demo_data") / "venues.csv"
 NAMESPACE = UUID("344f5741-c2f9-4798-9f62-6d2cc00ad57b")
 PREFIX = "courtmate-catalog-"
-OWNER_COUNT = 18
-PLAYER_COUNT = 128
 DAYS_AHEAD = 16
 DEMO_LOGINS = ("owner-01", "player-01", "player-02", "player-03", "player-04")
+PLAYER_NAMES = (
+    "An",
+    "Bảo",
+    "Chi",
+    "Duy",
+    "Giang",
+    "Hà",
+    "Huy",
+    "Khang",
+    "Linh",
+    "Mai",
+    "Minh",
+    "Nam",
+    "Ngọc",
+    "Phúc",
+    "Quân",
+    "Vy",
+)
+PLAYER_GROUPS = (
+    "Sáng sớm",
+    "Cuối tuần",
+    "Giờ trưa",
+    "Sau giờ làm",
+    "Giao hữu",
+    "Tập đôi",
+    "Tập kỹ thuật",
+    "Chơi cùng bạn",
+)
+OWNER_GROUPS = (
+    "Giờ Đẹp",
+    "Sân sáng",
+    "Đường biên",
+    "Bình Minh",
+    "Sân Mở",
+    "Kèo Chiều",
+    "Cỏ Mềm",
+    "Vợt Đôi",
+    "Sân Tối",
+    "Trận Mới",
+    "Vào Sân",
+    "Quả Bóng",
+    "Giờ Trống",
+    "Khung Vợt",
+    "Cú Giao",
+    "Chạm Vạch",
+    "Bước Sân",
+    "Lưới Xanh",
+)
+OWNER_COUNT = len(OWNER_GROUPS)
+PLAYER_COUNT = len(PLAYER_NAMES) * len(PLAYER_GROUPS)
 SPORTS = {
     "Bóng đá": ("football", 220_000, 14, "trận bóng đá sân nhỏ theo đội"),
     "Pickleball": ("pickleball", 110_000, 4, "buổi đánh đôi hoặc giao lưu sau giờ làm"),
@@ -125,18 +173,26 @@ def users(session: Session, role: str, count: int) -> list[User]:
     for number in range(1, count + 1):
         key = f"{role}-{number:02}"
         uid = PREFIX + key
+        index = number - 1
+        if role == "owner":
+            name = f"Điều phối {OWNER_GROUPS[index]} · Demo"
+        else:
+            group, nickname = divmod(index, len(PLAYER_NAMES))
+            name = f"{PLAYER_NAMES[nickname]} · {PLAYER_GROUPS[group]}"
         user = session.get(User, fixture_id(key))
         if user is None:
             user = User(
                 id=fixture_id(key),
                 firebase_uid=uid,
                 role=role,
-                display_name=f"{role_name} demo {number:02}",
+                display_name=name,
                 registration_email=login_email(key) if key in DEMO_LOGINS else None,
             )
             session.add(user)
         elif user.firebase_uid != uid or user.role != role:
             raise RuntimeError("Demo identity identifier is already in use.")
+        elif user.display_name == f"{role_name} demo {number:02}":
+            user.display_name = name
         result.append(user)
     session.flush()
     return result
