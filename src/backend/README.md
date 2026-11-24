@@ -54,7 +54,9 @@ CORS_ORIGINS=http://localhost:5173,http://127.0.0.1:5173
 
 `CORS_ORIGINS` accepts a comma-separated list of complete origins. These two origins are also the defaults when unset. Explicitly add other development ports if needed; wildcard `*` is rejected. CORS allows GET/HEAD/POST/PUT/PATCH/DELETE/OPTIONS and Accept/Content-Type/Authorization headers, with cookie credentials disabled. Keep origins explicit.
 
-The liveness endpoint needs no database query. API startup requires DATABASE_URL and FIREBASE_PROJECT_ID. `/ready` checks the database/migration, `/api/me` verifies a Firebase token and provisions Player, and `/api/owner/access` tests the stored Owner role. Runtime/migration/test URL separation, cloud credentials, local emulator and operator role scripts are documented in the development guide. `.env`, `.secrets/`, `.venv/` and caches are ignored; examples and lockfiles are tracked.
+The liveness endpoint needs no database query. API startup requires DATABASE_URL and FIREBASE_PROJECT_ID. `/ready` checks the database against migration head `0007_pa3_derived_state`. `/api/me` verifies the Firebase token and reads the application role. Runtime/migration/test URL separation, cloud credentials, local emulator and operator role scripts are documented in the development guide. `.env`, `.secrets/`, `.venv/` and caches are ignored. Examples and lockfiles are tracked.
+
+The [demo catalogue guide](../../docs/development/demo-catalog.md) documents the separate local seed and the approved hosted importer. Run the importer as an authenticated operator with a read-only dry run and a verified backup before enabling writes. Render startup does not run the importer.
 
 ## Quality checks
 

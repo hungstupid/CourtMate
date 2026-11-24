@@ -167,5 +167,84 @@
     "steady_requests": 2199,
     "all_phase_requests": 2391,
     "all_phase_expected_conflicts": 139
+  },
+  "hosted": {
+    "scope": "Approved additive demo import and writes scoped to synthetic demo fixtures",
+    "frontend": "https://courtmate-court-mate.vercel.app",
+    "backend": "https://courtmate-api-cs7b.onrender.com",
+    "tested_application_source": "b9f2537512c3a9c9a9661d4ebaad984d987f7681",
+    "seed_readback": {
+      "owners": 18,
+      "players": 128,
+      "courts": 64,
+      "published_slots": 10000,
+      "future_slots": 9024,
+      "bookings": 450,
+      "cancelled_bookings": 93,
+      "rooms": 64,
+      "open_rooms": 16,
+      "full_rooms": 16,
+      "memberships": 207,
+      "offers": 64,
+      "active_offers": 36,
+      "scheduled_offers": 12,
+      "expired_offers": 16,
+      "maintenance": 32,
+      "closed_rooms": 32,
+      "violations": {},
+      "migration": "0007_pa3_derived_state",
+      "preexisting_profiles": 3,
+      "owner_players_by_role": {
+        "player": 128,
+        "owner": 18
+      },
+      "hosts_with_signup_email": 5,
+      "distinct_images": 10,
+      "venue_sports": 5,
+      "areas": 17
+    },
+    "verified_firebase_sign_ins": 5,
+    "groups": {
+      "F01": "Five live Firebase sign-ins, invalid credentials, logout, reloaded roles, unauthenticated access, role immutability and cross-owner access. New registration tested in isolated Playwright.",
+      "F02": "64 public courts and 10 WebP assets, combined search/area/sport/time, address, empty results and unreserved slot preview.",
+      "F03": "Live detail and local-date availability; AVAILABLE, BOOKED and BLOCKED. FR-013 deferred in PA3.",
+      "F04": "Single and two consecutive slots, invalid selection, repricing/reconfirmation, competing overlap denial, accepted amount after reload.",
+      "F05": "History, reload, whole cancellation and release, immutable accepted price, cancellation refused below 6 h.",
+      "F06": "Browser create/hours/publish batch/maintenance, reload; individual publish/edit/remove maintenance; confirmed booking protected; venue deactivation persisted.",
+      "F07": "Owner history/detail in browser and authoritative amounts; cross-owner booking/court rejected.",
+      "F08": "Profile saved/reloaded and verified by API, role cannot be edited, original demo nickname restored.",
+      "F09": "Manual/automatic activation, schedule cancellation, active deactivation, discounted booking and preserved accepted total. Expired fixtures read through the database.",
+      "F10": "Discovery, creation, capacity, duplicate and full rejection, 122500 VND estimate, Join/Leave and organizer authorization; explicit/source-cancellation closure."
+    },
+    "responsive_public": {
+      "375": "No page overflow on discovery, deals, rooms and availability",
+      "768": "No page overflow on discovery, deals, rooms and availability",
+      "1280": "No page overflow on discovery, deals, rooms and availability"
+    },
+    "persisted": [
+      "Court and hours",
+      "Published schedule and maintenance",
+      "Booking snapshots and transitions",
+      "Room membership and closure",
+      "Offer lifecycle",
+      "Profile"
+    ],
+    "boundaries": [
+      "Public registration for both roles tested against the isolated Auth Emulator and PostgreSQL.",
+      "No hosted load or race harness. Cancellation at exactly six hours and time-driven expiry tested using isolated clocks and real PostgreSQL.",
+      "VoiceOver announcements and interactive Figma playback remain manual. Figma metadata and stored transition pairs were verified."
+    ],
+    "figma": {
+      "checked_use_cases": 17,
+      "referenced_frames_present": 179,
+      "stored_transition_pairs": 35,
+      "prototype_playback": "PENDING"
+    },
+    "regression": {
+      "pytest": 250,
+      "playwright": 50,
+      "service_statement_percent": 92.51,
+      "service_branch_percent": 83.01
+    }
   }
 }
