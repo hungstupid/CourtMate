@@ -1,0 +1,171 @@
+{
+  "date": "2026-11-24 ICT",
+  "catalogue": {
+    "scope": "local PostgreSQL 17 and Firebase Auth Emulator",
+    "counts_after_two_runs": {
+      "database": "courtmate_demo_catalog",
+      "owners": 18,
+      "players": 128,
+      "courts": 64,
+      "published_slots": 10000,
+      "future_slots": 9088,
+      "bookings": 450,
+      "cancelled_bookings": 93,
+      "rooms": 64,
+      "open_rooms": 16,
+      "full_rooms": 16,
+      "memberships": 207,
+      "offers": 64,
+      "active_offers": 36,
+      "scheduled_offers": 12,
+      "expired_offers": 16,
+      "maintenance": 32,
+      "closed_rooms": 32,
+      "violations": {}
+    },
+    "browser": {
+      "runtime": "Local PostgreSQL 17 and Firebase Auth Emulator",
+      "images": 10,
+      "checks": [
+        "owner-01 sign-in",
+        "player-01 sign-in",
+        "player-02 sign-in",
+        "player-03 sign-in",
+        "player-04 sign-in",
+        {
+          "name": "catalogue",
+          "width": 375,
+          "axeViolations": 0,
+          "fit": true
+        },
+        {
+          "name": "court detail",
+          "width": 375,
+          "axeViolations": 0,
+          "fit": true
+        },
+        {
+          "name": "Room list",
+          "width": 375,
+          "axeViolations": 0,
+          "fit": true
+        },
+        {
+          "name": "Last-minute Deals",
+          "width": 375,
+          "axeViolations": 0,
+          "fit": true
+        },
+        {
+          "name": "Owner courts",
+          "width": 375,
+          "axeViolations": 0,
+          "fit": true
+        },
+        {
+          "name": "Player booking history",
+          "width": 375,
+          "axeViolations": 0,
+          "fit": true
+        },
+        {
+          "name": "catalogue",
+          "width": 768,
+          "axeViolations": 0,
+          "fit": true
+        },
+        {
+          "name": "court detail",
+          "width": 768,
+          "axeViolations": 0,
+          "fit": true
+        },
+        {
+          "name": "Room list",
+          "width": 768,
+          "axeViolations": 0,
+          "fit": true
+        },
+        {
+          "name": "Last-minute Deals",
+          "width": 768,
+          "axeViolations": 0,
+          "fit": true
+        },
+        {
+          "name": "Owner courts",
+          "width": 768,
+          "axeViolations": 0,
+          "fit": true
+        },
+        {
+          "name": "Player booking history",
+          "width": 768,
+          "axeViolations": 0,
+          "fit": true
+        },
+        {
+          "name": "catalogue",
+          "width": 1280,
+          "axeViolations": 0,
+          "fit": true
+        },
+        {
+          "name": "court detail",
+          "width": 1280,
+          "axeViolations": 0,
+          "fit": true
+        },
+        {
+          "name": "Room list",
+          "width": 1280,
+          "axeViolations": 0,
+          "fit": true
+        },
+        {
+          "name": "Last-minute Deals",
+          "width": 1280,
+          "axeViolations": 0,
+          "fit": true
+        },
+        {
+          "name": "Owner courts",
+          "width": 1280,
+          "axeViolations": 0,
+          "fit": true
+        },
+        {
+          "name": "Player booking history",
+          "width": 1280,
+          "axeViolations": 0,
+          "fit": true
+        },
+        {
+          "name": "seeded venue booking quote",
+          "width": 375,
+          "axeViolations": 0,
+          "fit": true
+        },
+        "Multi-slot confirm/reload, Owner booking view, cancellation and slot release",
+        "Seeded booking create Room, other Player join/reload/leave, organizer close/reload"
+      ]
+    },
+    "timing_ms": {
+      "single_request_start_filter_before": 18082,
+      "after": 354,
+      "preview_after": 675
+    }
+  },
+  "nfr01": {
+    "scope": "isolated single-court PostgreSQL 17 workload",
+    "warmup_seconds": 5,
+    "steady_seconds": 60,
+    "virtual_users": 30,
+    "read_p95_ms": 149.49,
+    "write_p95_ms": 161.61,
+    "unexpected_errors": 0,
+    "steady_requests": 2199,
+    "all_phase_requests": 2391,
+    "all_phase_expected_conflicts": 139
+  }
+}

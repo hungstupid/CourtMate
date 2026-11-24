@@ -1,10 +1,10 @@
 # PA4 — Test Plan & Test Cases
 
-**CourtMate | T05 Nexora | 23 November 2026 | Working draft**
+**CourtMate | T05 Nexora | 24 November 2026 | Working draft**
 
 [PA1](https://docs.google.com/document/d/1HvIxWBQigw2EOslvJC_QruAoHZRrhQgO/edit) · [PA2](https://docs.google.com/document/d/1zL3Ra_0LceKOF_2pZa9iWpq7HIbRtALB/edit) · [PA3](https://docs.google.com/document/d/1b8tVkH3fjPObuf5piq0AejaUdxBCBAa2/edit) · [Rubric](https://docs.google.com/document/d/1ztkQ3DTItC-ry2j3lFM4T76Lgo54sE1V/edit)
 
-## 1. Member contribution assessment
+## 1. Member Contribution Assessment
 
 | Member | Evidence available | PA4 contribution |
 |---|---|---|
@@ -15,11 +15,13 @@
 
 The team must approve PA4 roles and percentages totaling 100% from current-phase work records before submission. Prior-phase percentages concern PA3 only.
 
-## 2. Test plan
+## 2. Test Plan
 
-### Objectives and scope
+### Objectives and Scope
 
 Verify the complete Player and Court Owner journeys F01–F07 and F10 against 38 Must FR, with permission, recovery, persisted state and concurrent transaction assertions. Review F08 and F09 because this release includes them. PA3 defers FR-013 map and directions. Payment, chat, waiting lists and forced cancellation are outside scope.
+
+### Test Levels
 
 | Level | Target | Method | Responsibility |
 |---|---|---|---|
@@ -28,21 +30,31 @@ Verify the complete Player and Court Owner journeys F01–F07 and F10 against 38
 | System | Player and Owner browse, reserve, manage and recover | Playwright Chromium plus built staging smoke | Frontend developer and tester |
 | Acceptance | FR/AC traceability, visual design, assistive technology and deployment | PA2 role journeys, Figma frames, Axe, Lighthouse, manual tasks | Team reviewer and intended users |
 
-Types include functional, authorization (NFR-04), repeatable concurrency (NFR-02/03), local load (NFR-01), accessibility (NFR-05) and regression. Use requirements-based and use-case tests for happy paths, partitions and boundaries for inputs, decision tables for combined rules, and coverage.py statement/branch measures for the service layer.
+### Test Types
 
-### Environment and data
+Run functional, authorization (NFR-04), repeatable concurrency (NFR-02/03), local load (NFR-01), accessibility (NFR-05) and regression.
 
-Local Apple Silicon macOS, Chrome/Chromium, Python 3.12, Node 24, local PostgreSQL 17 and Firebase Auth Emulator project demo-courtmate. CI uses Ubuntu, disposable PostgreSQL 17 and an independent emulator. Generate accounts from run markers and one or more synthetic venues and clean only that run’s data. The PA3 migration fixture preserves the schedule, snapshots, claim and member at the old revision. Copy backup files with restrictive permissions. Public deploy smoke covers HTTPS frontend, API and readiness without write fixtures.
+### Test Design Techniques
 
-### Entry and exit
+Use requirements-based and use-case tests for happy paths, partitions and boundaries for inputs, decision tables for combined rules, and coverage.py statement/branch measures for the service layer.
+
+### Test Environment and Test Data
+
+Local Apple Silicon macOS, Chrome/Chromium, Python 3.12, Node 24, local PostgreSQL 17 and Firebase Auth Emulator project demo-courtmate. CI uses Ubuntu, disposable PostgreSQL 17 and an independent emulator. Generate accounts from run markers and one or more synthetic venues and clean only that run’s data. The [seeded catalogue](../../development/demo-catalog.md) supports realistic scale tests. Use the [manual screen-reader checklist](screen-reader-checklist.md) for TC-20. The PA3 migration fixture preserves the schedule, snapshots, claim and member at the old revision. Copy backup files with restrictive permissions. Public deploy smoke covers HTTPS frontend, API and readiness without write fixtures.
+
+### Entry and Exit Criteria
 
 Entry requires release candidate build, readiness, migrated test DB, isolated emulator and prepared fixtures. Exit requires 100% of Must test cases executed, at least 90% pass, and zero open Critical or High defects. Track manual usability and staging availability as separate gates and preserve evidence for failures and blocked cases.
 
-### Defects, schedule and risks
+### Defect Management
 
 File or update an authorized work item with run SHA, reproduction steps, expected and actual results, severity, owner, testcase and retest. Critical means system failure, data loss or security breach without workaround. High means a Must fails with a difficult workaround. Medium means incorrect behavior with a usable workaround. Low means cosmetic. Keep the record open until actual retest evidence is available.
 
+### Schedule, Responsibilities and Tools
+
 Prepare the PA4 matrix in W08, run integration and UI with each change, then repeat regression, deployment smoke and demo checks for W09–W10. The team lead assigns review, testing, deployment and presentation during the team checkpoint.
+
+### Test Risks
 
 | Risk | Mitigation |
 |---|---|
@@ -53,7 +65,9 @@ Prepare the PA4 matrix in W08, run integration and UI with each change, then rep
 | CI or a single browser misses user obstacles | Verify viewport matrix, keyboard task, human screen reader and device separately. |
 | Provider deploy and database revisions drift | Check CI and runtime SHA and /ready, test an old-schema rollback against a local clone. |
 
-## 3. Test design
+## 3. Test Design
+
+### Equivalence Partitions and Boundary Values
 
 | Input or operation | Eligible partition | Rejected partition | Boundaries tested |
 |---|---|---|---|
@@ -63,6 +77,8 @@ Prepare the PA4 matrix in W08, run integration and UI with each change, then rep
 | Cancellation | owned CONFIRMED and receive time at least 6h before start | denied owner or too late or cancelled | 6h + 1 µs, exactly 6h, 6h − 1 µs |
 | Room capacity | integer 2 through 2×venue maximum | lower, greater, noninteger or invalid source | 1/2/16/17 at maximum 8, count C−1/C |
 | Discounts | positive integer below regular and 0 < h ≤ 24 | invalid price/lead, occupied, expired or terminal | 0/0.5/24/>24 hours, activation and start equality |
+
+### Decision Tables
 
 | Rule | Conditions | Expected operation | Case |
 |---|---|---|---|
@@ -81,7 +97,9 @@ Prepare the PA4 matrix in W08, run integration and UI with each change, then rep
 | O1 | Eligible fixed offer within its window | Apply its fixed price to new booking | TC-19 |
 | O2 | Before threshold, expired, terminal or disabled | Use regular price | TC-19 |
 
-## 4. Test case list
+## 4. Test Cases
+
+### List of Test Cases
 
 | Case | Objective | UC | Priority | Automated evidence |
 |---|---|---|---|---|
@@ -106,9 +124,9 @@ Prepare the PA4 matrix in W08, run integration and UI with each change, then rep
 | TC-19 | Apply or end fixed slot offers without rewriting accepted prices | UC-16 | Should | test_offers.py, review.spec.ts F09 and business.spec.ts automatic offer |
 | TC-20 | Measure release usability, load and migration guards | Cross-cutting | High | test_business_migrations.py, screen-matrix.spec.ts, k6 and Lighthouse evidence |
 
-## 5. Test case specifications
+### Test Case Specifications
 
-### TC-01 · Register both initial roles and reject duplicate or invalid identity
+#### TC-01 · Register both initial roles and reject duplicate or invalid identity
 
 **Trace** UC-01, FR-001, FR-003, FR-004, FR-005. **Technique** Partition, decision table.
 
@@ -120,7 +138,7 @@ Prepare the PA4 matrix in W08, run integration and UI with each change, then rep
 
 **Postcondition** Read the documented state and remove only run-owned data after the test.
 
-### TC-02 · Sign in and sign out with valid or invalid credentials
+#### TC-02 · Sign in and sign out with valid or invalid credentials
 
 **Trace** UC-02, FR-002, FR-004, FR-005. **Technique** Partition, state transition.
 
@@ -132,7 +150,7 @@ Prepare the PA4 matrix in W08, run integration and UI with each change, then rep
 
 **Postcondition** Read the documented state and remove only run-owned data after the test.
 
-### TC-03 · Find only active courts and recover from an empty search
+#### TC-03 · Find only active courts and recover from an empty search
 
 **Trace** UC-03, FR-006, FR-007, FR-008, FR-009, FR-046. **Technique** Partition, pairwise control coverage.
 
@@ -144,7 +162,7 @@ Prepare the PA4 matrix in W08, run integration and UI with each change, then rep
 
 **Postcondition** Read the documented state and remove only run-owned data after the test.
 
-### TC-04 · Open court details and preview eligible published slots
+#### TC-04 · Open court details and preview eligible published slots
 
 **Trace** UC-03/04, FR-010, FR-011, FR-012, FR-046. **Technique** Partition, boundary-value analysis.
 
@@ -156,7 +174,7 @@ Prepare the PA4 matrix in W08, run integration and UI with each change, then rep
 
 **Postcondition** Read the documented state and remove only run-owned data after the test.
 
-### TC-05 · Review and confirm one consecutive multi-slot booking
+#### TC-05 · Review and confirm one consecutive multi-slot booking
 
 **Trace** UC-05, FR-012, FR-014, FR-015, FR-016, FR-017, FR-018. **Technique** Boundary-value analysis and decision table.
 
@@ -168,7 +186,7 @@ Prepare the PA4 matrix in W08, run integration and UI with each change, then rep
 
 **Postcondition** Read the documented state and remove only run-owned data after the test.
 
-### TC-06 · Reject select/confirm when eligibility or quote changes
+#### TC-06 · Reject select/confirm when eligibility or quote changes
 
 **Trace** UC-05, FR-012, FR-014, FR-015, FR-016, FR-017, FR-018. **Technique** Decision table, state transition, concurrency.
 
@@ -180,7 +198,7 @@ Prepare the PA4 matrix in W08, run integration and UI with each change, then rep
 
 **Postcondition** Read the documented state and remove only run-owned data after the test.
 
-### TC-07 · View recent owned booking history and immutable totals
+#### TC-07 · View recent owned booking history and immutable totals
 
 **Trace** UC-06, FR-019. **Technique** Boundary-value analysis and permissions.
 
@@ -192,7 +210,7 @@ Prepare the PA4 matrix in W08, run integration and UI with each change, then rep
 
 **Postcondition** Read the documented state and remove only run-owned data after the test.
 
-### TC-08 · Cancel a whole booking at the six-hour boundary
+#### TC-08 · Cancel a whole booking at the six-hour boundary
 
 **Trace** UC-07, FR-020, FR-021, FR-022. **Technique** Boundary-value analysis and state transition.
 
@@ -204,7 +222,7 @@ Prepare the PA4 matrix in W08, run integration and UI with each change, then rep
 
 **Postcondition** Read the documented state and remove only run-owned data after the test.
 
-### TC-09 · Create, edit and deactivate an owned court
+#### TC-09 · Create, edit and deactivate an owned court
 
 **Trace** UC-08, FR-023, FR-024. **Technique** Partition and permissions.
 
@@ -216,7 +234,7 @@ Prepare the PA4 matrix in W08, run integration and UI with each change, then rep
 
 **Postcondition** Read the documented state and remove only run-owned data after the test.
 
-### TC-10 · Publish operating hours and atomic batch with the local-day boundary
+#### TC-10 · Publish operating hours and atomic batch with the local-day boundary
 
 **Trace** UC-09, FR-025, FR-027. **Technique** Boundary-value analysis and decision table.
 
@@ -228,7 +246,7 @@ Prepare the PA4 matrix in W08, run integration and UI with each change, then rep
 
 **Postcondition** Read the documented state and remove only run-owned data after the test.
 
-### TC-11 · Create and remove maintenance without invalidating reservations
+#### TC-11 · Create and remove maintenance without invalidating reservations
 
 **Trace** UC-09, FR-026, FR-027. **Technique** Partition, state transition.
 
@@ -240,7 +258,7 @@ Prepare the PA4 matrix in W08, run integration and UI with each change, then rep
 
 **Postcondition** Read the documented state and remove only run-owned data after the test.
 
-### TC-12 · View only owned-court bookings with scoped contact
+#### TC-12 · View only owned-court bookings with scoped contact
 
 **Trace** UC-10, FR-005, FR-028, FR-029, FR-030. **Technique** Decision table, permissions.
 
@@ -252,7 +270,7 @@ Prepare the PA4 matrix in W08, run integration and UI with each change, then rep
 
 **Postcondition** Read the documented state and remove only run-owned data after the test.
 
-### TC-13 · Create exactly one room and validate capacity
+#### TC-13 · Create exactly one room and validate capacity
 
 **Trace** UC-12, FR-031, FR-032, FR-038. **Technique** Boundary-value analysis, decision table.
 
@@ -264,7 +282,7 @@ Prepare the PA4 matrix in W08, run integration and UI with each change, then rep
 
 **Postcondition** Read the documented state and remove only run-owned data after the test.
 
-### TC-14 · Discover public rooms by address without leaking identity
+#### TC-14 · Discover public rooms by address without leaking identity
 
 **Trace** UC-11, FR-033, FR-038. **Technique** Partition, privacy and state transition.
 
@@ -276,7 +294,7 @@ Prepare the PA4 matrix in W08, run integration and UI with each change, then rep
 
 **Postcondition** Read the documented state and remove only run-owned data after the test.
 
-### TC-15 · Join the final seat or reject a duplicate or closed request
+#### TC-15 · Join the final seat or reject a duplicate or closed request
 
 **Trace** UC-13, FR-034, FR-035, FR-038. **Technique** Decision table and concurrency.
 
@@ -288,7 +306,7 @@ Prepare the PA4 matrix in W08, run integration and UI with each change, then rep
 
 **Postcondition** Read the documented state and remove only run-owned data after the test.
 
-### TC-16 · Leave a room as a member and enforce immutable closure
+#### TC-16 · Leave a room as a member and enforce immutable closure
 
 **Trace** UC-14, FR-036, FR-037, FR-038. **Technique** Decision table and concurrency.
 
@@ -300,7 +318,7 @@ Prepare the PA4 matrix in W08, run integration and UI with each change, then rep
 
 **Postcondition** Read the documented state and remove only run-owned data after the test.
 
-### TC-17 · Close a room as organizer and preserve accepted booking
+#### TC-17 · Close a room as organizer and preserve accepted booking
 
 **Trace** UC-17, FR-005, FR-037, FR-038. **Technique** Decision table and state transition.
 
@@ -312,7 +330,7 @@ Prepare the PA4 matrix in W08, run integration and UI with each change, then rep
 
 **Postcondition** Read the documented state and remove only run-owned data after the test.
 
-### TC-18 · Save basic profile without changing identity or role
+#### TC-18 · Save basic profile without changing identity or role
 
 **Trace** UC-15, FR-039, FR-040. **Technique** Partition and state transition.
 
@@ -324,7 +342,7 @@ Prepare the PA4 matrix in W08, run integration and UI with each change, then rep
 
 **Postcondition** Read the documented state and remove only run-owned data after the test.
 
-### TC-19 · Apply or end fixed slot offers without rewriting accepted prices
+#### TC-19 · Apply or end fixed slot offers without rewriting accepted prices
 
 **Trace** UC-16, FR-041, FR-042, FR-043, FR-044, FR-045, FR-047, FR-048, FR-049. **Technique** Boundary-value analysis, decision table and concurrency.
 
@@ -336,7 +354,7 @@ Prepare the PA4 matrix in W08, run integration and UI with each change, then rep
 
 **Postcondition** Read the documented state and remove only run-owned data after the test.
 
-### TC-20 · Measure release usability, load and migration guards
+#### TC-20 · Measure release usability, load and migration guards
 
 **Trace** Cross-cutting, NFR-01 and NFR-05, ADR-002 migration. **Technique** Threshold and fault injection.
 
@@ -348,7 +366,7 @@ Prepare the PA4 matrix in W08, run integration and UI with each change, then rep
 
 **Postcondition** Read the documented state and remove only run-owned data after the test.
 
-## 6. Requirements–test traceability
+## 5. Requirements–Test Traceability
 
 The 49-row RTM includes 38/38 Must FR with linked tests. Planning coverage is distinct from execution. FR-013 is tracked as Deferred in PA3. [Editable RTM](requirements-traceability.csv).
 
@@ -393,7 +411,7 @@ The 49-row RTM includes 38/38 Must FR with linked tests. Planning coverage is di
 | FR-038 | Display per-person cost estimate. | TC-13, TC-14, TC-15, TC-16, TC-17 |
 | FR-046 | Preview a result court’s matching or nearest slots. | TC-03, TC-04 |
 
-## 7. AI usage log
+## 6. AI Usage Log
 
 | Tool | Task | Validation |
 |---|---|---|

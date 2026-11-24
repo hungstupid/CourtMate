@@ -2,7 +2,7 @@
 
 **Sports Court Booking & Management Platform**
 
-CourtMate is a proposed web platform for players to discover sports courts, check availability and make reservations, while helping venue owners manage courts, schedules and bookings.
+CourtMate is a web application for players to discover sports courts, check availability and make reservations, while helping venue owners manage courts, schedules and bookings.
 
 **Team:** Nexora — T05  
 **Course:** Introduction to Software Engineering — University of Science, VNU-HCM (HCMUS)
@@ -14,9 +14,28 @@ CourtMate is a proposed web platform for players to discover sports courts, chec
 | Player | Search courts, inspect available times, manage reservations and account information |
 | Court Owner | Manage court information, opening schedules and incoming bookings |
 
-The PA0 proposal contains **8 Must-have** and **2 Should-have** features. Current booking, cancellation, capacity and role decisions are recorded in the [current SRS](https://docs.google.com/document/d/1zL3Ra_0LceKOF_2pZa9iWpq7HIbRtALB/edit); use that source rather than older PA1 assumptions. Online payments remain outside scope.
+The [SRS](https://docs.google.com/document/d/1zL3Ra_0LceKOF_2pZa9iWpq7HIbRtALB/edit) defines 38 Must FR across F01–F07 and F10. F08 profile and F09 offers are included. [PA3](https://docs.google.com/document/d/1b8tVkH3fjPObuf5piq0AejaUdxBCBAa2/edit) defers FR-013 map and directions. Online payments remain outside scope.
 
-**Development stack:** React + TypeScript + Vite, FastAPI + Python 3.12 + uv, PostgreSQL, and Firebase Authentication. Local database uses Docker; cloud uses Vercel, Render and Neon. Business implementation remains for PA5.
+**Development stack:** React + TypeScript + Vite, FastAPI + Python 3.12 + uv, PostgreSQL, and Firebase Authentication. Local database uses Docker; cloud uses Vercel, Render and Neon.
+
+## Run CourtMate
+
+Public deployment: [CourtMate](https://courtmate-court-mate.vercel.app) · [API readiness](https://courtmate-api-cs7b.onrender.com/ready).
+
+Install Node 24, uv, Docker Compose with PostgreSQL 17, and the Firebase CLI as listed in the [setup guide](docs/development/setup.md).
+
+```sh
+git clone --branch chore/project-bootstrap https://github.com/hungstupid/CourtMate.git
+cd CourtMate
+make setup db-up migrate
+```
+
+Run `make auth-emulator`, `make dev-api` and `make dev-web` in separate terminals. Open http://localhost:5173. Check http://localhost:8000/ready if the web app cannot load courts. Check the generated environment files and emulator if sign-in fails. Run `make test`, then `make e2e` after the browser installation in the setup guide.
+
+- **Player:** Search by name, sport, address or time. Choose consecutive slots on one court and date, review the quote, then confirm. Open **Lịch đặt** for history, eligible cancellation and creating an Open Play Room. Use **Open Play** to find and join rooms and **Ưu đãi giờ gần** to see last-minute offers.
+- **Court Owner:** Open **Sân của tôi**, add a court and set operating hours in **Lịch sân**. Preview and publish draft slots, schedule maintenance, manage offers and see bookings for your own courts.
+
+[Isolated demo data and demo script](docs/development/demo-catalog.md) · [PA4/PA5 and Final materials](docs/test/pa4-pa5/)
 
 ## Repository Structure
 

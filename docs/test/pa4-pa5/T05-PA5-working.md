@@ -1,8 +1,8 @@
 # PA5 — Implementation, Testing & Deployment
 
-**CourtMate | T05 Nexora | 23 November 2026 | Working draft**
+**CourtMate | T05 Nexora | 24 November 2026 | Working draft**
 
-## 1. Member contribution assessment
+## 1. Member Contribution Assessment
 
 The team should verify this phase’s assignments and percentages totaling 100% before submission. Earlier PA3 evidence establishes the design handoff. It does not establish individual PA5 hours or percentages.
 
@@ -15,7 +15,11 @@ The team should verify this phase’s assignments and percentages totaling 100% 
 
 ## 2. Implementation
 
+### Source Code and Structure
+
 The backend and frontend share the PA2 behavior and current PA3 design. The PA3 schema implementation is d4df9a3, UI and initial regression alignment d551a36, and focus return correction 7bd1601. The repository release candidate includes these commits.
+
+### Feature Status and Architecture Mapping
 
 | PA3 decision or feature | Realization and status |
 |---|---|
@@ -29,23 +33,42 @@ The backend and frontend share the PA2 behavior and current PA3 design. The PA3 
 | F08 / UC-15 | Done. Safe basic profile editing and role/email protection. |
 | F09 / UC-16 | Done. Manual/automatic fixed offers, explicit thresholds and regular-pricing fallback when disabled. |
 
-Review uses the team’s PR and independent-review convention in CONTRIBUTING.md. Current code self-review verified the Room exception narrowing and readiness/rollback path. Historical PA3 design links provide provenance. Independent review of this release is pending until a teammate comments or approves. Ruff lint/format and ESLint passed, TypeScript typecheck and Vite build passed. The bundle warning is approximately 520 kB minified and does not prevent the build.
+### Coding Standards and Code Review
 
-### Design and interaction differences
+Review uses the team’s PR and independent-review convention in CONTRIBUTING.md. Release self-review checked dataset scope, repeatability, backend state consistency and the search shortlist. Prior code self-review verified the Room exception narrowing and readiness/rollback path. Historical PA3 design links provide provenance. Independent review of this release is pending until a teammate comments or approves.
+
+### Static Analysis
+
+Ruff lint/format and ESLint passed, TypeScript typecheck and Vite build passed. The current bundle warning is approximately 515 kB minified and does not prevent the build.
+
+### Deviations from the Design
 
 The core PA3 screens were compared against Figma S06, S127, S217, S34, S20, S21 and S241. The release preserves the design’s actions, state text and role ownership. S217 is a modal over the selected slots, and S21 uses live room and roster data rather than its sample labels. S06 excludes the optional map affordance visible in the older frame; PA3 defers it. S34 and the Player calendar show textual reasons for blocked slots.
 
 ## 3. Testing
 
+### Test Execution Summary
+
 | Layer | Executed evidence |
 |---|---|
 | Baseline b37fa6d | 239 pytest and 53 Playwright passed, including legacy map tests. |
-| Current backend | 242 pytest passed under Firebase Auth Emulator and real PostgreSQL 17. Ruff and locked sync passed. Legacy, fresh, abort and downgrade/re-upgrade paths run; /ready passed from a restored local database. |
-| Current browser | Full local 50 Playwright passed. The six business cases were rerun after the focus correction. Three map-only scenarios and the previous map AC test were replaced by the PA3 address/availability regression. |
+| 23 November baseline backend | 242 pytest passed under Firebase Auth Emulator and real PostgreSQL 17. Ruff and locked sync passed. Legacy, fresh, abort and downgrade/re-upgrade paths run; /ready passed from a restored local database. |
+| 23 November baseline browser | Full local 50 Playwright passed. The six business cases were rerun after the focus correction. Three map-only scenarios and the previous map AC test were replaced by the PA3 address/availability regression. |
 | Accessibility | 28 real states × 375/768/1280 px passed Axe and geometry on stage. Five Lighthouse snapshots scored 100. Visible focus and dialog Escape/focus return checked at the three widths. Human screen-reader session remains pending. |
 | NFR-01 | 30 VUs, 5 s warm-up, 60 s steady. Read P95 690.56 ms, write P95 675.17 ms, 0/1,858 unexpected errors. The overall 153 HTTP 409 responses are expected conflicts from the contended workload. |
 | NFR-02/03 | PostgreSQL real-connection tests include ten overlapping confirms, one-slot shared pairs, last-seat/duplicate Join, capacity edit races, Join/Leave/Close, schedule and F09 hazards, start and six-hour receipt boundaries. Assertions inspect accepted aggregates, claims and roster. |
 | NFR-04 | Invalid and expired identity, role/ownership denials, public projections and unchanged state on rejected writes verified. |
+
+**24 November candidate execution.** Counts below assign each automation case to a single layer. Integration rows are collected pytest cases using the PostgreSQL/client fixtures or migration probes. Unit/static are the remaining pytest cases. System scope is the 50-case Playwright suite. Acceptance tracks the PA4 functional cases and the separate composite manual/technical gate.
+
+| Level | Planned | Executed | Passed | Failed | Blocked or partial |
+|---|---:|---:|---:|---:|---:|
+| Unit/static (pytest) | 107 | 107 | 107 | 0 | 0 |
+| Integration (pytest) | 141 | 141 | 141 | 0 | 0 |
+| System (Playwright) | 50 | 50 | 50 | 0 | 0 |
+| Acceptance (PA4 cases) | 20 | 20, TC-20 in part | 19 | 0 | 1 |
+
+TC-01–17 cover the 38 Must FR and all passed in isolation. TC-18–19 cover the optional profile and offers. TC-20 stays Partial pending spoken screen-reader evidence. The [manual procedure](screen-reader-checklist.md) records how to finish this gate. Additional hosted write acceptance requires authorized cloud isolation.
 
 The 17 Must functional test groups were executed in the isolated setup and passed. The PA4 functional exit criterion is met for the checked scope. The cross-cutting human screen-reader gate and authorization for a cloud write demo remain open. The [RTM](requirements-traceability.csv) and [extended map](release-traceability.csv) track 49 FR, five NFR, ten BR, 17 UC and 106 AC. The AC rows link to executed suites and do not imply an individually named test for every AC.
 
@@ -85,10 +108,17 @@ The 17 Must functional test groups were executed in the isolated setup and passe
 | D-05, harness mismatch | Test only | Two tests compared public and protected projections as identical and one clicked a duplicate link name. Corrected API comparison and scoped navigation. | 50/50 rerun |
 | D-06, F09 test clock | Test only | Initial fixture reviewed before its configured window. Fixture now uses an eligible instant. | 242/242 rerun |
 | D-07, focus-ref lint | Build gate | The focus effect read a React ref during cleanup. It now captures the trigger before opening the dialog. | Lint, typecheck, build and all six business browser cases passed after the change. |
+| D-08, public development tools | High release priority | The diagnostic page and helper components were bundled in production. Vite now eliminates the route and lazy module from production. | 1b61bb4. Product discovery smoke and bundle inspection. |
+| D-09, large time-filter search | High | Start-only search on 64 courts took 18.1 seconds. Search now stops at the first eligible slot for each court. Preview still iterates every qualifying slot. | 1b61bb4. PostgreSQL regression and 354 ms single-request retest. |
 
-### Service coverage and automated system tests
 
-Coverage.py measured app/services across the full pytest suite, including PostgreSQL integration. Statement coverage **91.64% (658/718)** and branch coverage **81.79% (247/302)**. The [coverage report](../../development/evidence/pa3-business-coverage.json) records per-file missed lines and branches.
+### Unit Tests and Coverage
+
+On 24 November, 248 pytest passed with 92.51% statement coverage (667/721) and 83.01% branch coverage (254/306) in app/services. The [current results](../../development/evidence/nov24-service-coverage.json) include uncovered branches.
+
+On 23 November, coverage.py measured app/services across the full pytest suite, including PostgreSQL integration. Statement coverage **91.64% (658/718)** and branch coverage **81.79% (247/302)**. The [coverage report](../../development/evidence/pa3-business-coverage.json) records per-file missed lines and branches.
+
+### Automated System Tests
 
 | UC | Main | Alternative / exception |
 |---|---|---|
@@ -96,32 +126,42 @@ Coverage.py measured app/services across the full pytest suite, including Postgr
 | UC-13 | business.spec.ts successful Join with persisted membership | usability.spec.ts Keep (no membership), test_room_concurrency.py duplicate and final place; test_core_api.py closed 409 |
 | UC-17 | review.spec.ts organizer closes open/full, preserves roster and booking | Same suite Keep and Escape, non-organizer denial in backend |
 
+### Continuous Integration
+
 GitHub Actions .github/workflows/quality.yml runs frontend locked install/lint/typecheck/build and integration Postgres 17, migrations, Ruff, pytest and Playwright on pull requests and branch pushes. A deployment check records the actual PR run and SHA separately.
 
-## 4. Deployment, release and user guide
+## 4. Deployment
+
+### Deployment Environment
 
 - Local setup and isolated staging are documented in docs/development/setup.md. Start PostgreSQL, Firebase Emulator and API, run migrations, then run Vite. Browser writes use demo-courtmate and a localhost test database. The protected test branch is a local PostgreSQL copy restored before release startup.
+
+### Release and User Guide
+
 - Player: create one Player account, search by sport/area/time, open court and choose contiguous available slots. Review the final quote, confirm, then use Lịch đặt to view/cancel or create Open Play. Eligible Players can join or leave, and the organiser can close.
 - Owner: create one Owner account, add a court, configure hours, create and review draft slots, publish, and inspect Lịch sân and Booking. Keep or discard drafts explicitly when leaving. Optional F09 never alters already accepted prices.
 - Deployment targets are [Vercel frontend](https://courtmate-court-mate.vercel.app) and [Render readiness](https://courtmate-api-cs7b.onrender.com/ready). The release operator compares /version.json, X-CourtMate-Commit and migration head. Read-only production smoke and the verified SHA belong in the final deployment readback.
 - Render automatic publishing waits for CI and runs schema upgrade first. Review src/backend/README.md for the 0007 rollback order. The staged downgrade reconstructs both old columns. Record a Neon recovery point before production release. Maintain operator access to the direct migration connection.
 - For teaching staff, ask the team’s operator to share dedicated test logins over the approved private channel. Local demo scenarios use synthetic data and the Firebase emulator. Cloud authentication and business writes require a designated test environment and accounts. Keep credentials out of this report, Git and recordings.
 
+### Working Software Video
+
 The demonstration records Owner registration, court/hours/publication and maintenance, Player sign-in/search/review/booking, history, open-play creation/join/leave/close, Owner booking view, cancellation/release and deactivation. The MP4 comes from the live local browser and uses synthetic records. Distribution is pending an approved destination.
 
-## 5. Retrospective against PA1
+## 5. Project Retrospective
 
 PA1 placed Must completion before the planned December demo gate and treated F09 as Should. The implementation now includes the fixed-price option and the PA2 multi-slot and organizer-closure refinements while deferring maps in PA3. Milestones and estimates are planning data. Actual team effort and individual contributions await team validation.
 
 PostgreSQL tests with independent transactions established correct behavior under collisions. Earlier review retained concrete Figma and PA2 evidence. Design revisions arrived after the first deployed release, which caused rework on date/room persistence and test expectations. For a later project, explicitly budget schema compatibility and use small reviewable release slices against the current design. A Scrum cadence could expose design/code drift earlier through frequent increments and early acceptance. AI accelerated the traceability draft and reproduction scripts. Reviewers must still verify source revisions, test assumptions and emitted evidence.
 
-## 6. Final presentation
+## 6. Project Presentation
 
 See [18-slide outline](Final-outline.md) for 15 minutes with a minimum of two minutes per member and a separate Q&A. Demonstrate one complete journey on the tested build using local staging if cloud fixtures are unavailable.
 
-## 7. AI usage log
+## 7. AI Usage Log
 
 | Tool | Significant use | Verification |
 |---|---|---|
 | Codex | Compare PA2/PA3, update schema and scoped transaction handling, add UI focus and denial regressions. | Reviewed generated diffs, reproduced failures and validated actual database state, Ruff/ESLint, full tests and staging startup. |
 | Codex | Prepare PA4/PA5, evidence, demo captions and presentation outline. | Checked execution counts and artifacts against captured logs, linked requirements, kept manual/peer review and cloud write gates explicit. Team must confirm contribution and final wording. |
+| Codex and ImageGen | Create the isolated catalogue, generated illustrations and synthetic test data. Reproduce and correct slow filtering and diagnostic route exposure. | Sourced public venue facts and labeled the simulation. Verified image assets, runtime and invariants against isolated PostgreSQL and Chrome. |

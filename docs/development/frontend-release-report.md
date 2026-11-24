@@ -121,3 +121,9 @@ This is a time-stamped application-source snapshot. A subsequent evidence-only c
 [Detailed review](screen-usability-review.md) covers all product pages/functions, with 28 real screen states × 375/768/1280 and 10 targeted regressions. Six evidenced issues corrected: unsent edits during pending saves, stale profile success, room-capacity reset on failure, recovery after a committed room response is lost, dialog-padding dismissal, midnight/multi-day time display. Existing routes/API/BR/PA2/Figma remain unchanged.
 
 Local result: **239 pytest / 53 Playwright PASS**, including live Maps; lint/typecheck/build/Ruff and isolated migration/drift checks PASS. Regular CI skips that one external Maps test and includes the other 52. [Machine evidence](evidence/screen-usability.json) records all 84 Axe/geometry measurements. Functional coverage remains 49 FR / 106 AC in the documented scope; NFR-05/human review and cloud write limits remain as before. No dependency or backend logic change. Post-push CI/deployment outcome is reported separately; no new remote PASS is inferred from the local run.
+
+## 24 November candidate
+
+Main was synchronized into `chore/project-bootstrap` before development. The Vite production bundle now excludes `/development` and its diagnostics. Time-filter search checks only as far as the first available match per court, with a PostgreSQL regression protecting the complete slot preview. A start-only search on 64 locally seeded courts took 354 ms after the fix, compared with 18.1 seconds on the first scale check. These are single-request sample timings. All catalogue venue imagery is generated and marked as illustrative.
+
+[Demo setup and sources](demo-catalog.md) · [Seed, browser and load evidence](evidence/nov24-demo-validation.json) · [Audit](srs-implementation-audit.md#release-candidate-after-main-synchronization--24-november-2026)

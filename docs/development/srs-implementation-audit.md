@@ -261,3 +261,17 @@ The release adds real repeated quote-change/reacceptance and competing-slot reco
 ## PA3 release continuation — 23 November 2026
 
 Verified against PA2 revision 14 November and PA3 revision 23 November. The three Accepted ADRs map to the existing service and auth boundaries, PostgreSQL transactions and CI fixtures. Revision 0007 drops the redundant playing date and room flag. A scoped Join at the closure boundary persists the reason only, while denied Leave, already-closed Join and auth failures retain the observed database state. Public room responses omit organizer and source-booking identifiers. Published slots use Available, Booked or Blocked with an explanation. F09-off pricing, reload, local-day and migration rollback are covered by regression. See the [PA4 RTM and cases](../test/pa4-pa5/T05-PA4-working.md) and [latest release evidence](evidence/pa3-business-coverage.json).
+
+## Release candidate after main synchronization — 24 November 2026
+
+The official Drive metadata matches the previously fetched PA2 (14 November) and PA3 (23 November) text. The [release matrix](../test/pa4-pa5/release-traceability.csv) tracks all 49 FR, 106 AC, 10 BR, 5 NFR and 17 UC. Recertification retains 38/38 Must FR and 48/49 total FR. The sole deferred FR/AC pair remains FR-013/AC-F03-04. BR-01–10 retain concrete service and PostgreSQL evidence. No PA was edited.
+
+| PA3 section | Current implementation and check |
+|---|---|
+| 3. Architecture | C4 context, container, component and deployment sources merged from main. Three ADRs match React, Firebase identity, FastAPI service boundaries, ordered PostgreSQL locks and the Vercel/Render/Neon deployment. |
+| 4. Object design | Court, Slot, Booking, BookingSlot, SlotClaim, Room, RoomMember and offer states map to SQLAlchemy and service functions. Checked quote/confirm, cancel, schedule, Join and Close through the existing concurrent PostgreSQL suite. Service functions implement responsibilities pictured as classes in the design. |
+| 5. Data design | Revision 0007, checks, indexes, stored price snapshots, derived slot day and authoritative closure reason checked by empty/populated/ambiguous/downgrade migration cases and drift check. The seed reuses domain services and reports invariant violations before commit. |
+| 6. UI/UX | Product render and state checks at 375/768/1280 with 28 core states. PA3 screen exports from main and earlier Figma screenshots support comparison. Prototype playback is still pending. Current Figma file connector asks for reauthentication. |
+| 7. Traceability | 38 Must FR covered by PA4 cases with execution results in PA5. BR/NFR/UC/AC evidence is mapped in the extended matrix. Maps remain deferred and NFR-05 human screen-reader coverage remains partial. |
+
+The catalogue audit found slow search at scale and production diagnostics exposure. Search stops once each court has an eligible slot, while preview still returns all qualifying results. The built SPA excludes development diagnostics. The [scale and dataset evidence](evidence/nov24-demo-validation.json) records identical seed counts on two runs, zero invariant failures, 26 browser observations including five test logins, and isolated reload checks. A separate 30-VU k6 run recorded 149.49 ms read P95, 161.61 ms write P95 and 0/2,199 unexpected errors. Cloud write and instructor sign-in are gated on an authorized isolated Neon/Firebase environment.

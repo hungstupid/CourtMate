@@ -1,6 +1,6 @@
 # Development, identity and deployment
 
-Stack: React/TypeScript/Vite, FastAPI/Python 3.12/uv, PostgreSQL 17, Firebase Authentication. PostgreSQL is hosted on Neon; the API on Render and the frontend on Vercel. Only Player and Court Owner are application roles. Court scheduling, atomic booking/cancellation and Open Play are now backend implementation drafts; see [backend-api.md](backend-api.md) and [backend-core-design.md](backend-core-design.md). Business frontend, deals, profile, payment and chat remain outside this implementation.
+Stack: React/TypeScript/Vite, FastAPI/Python 3.12/uv, PostgreSQL 17, Firebase Authentication. PostgreSQL is hosted on Neon; the API on Render and the frontend on Vercel. Only Player and Court Owner are application roles. Court scheduling, booking/cancellation, Open Play, profile and offers are implemented. See the [SRS audit](srs-implementation-audit.md) and [demo guide](demo-catalog.md) for current release evidence. Payment and chat remain outside scope.
 
 ## Clean local setup
 
@@ -29,7 +29,7 @@ make dev-web
 
 These are separate long-running commands, one per terminal. URLs: frontend http://localhost:5173; API http://localhost:8000/health; readiness http://localhost:8000/ready; docs http://localhost:8000/docs. Firebase Auth Emulator listens only on 127.0.0.1:9099 with project `demo-courtmate`. No real Google login or cloud credentials are needed for local development or CI.
 
-After the emulator is running, `make seed` creates local Player/Owner fixtures idempotently. Their fixture credentials are defined only in the emulator seed script. Seed refuses real Firebase projects and production. Sign up in the development page to create another Player and select “Verify with backend” to test the full identity/database path.
+After the emulator is running, `make seed` creates local Player/Owner fixtures idempotently. Their fixture credentials are defined only in the emulator seed script. Seed refuses real Firebase projects and production. Register at /register to verify Firebase and PostgreSQL together. /development is available in Vite dev mode.
 
 Stop each dev server with Ctrl+C in its own terminal. `make db-stop` stops only the CourtMate database without removing its volume. Never use a global kill command or remove unrelated Docker resources.
 
@@ -68,14 +68,7 @@ uv run alembic current
 
 Review generated migrations before committing. Database schema changes belong in migration files, not ad hoc console edits. Start from a clean test database to verify both migration application and repeated `upgrade head`. Use the Neon development branch to validate cloud compatibility; never run destructive tests against demo.
 
-Public registration and `/api/me` always provision Player; the backend ignores role claims and uses the database role. Internal operators with both trusted database and matching Firebase access can grant Owner:
-
-```bash
-cd src/backend
-uv run python -m app.scripts.grant_owner FIREBASE_UID --confirm FIREBASE_UID
-```
-
-The script checks that the UID exists and is enabled before modifying the role. This is not a public endpoint or Admin UI. Apply `require_owner` plus `require_resource_ownership` when approved Owner resources are added. Organizer is a future room membership relation, not a role. Secrets needed for cloud operator commands must be supplied from ignored local configuration/secret storage, never committed or copied into docs.
+Registration at `/register` uses Firebase Auth and `POST /api/register`. Choose Player or Court Owner once. `GET /api/me` reads the stored role. Backend route and resource ownership checks use the database role. The Organizer is the Player who created a Room from their booking.
 
 ## Tests and data lifecycle
 
@@ -97,8 +90,7 @@ Use `BROWSER_CHANNEL=chrome make e2e` when Google Chrome is already installed. P
 
 Export/restore uses pg_dump/pg_restore inside the CourtMate Docker container. Backups are ignored `.secrets/demo.dump` files; restore is restricted to localhost `_test`. Do not run restore against demo. For Neon export, use its direct URL through ignored configuration; keep the container/client PostgreSQL major version compatible. Cloud data is never reset by ordinary `make test`.
 
-The 20-request/5-worker load probe measures only liveness. Playwright/axe exercise the development/identity foundation UI. Local `client.spec.ts` deliberately injects API failures for HTTP error, timeout/cancellation and session regression tests; it is excluded from real cloud acceptance, which uses existing Firebase accounts and real API/PostgreSQL requests. Add real page accessibility tests, booking/room race tests, boundary tests and repeatable load scenarios when their PA5 implementations exist. Current evidence does not establish business ACs or performance NFRs.
-
+The 20-request/5-worker probe measures liveness. The [NFR benchmark and test evidence](../test/pa4-pa5/T05-PA5-working.md) record business integration, 30-VU performance, concurrency, browser flows and accessibility. Use the separately named database in the [demo guide](demo-catalog.md) for the seeded demo.
 
 ## Frontend foundations (not business features)
 
