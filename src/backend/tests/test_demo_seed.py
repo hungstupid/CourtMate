@@ -7,7 +7,7 @@ from sqlalchemy import select
 
 from app.core.settings import Settings
 from app.db.models import Court, User
-from app.scripts import demo_seed
+from app.scripts import demo_cloud, demo_seed
 from app.scripts.demo_verify import verify_catalog
 from app.services.common import database_now
 
@@ -76,3 +76,40 @@ def test_catalog_seed_is_repeatable_and_preserves_user_edits(db_session):
     assert refreshed["courts"] == first["courts"]
     assert refreshed["published_slots"] > first["published_slots"]
     assert refreshed["violations"] == {}
+
+
+def test_cloud_scope_requires_pinned_neon_and_real_auth(monkeypatch):
+    monkeypatch.delenv("FIREBASE_AUTH_EMULATOR_HOST", raising=False)
+    local = "postgresql://demo@localhost/courtmate_demo_release"
+    cloud = f"postgresql://demo@{demo_cloud.HOST}/neondb"
+    demo_cloud.validate_scope(local, cloud)
+    with pytest.raises(SystemExit, match="pinned Neon"):
+        demo_cloud.validate_scope(local, cloud + "_other")
+    with pytest.raises(SystemExit, match="dedicated local"):
+        demo_cloud.validate_scope(cloud, cloud)
+    monkeypatch.setenv("FIREBASE_AUTH_EMULATOR_HOST", "127.0.0.1:9099")
+    with pytest.raises(SystemExit, match="real Firebase"):
+        demo_cloud.validate_scope(local, cloud)
+
+
+def test_cloud_import_inserts_once_and_preserves_existing_rows(db_session):
+    user_id = demo_seed.fixture_id("player-01")
+    rows = {name: [] for name in demo_cloud.TABLES}
+    rows["users"] = [
+        {
+            "id": str(user_id),
+            "firebase_uid": demo_seed.PREFIX + "player-01",
+            "role": "player",
+            "display_name": "Demo name",
+            "registration_email": demo_cloud.cloud_email("player-01"),
+            "contact_preferences": "",
+            "created_at": database_now(db_session).isoformat(),
+        }
+    ]
+    assert demo_cloud.insert_records(db_session, rows)["users"] == 1
+    user = db_session.get(User, user_id)
+    user.display_name = "Existing demo edit"
+    db_session.flush()
+    assert not any(demo_cloud.insert_records(db_session, rows).values())
+    db_session.expire(user)
+    assert user.display_name == "Existing demo edit"
