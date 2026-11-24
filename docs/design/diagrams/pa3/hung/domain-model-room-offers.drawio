@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='utf-8'?>
+<mxfile host="app.diagrams.net" modified="2026-11-13T14:00:00.000Z" agent="CourtMate PA3" version="24.0.0" type="device">
+  <diagram name="4.1b Room participation and slot offers" id="court-mate-pa3-domain-model">
+    <mxGraphModel dx="1340" dy="860" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1370" pageHeight="690" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="v2" value="User&lt;br&gt;Player account" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ECF7F2;strokeColor=#145D49;fontColor=#103D30;fontSize=15;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="110" y="55" width="220" height="64" as="geometry" />
+        </mxCell>
+        <mxCell id="v3" value="Booking" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ECF7F2;strokeColor=#145D49;fontColor=#103D30;fontSize=15;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="70" y="270" width="190" height="63" as="geometry" />
+        </mxCell>
+        <mxCell id="v4" value="OpenPlayRoom" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ECF7F2;strokeColor=#145D49;fontColor=#103D30;fontSize=15;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="440" y="270" width="210" height="68" as="geometry" />
+        </mxCell>
+        <mxCell id="v5" value="Membership" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ECF7F2;strokeColor=#145D49;fontColor=#103D30;fontSize=15;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="845" y="270" width="190" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="v6" value="PublishedSlot" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ECF7F2;strokeColor=#145D49;fontColor=#103D30;fontSize=15;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1035" y="65" width="205" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="v7" value="SlotOffer&lt;br&gt;F09 (Should)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ECF7F2;strokeColor=#145D49;fontColor=#103D30;fontSize=15;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1035" y="435" width="210" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="e8" value="places 1 → 0..*" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#145D49;fontSize=12;" edge="1" parent="1" source="v2" target="v3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e9" value="source 1 → 0..1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#145D49;fontSize=12;" edge="1" parent="1" source="v3" target="v4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e10" value="organizes 1 → 0..*" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#145D49;fontSize=12;" edge="1" parent="1" source="v2" target="v4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e11" value="participates 1 → 0..*" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#145D49;fontSize=12;" edge="1" parent="1" source="v2" target="v5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e12" value="has members 1 → 1..*" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#145D49;fontSize=12;" edge="1" parent="1" source="v4" target="v5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e13" value="offer history 1 → 0..*" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#145D49;fontSize=12;" edge="1" parent="1" source="v6" target="v7">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

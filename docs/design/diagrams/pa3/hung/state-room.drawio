@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='utf-8'?>
+<mxfile host="app.diagrams.net" modified="2026-11-13T14:00:00.000Z" agent="CourtMate PA3" version="24.0.0" type="device">
+  <diagram name="Room lifecycle" id="court-mate-pa3-state-room.d">
+    <mxGraphModel dx="1340" dy="860" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="790" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="v2" value="" style="ellipse;whiteSpace=wrap;html=1;fillColor=#145D49;strokeColor=#145D49;" vertex="1" parent="1">
+          <mxGeometry x="80" y="50" width="27" height="27" as="geometry" />
+        </mxCell>
+        <mxCell id="v3" value="OPEN&lt;br&gt;count &lt; capacity" style="rounded=1;arcSize=18;whiteSpace=wrap;html=1;fillColor=#ECF7F2;strokeColor=#145D49;fontSize=17;" vertex="1" parent="1">
+          <mxGeometry x="355" y="165" width="250" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="v4" value="FULL&lt;br&gt;count = capacity" style="rounded=1;arcSize=18;whiteSpace=wrap;html=1;fillColor=#ECF7F2;strokeColor=#145D49;fontSize=17;" vertex="1" parent="1">
+          <mxGeometry x="780" y="165" width="250" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="v5" value="CLOSED&lt;br&gt;irreversible" style="rounded=1;arcSize=18;whiteSpace=wrap;html=1;fillColor=#ECF7F2;strokeColor=#145D49;fontSize=17;" vertex="1" parent="1">
+          <mxGeometry x="590" y="495" width="280" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="e6" value="/ add organizer as first member" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#145D49;fontSize=12;" edge="1" parent="1" source="v2" target="v3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e7" value="join [count+1 = capacity]" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#145D49;fontSize=12;" edge="1" parent="1" source="v3" target="v4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e8" value="leave [non-organizer]" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#145D49;fontSize=12;" edge="1" parent="1" source="v4" target="v3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e9" value="organizer closes OR booking cancelled OR start reached" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#145D49;fontSize=12;" edge="1" parent="1" source="v3" target="v5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e10" value="organizer closes OR booking cancelled OR start reached" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#145D49;fontSize=12;" edge="1" parent="1" source="v4" target="v5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

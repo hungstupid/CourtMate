@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='utf-8'?>
+<mxfile host="app.diagrams.net" modified="2026-11-13T14:00:00.000Z" agent="CourtMate PA3" version="24.0.0" type="device">
+  <diagram name="Booking lifecycle" id="court-mate-pa3-state-bookin">
+    <mxGraphModel dx="1340" dy="860" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="790" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="v2" value="" style="ellipse;whiteSpace=wrap;html=1;fillColor=#145D49;strokeColor=#145D49;" vertex="1" parent="1">
+          <mxGeometry x="135" y="95" width="28" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="v3" value="CONFIRMED" style="rounded=1;arcSize=18;whiteSpace=wrap;html=1;fillColor=#ECF7F2;strokeColor=#145D49;fontSize=17;" vertex="1" parent="1">
+          <mxGeometry x="335" y="230" width="265" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="v4" value="CANCELLED" style="rounded=1;arcSize=18;whiteSpace=wrap;html=1;fillColor=#ECF7F2;strokeColor=#145D49;fontSize=17;" vertex="1" parent="1">
+          <mxGeometry x="785" y="435" width="280" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="e5" value="/ initialize accepted reservation" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#145D49;fontSize=12;" edge="1" parent="1" source="v2" target="v3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e6" value="cancel [own booking and &gt;= 6h at server receipt] / release all claims; close linked room" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#145D49;fontSize=12;" edge="1" parent="1" source="v3" target="v4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
